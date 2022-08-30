@@ -1,34 +1,34 @@
 /* quarto syntax highlight colors */
 :root {
-  --quarto-hl-ot-color: #003B4F;
-  --quarto-hl-at-color: #657422;
-  --quarto-hl-ss-color: #20794D;
-  --quarto-hl-an-color: #5E5E5E;
-  --quarto-hl-fu-color: #4758AB;
-  --quarto-hl-st-color: #20794D;
-  --quarto-hl-cf-color: #003B4F;
-  --quarto-hl-op-color: #5E5E5E;
-  --quarto-hl-er-color: #AD0000;
-  --quarto-hl-bn-color: #AD0000;
-  --quarto-hl-al-color: #AD0000;
-  --quarto-hl-va-color: #111111;
-  --quarto-hl-bu-color: inherit;
-  --quarto-hl-ex-color: inherit;
-  --quarto-hl-pp-color: #AD0000;
-  --quarto-hl-in-color: #5E5E5E;
-  --quarto-hl-vs-color: #20794D;
-  --quarto-hl-wa-color: #5E5E5E;
-  --quarto-hl-do-color: #5E5E5E;
-  --quarto-hl-im-color: #00769E;
-  --quarto-hl-ch-color: #20794D;
-  --quarto-hl-dt-color: #AD0000;
-  --quarto-hl-fl-color: #AD0000;
-  --quarto-hl-co-color: #5E5E5E;
-  --quarto-hl-cv-color: #5E5E5E;
-  --quarto-hl-cn-color: #8f5902;
-  --quarto-hl-sc-color: #5E5E5E;
-  --quarto-hl-dv-color: #AD0000;
-  --quarto-hl-kw-color: #003B4F;
+  --quarto-hl-ot-color: #FCFFFB;
+  --quarto-hl-at-color: #FCFFFB;
+  --quarto-hl-ss-color: #FCFFFB;
+  --quarto-hl-an-color: #FCFFFB;
+  --quarto-hl-fu-color: #FCFFFB;
+  --quarto-hl-st-color: #E9F5B9;
+  --quarto-hl-cf-color: #85B258;
+  --quarto-hl-op-color: #FCFFFB;
+  --quarto-hl-er-color: #FCFFFB;
+  --quarto-hl-bn-color: #CAD3C1;
+  --quarto-hl-al-color: #FCFFFB;
+  --quarto-hl-va-color: #FFDFE5;
+  --quarto-hl-bu-color: #FCFFFB;
+  --quarto-hl-ex-color: #FCFFFB;
+  --quarto-hl-pp-color: #FCFFFB;
+  --quarto-hl-in-color: #FCFFFB;
+  --quarto-hl-vs-color: #FCFFFB;
+  --quarto-hl-wa-color: #FCFFFB;
+  --quarto-hl-do-color: #C29CB7;
+  --quarto-hl-im-color: #FCFFFB;
+  --quarto-hl-ch-color: #E9F5B9;
+  --quarto-hl-dt-color: #FCFFFB;
+  --quarto-hl-fl-color: #CAD3C1;
+  --quarto-hl-co-color: #C29CB7;
+  --quarto-hl-cv-color: #C29CB7;
+  --quarto-hl-cn-color: #FFDFE5;
+  --quarto-hl-sc-color: #FCFFFB;
+  --quarto-hl-dv-color: #CAD3C1;
+  --quarto-hl-kw-color: #85B258;
 }
 
 /* other quarto variables */
@@ -37,131 +37,136 @@
 }
 
 pre > code.sourceCode > span {
-  color: #003B4F;
+  color: #FCFFFB;
 }
 
 code span {
-  color: #003B4F;
+  color: #FCFFFB;
 }
 
 code.sourceCode > span {
-  color: #003B4F;
+  color: #FCFFFB;
 }
 
 div.sourceCode,
 div.sourceCode pre.sourceCode {
-  color: #003B4F;
+  color: #FCFFFB;
 }
 
 code span.ot {
-  color: #003B4F;
+  color: #FCFFFB;
 }
 
 code span.at {
-  color: #657422;
+  color: #FCFFFB;
 }
 
 code span.ss {
-  color: #20794D;
+  color: #FCFFFB;
 }
 
 code span.an {
-  color: #5E5E5E;
+  color: #FCFFFB;
 }
 
 code span.fu {
-  color: #4758AB;
+  color: #FCFFFB;
 }
 
 code span.st {
-  color: #20794D;
+  color: #E9F5B9;
 }
 
 code span.cf {
-  color: #003B4F;
+  color: #85B258;
 }
 
 code span.op {
-  color: #5E5E5E;
+  color: #FCFFFB;
 }
 
 code span.er {
-  color: #AD0000;
+  color: #FCFFFB;
 }
 
 code span.bn {
-  color: #AD0000;
+  color: #CAD3C1;
 }
 
 code span.al {
-  color: #AD0000;
+  color: #FCFFFB;
 }
 
 code span.va {
-  color: #111111;
+  color: #FFDFE5;
+}
+
+code span.bu {
+  color: #FCFFFB;
+}
+
+code span.ex {
+  color: #FCFFFB;
 }
 
 code span.pp {
-  color: #AD0000;
+  color: #FCFFFB;
 }
 
 code span.in {
-  color: #5E5E5E;
+  color: #FCFFFB;
 }
 
 code span.vs {
-  color: #20794D;
+  color: #FCFFFB;
 }
 
 code span.wa {
-  color: #5E5E5E;
-  font-style: italic;
+  color: #FCFFFB;
 }
 
 code span.do {
-  color: #5E5E5E;
-  font-style: italic;
+  color: #C29CB7;
 }
 
 code span.im {
-  color: #00769E;
+  color: #FCFFFB;
 }
 
 code span.ch {
-  color: #20794D;
+  color: #E9F5B9;
 }
 
 code span.dt {
-  color: #AD0000;
+  color: #FCFFFB;
 }
 
 code span.fl {
-  color: #AD0000;
+  color: #CAD3C1;
 }
 
 code span.co {
-  color: #5E5E5E;
+  color: #C29CB7;
 }
 
 code span.cv {
-  color: #5E5E5E;
-  font-style: italic;
+  color: #C29CB7;
 }
 
 code span.cn {
-  color: #8f5902;
+  color: #FFDFE5;
 }
 
 code span.sc {
-  color: #5E5E5E;
+  color: #FCFFFB;
 }
 
 code span.dv {
-  color: #AD0000;
+  color: #CAD3C1;
 }
 
 code span.kw {
-  color: #003B4F;
+  color: #85B258;
 }
 
 .prevent-inlining {

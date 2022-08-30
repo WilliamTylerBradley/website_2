@@ -1,0 +1,23 @@
+/*-- scss:defaults --*/
+
+// use default as the base
+$theme: "default" !default;
+
+$primary:       #263121 !default;
+$secondary:     #353E31 !default;
+
+
+/*-- scss:rules --*/
+
+// Titles
+
+.title {
+  color: $white;
+}
+
+// Links 
+
+a:link { text-decoration: none; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:active { text-decoration: none; }

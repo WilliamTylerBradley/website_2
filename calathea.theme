@@ -1,0 +1,99 @@
+{
+    "text-color": "#FCFFFB",
+    "background-color": "#263121",
+    "line-number-color": "#FCFFFB",
+    "line-number-background-color": "#263121",
+    "text-styles": {
+        "Normal": {
+            "text-color": "#FCFFFB"
+        },
+        "Other": {
+            "text-color": "#FCFFFB"
+        },
+        
+        "Attribute": {
+            "text-color": "#FCFFFB"
+        },
+        "SpecialString": {
+            "text-color": "#FCFFFB"
+        },
+        "Annotation": {
+            "text-color": "#FCFFFB"
+        },
+        "Function": {
+            "text-color": "#FCFFFB"
+        },
+        "String": {
+            "text-color": "#E9F5B9"
+        },
+        "ControlFlow": {
+            "text-color": "#85B258"
+        },
+        "Operator": {
+            "text-color": "#FCFFFB"
+        },
+        "Error": {
+            "text-color": "#FCFFFB"
+        },
+        "BaseN": {
+            "text-color": "#CAD3C1"
+        },
+        "Alert": {
+            "text-color": "#FCFFFB"
+        },
+        "Variable": {
+            "text-color": "#FFDFE5"
+        },
+        "BuiltIn": {
+            "text-color": "#FCFFFB"
+        },
+        "Extension": {
+            "text-color": "#FCFFFB"
+        },
+        "Preprocessor": {
+            "text-color": "#FCFFFB"
+        },
+        "Information": {
+            "text-color": "#FCFFFB"
+        },
+        "VerbatimString": {
+            "text-color": "#FCFFFB"
+        },
+        "Warning": {
+            "text-color": "#FCFFFB"
+        },
+        "Documentation": {
+            "text-color": "#C29CB7"
+        },
+        "Import": {
+            "text-color": "#FCFFFB"
+        },
+        "Char": {
+            "text-color": "#E9F5B9"
+        },
+        "DataType": {
+            "text-color": "#FCFFFB"
+        },
+        "Float": {
+            "text-color": "#CAD3C1"
+        },
+        "Comment": {
+            "text-color": "#C29CB7"
+        },
+        "CommentVar": {
+            "text-color": "#C29CB7"
+        },
+        "Constant": {
+            "text-color": "#FFDFE5"
+        },
+        "SpecialChar": {
+            "text-color": "#FCFFFB"
+        },
+        "DecVal": {
+            "text-color": "#CAD3C1"
+        },
+        "Keyword": {
+            "text-color": "#85B258"
+        }
+    }
+}
