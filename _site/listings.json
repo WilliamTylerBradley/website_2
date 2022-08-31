@@ -2,8 +2,23 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
+      "/posts/2022-05-28-circuitry/index.html",
+      "/posts/2022-05-20-cross-validation-a-toy-example/index.html",
+      "/posts/2022-05-03-pandemic-mazes/index.html",
+      "/posts/2022-03-01-cohesive-graphs/index.html",
+      "/posts/2022-02-28-constellations/index.html",
+      "/posts/2021-12-20-az-900-exam-flashcards/index.html",
+      "/posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html",
+      "/posts/2021-10-25-penrsose-tiling/index.html",
+      "/posts/2021-10-19-power-bi-and-missing-values/index.html",
+      "/posts/2021-08-12-bertrand-paradox/index.html",
+      "/posts/2021-08-10-choosing-nearby-colors-part-2/index.html",
+      "/posts/2021-08-09-choosing-nearby-colors-part-1/index.html",
+      "/posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html",
+      "/posts/2021-01-31-genuary-2021/index.html",
+      "/posts/2020-05-15-calathea-theme/index.html",
+      "/posts/2020-04-16-website-design-part-2/index.html",
+      "/posts/2020-04-16-website-design-part-1/index.html"
     ]
   }
 ]

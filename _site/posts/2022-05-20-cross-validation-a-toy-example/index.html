@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.132">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-05-20">
+<meta name="description" content="Presentation on cross-validation using toys">
+
+<title>Cross-validation: A Toy Example</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/WilliamTylerBradley"><i class="bi bi-github" role="img" aria-label="github">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"><i class="bi bi-twitter" role="img" aria-label="twitter">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Cross-validation: A Toy Example</h1>
+                  <div>
+        <div class="description">
+          Presentation on cross-validation using toys
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Data Science</div>
+                <div class="quarto-category">Presentations</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 20, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<hr>
+<center>
+<h2 class="anchored">
+Background
+</h2>
+</center>
+<hr>
+<p>This blog post comes from a presentation I gave a few years ago. It will walk through a demonstration of cross-validation for comparing predictive models. I assume you already know about cross-validation and won’t spend much time explaining it. Working through how this presentation functions is the main focus. The exercise works by having your co-workers (or other people) stand on a large grid marked by string. Each person has a toy animal representing their class, either African mammal or dinosaur, with information attached.</p>
+<p>The toy also has a tag with:</p>
+<ul>
+<li>ID number</li>
+<li>x-position of X1</li>
+<li>y-position of X2</li>
+<li>fold number.</li>
+</ul>
+<p>I used X1 and X2 instead of x and y since y is often reserved for the class, but x and y can be used. People will move on and off the grid as the toys move in and out of hold-out sets for different folds. Predictive models are built and tested to determine the best one. There are many variations on this idea, so feel free to change this up to suit your situation.</p>
+<p>I’d recommend starting with a brief explanation of cross-validation and when/why it is used. I usually have slides with a curve of data (like y = x^2 + noise). Then show three models: a line, a curve, and one that goes through all data points but is very squiggly. Then add in some data to estimate and show that the curve fits best. Or something similar to get the general picture.</p>
+<p>(As a side note, this presentation was inspired by the <a href="https://en.wikipedia.org/wiki/Dance_Your_Ph.D.">Dance Your Ph.D.&nbsp;contest</a>. I’m not good with music, but if you are, I’m pretty confident this could be a dance instead.)</p>
+<hr>
+<center>
+<h2 class="anchored">
+Setup
+</h2>
+</center>
+<hr>
+<p>The following picture gives a general idea of the setup. I’m using a table for the photography, but it would be much larger on the floor. I had small cones for the axis labels, but there are small pieces of paper here. String or tape can mark the grid lines. The axes are generic X1 and X2, but they can represent variables like height/weight ratio or transformations like PCA.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="set_up.JPG" style="width:80.0%;height:80.0%" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">Setup Grid</figcaption><p></p>
+</figure>
+</div>
+<p>The exercise aims to create models using ribbons, to separate the mammals from dinosaurs. The ribbons are different lengths to represent the different flexibility of models. Then, we’ll test each of the models using cross-validation to estimate how well each one would perform on new data.</p>
+<p>I created test data sets to determine the toys’ positions and folds until I got some with the desired attributes. I used twelve animals, but your number will depend on the people you have. There are three folds and three models. Each fold has four animals, two mammals and two dinosaurs. The three models are a straight line, a curve, and a squiggle. I wanted some variety with accuracy, none of the models to be perfect, and have Model 2 to be the best. I created a decision boundary of a curve to get started. All animals are positioned on integers, with African mammals on the left/below the curve and dinosaurs on the right/above. Then I sampled data sets until I got some with the desired properties, compared them, and chose one with nice images. You can see the <a href="https://github.com/WilliamTylerBradley/cross-validation-example">code in this repo</a>.</p>
+<hr>
+<center>
+<h2 class="anchored">
+Full Data Set
+</h2>
+</center>
+<hr>
+<p>The following images show a graphic of the data and a picture of the toys in place. In the graphic, mammals are yellow while dinosaurs are green. The toys are in place based on their tag’s information. The tea towel holds the assessment data. People can just walk off the grid to any place in real life. For this blogpost, graphics on the left would be displayed during the presentation to guide the exercise, while the pictures on the right show the physical experience.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ids.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Full Data Set - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="full_pop.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Full Data Set - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<center>
+<h2 class="anchored">
+Folds and Models
+</h2>
+</center>
+<hr>
+<p>The next image shows which animals are in each fold. This image shows when people should move off the grid. The fold IDs are also on the tag attached to each toy.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="folds.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Folds Identification</figcaption><p></p>
+</figure>
+</div>
+<section id="fold-1" class="level1">
+<h1>Fold 1</h1>
+<p>So to set up the first fold, people with a fold ID of 1 move off the grid. These people are in the assessment set while everyone else is in the analysis set. (Sometimes called validation and training set.)</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_analysis.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_analysis_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-1-model-1" class="level1">
+<h1>Fold 1 Model 1</h1>
+<p>For Model 1, we have a piece of ribbon that stretches to a line across the grid. For this model, the ribbon is always a straight line. The analysis set people attempt to set the line down to separate the mammals from the dinosaurs. In this case, a straight line cannot separate the animals. So, the elephant in the bottom right corner ends up on the wrong side. The graphic displays the error with a green on the outside (labeled as a dinosaur) and yellow on the inside (actually a mammal) dot. For the graphics, dots with two colors are mismatches.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_analysis_model_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Analysis Set - Model 1 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_analysis_model_1_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Analysis Set - Model 1 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>It’s important to emphasize the analysis set doesn’t know about the assessment set. This way, people don’t try to remember where they were to improve accuracy. Driving home this point really helped explain the importance of cross-validation and how it estimates model performance on unseen data.</p>
+<p>We bring the people in the hold-out area back onto the grid for the assessment set. The ribbon marking the model stays in place. For my presentation, I kept everyone on the grid. But for the pictures, it was easier to see the results by moving the analysis set out of the way. In the end, the model mislabels one of the dinosaurs because it’s on the wrong side. Its dot is two colors, and the toy is knocked over.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_assessment_model_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Assessment Set - Model 1 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_assessment_model_1_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Assessment Set - Model 1 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-2" class="level1">
+<h1>Fold 2</h1>
+<p>The people in fold 2 move off the grid for the next step. Then a straight line model is built.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_analysis.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_analysis_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-2-model-1" class="level1">
+<h1>Fold 2 Model 1</h1>
+<p>In this example, the model built by code mismarks the dinosaur in the model. I choose to move the model and correct it for the picture. In an actual presentation, people will move these however they want. So they are unlikely to match the computer result every time. You can either keep track of both results or only focus on the computer output.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_analysis_model_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Assessment Set - Model 1 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_analysis_model_1_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Assessment Set - Model 1 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>When we add back in the assessment set, two errors occur: the giraffe in the top left and a dinosaur towards the bottom right.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_assessment_model_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Analysis Set - Model 1 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_assessment_model_1_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Analysis Set - Model 1 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-3" class="level1">
+<h1>Fold 3</h1>
+<p>Fold 3 repeats the same action with the last set of people.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_analysis.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_analysis_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-3-model-1" class="level1">
+<h1>Fold 3 Model 1</h1>
+<p>We end up building a model again. This time everyone in the analysis set can be labeled correctly, but we’ll miss the elephant in the bottom right of the assessment set.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_analysis_model_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Assessment Set - Model 1 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_analysis_model_1_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Assessment Set - Model 1 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_assessment_model_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Analysis Set - Model 1 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_assessment_model_1_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Analysis Set - Model 1 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-1-model-2" class="level1">
+<h1>Fold 1 Model 2</h1>
+<p>This set will mirror the first part of the exercise but use a different model. The new model is a longer piece of ribbon that can have a slight curve. Apart from that, everything is the same.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_analysis_model_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Assessment Set - Model 2 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_analysis_model_2_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Assessment Set - Model 2 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_assessment_model_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Analysis Set - Model 2 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_assessment_model_2_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Analysis Set - Model 2 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>For fold 1, we finally get an analysis set and an assessment set with 100% accuracy. This shows that adding some complexity to the model can help.</p>
+</section>
+<section id="fold-2-model-2" class="level1">
+<h1>Fold 2 Model 2</h1>
+<p>This follows the same pattern as the previous fold.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_analysis_model_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Assessment Set - Model 2 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_analysis_model_2_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Assessment Set - Model 2 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_assessment_model_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Analysis Set - Model 2 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_assessment_model_2_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Analysis Set - Model 2 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-3-model-2" class="level1">
+<h1>Fold 3 Model 2</h1>
+<p>In this fold, we do have an error in the assessment set. I like to see at least one error for each model to demonstrate that it can be impossible to get everything correct.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_analysis_model_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Assessment Set - Model 2 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_analysis_model_2_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Assessment Set - Model 2 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_assessment_model_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Analysis Set - Model 2 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_assessment_model_2_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Analysis Set - Model 2 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-1-model-3" class="level1">
+<h1>Fold 1 Model 3</h1>
+<p>We have the longest ribbon for the most flexible model for the final model. The exercise follows the previous steps.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_analysis_model_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Assessment Set - Model 3 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_analysis_model_3_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Assessment Set - Model 3 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_assessment_model_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Analysis Set - Model 3 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_1_assessment_model_3_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 1 - Analysis Set - Model 3 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-2-model-3" class="level1">
+<h1>Fold 2 Model 3</h1>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_analysis_model_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Assessment Set - Model 3 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_analysis_model_3_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Assessment Set - Model 3 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_assessment_model_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Analysis Set - Model 3 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_2_assessment_model_3_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 2 - Analysis Set - Model 3 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fold-3-model-3" class="level1">
+<h1>Fold 3 Model 3</h1>
+<p>There is more room for the final model to move the ribbon. The flexibility can create new patterns that don’t capture the data as well.</p>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_analysis_model_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Assessment Set - Model 3 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_analysis_model_3_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Assessment Set - Model 3 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_assessment_model_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Analysis Set - Model 3 - Graphic</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="fold_3_assessment_model_3_pic.JPG" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Fold 3 - Analysis Set - Model 3 - Picture</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<center>
+<h2 class="anchored" data-anchor-id="fold-3-model-3">
+Overall Accuracy
+</h2>
+</center>
+<hr>
+<p>We can wrap up the exercise by looking at the models’ overall accuracy. For this setup, Model 2 performed the best. This outcome shows that having some flexibility can fit the data better, but adding too much complexity to the model can hurt.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="accuracy_table.png" style="height:80.0%" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">Accuracy Results</figcaption><p></p>
+</figure>
+</div>
+<hr>
+<p>The last topic to mention is the toys used. I got African mammals and dinosaurs because they were at the store near me, but I think it’s a great combination. Most people know enough about them to have a conversation on variables that can help separate them. At the same time, it’s not a serious or business-related topic. So, it’s more interesting than just using colored points, but you can also avoid people getting too caught up in the weeds. Feel free to change it to whatever you want.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2022, William Tyler Bradley</div>
+  </div>
+</footer>
+
+
+
+</body></html>

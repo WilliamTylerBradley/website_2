@@ -1,0 +1,480 @@
+---
+title: "Circuitry"
+description: "Generative art project based on a looped path"
+date: "2022-05-28"
+categories: [R, Generative Art]
+image: "output_1.jpeg"
+execute: 
+  eval: false
+---
+
+<hr>
+
+<center>
+
+<h2>Background</h2>
+
+</center>
+
+<hr>
+
+This small generative art project uses code from my previous work. I really liked the looped path objects and decided to try something else with them. This work expands the loop a little, adds a randomly generated color scheme, and uses a standard image style.
+
+<hr>
+
+<center>
+
+<h2>Code</h2>
+
+</center>
+
+<hr>
+
+The first function is `get_maze`. This code creates a maze from a `size`-by-`size` grid. The final code uses a base `size` of ten. The maze starts at the bottom middle and randomly adds edges.
+
+```{r get_maze}
+#| code-fold: true
+#| code-summary: "[`get_maze` function]"
+
+get_maze <- function(size) {
+  
+  # Sets up base data set of potential edges for the maze
+  # size is always 5 for right now
+  edges <- CJ(
+    x1 = rep(seq(1, size), 2),
+    y1 = seq(1, size)
+  )
+  edges[, ":="(x2 = ifelse(.I %% 2 == 0, x1 + 1, x1),
+               y2 = ifelse(.I %% 2 == 1, y1 + 1, y1))]
+  edges <- edges[x2 <= size & y2 <= size, ]
+  edges[, id := seq(1, nrow(edges))]
+  edges[, ":="(node1 = (x1 - 1) * size + (y1 - 1) + 1,
+               node2 = (x2 - 1) * size + (y2 - 1) + 1)]
+  setkey(edges, id)
+  
+  # data set of nodes
+  nodes <- unique(rbind(edges[, .(id = node1)], edges[, .(id = node2)]))
+  nodes[, connected := 0]
+  setkey(nodes, id)
+  
+  # data set of node id to edge ids
+  nodes_edges <- unique(rbind(edges[, .(id = node1, edge = id)][], 
+                              edges[, .(id = node2, edge = id)]))
+  setkey(nodes_edges, id)
+  
+  # location : 1 for maze, 0 for frontier, -1 for uncharted, -2 for discarded
+  # starting point : bottom middle
+  # include bottom middle then either off to the sides or up
+  starting_edge <- edges[(x1 == 3 & y1 == 1) |
+                           (x1 == 2 & y1 == 1 & x2 == 3 & y2 == 1), ][sample(.N, 1), ]
+  
+  # Set up base columns
+  edges[, ":="(location = -1,
+               probability = 0)]
+  edges[.(starting_edge$id), ":="(location = 1,
+                                  probability = 0)]
+  nodes[.(c(starting_edge$node1, starting_edge$node2)), connected := 1]
+  edges[.(nodes_edges[.(c(starting_edge$node1, starting_edge$node2)), "edge"]), ":="
+        (location = fifelse(location == -1, 0, location),
+          probability = fifelse(location == -1, 1, probability))]
+  
+  #### Loop through maze generation ----
+  num_edges <- 1
+  while (num_edges < (size^2 - 1)) {
+    
+    # select next edge
+    selected_edge <- edges[sample(.N, 1, prob = probability), ]
+    
+    ## if it's good, then
+    # add it to the maze
+    # add connecting edges to the frontier
+    # else add it to discard
+    if (any(nodes[.(c(selected_edge$node1, selected_edge$node2))
+                  , connected] == 0)) {
+      
+      # add to maze
+      edges[.(selected_edge$id), ":="(location = 1,
+                                      probability = 0)]
+      
+      # update nodes
+      nodes[.(c(selected_edge$node1, selected_edge$node2)), connected := 1]
+      
+      # update frontier
+      edges[.(nodes_edges[.(c(selected_edge$node1, selected_edge$node2))
+                          , "edge"]), ":="
+            (location = fifelse(location == -1, 0, location),
+              probability = fifelse(location == -1, 1, probability))]
+      
+      num_edges <- num_edges + 1
+    } else {
+      # drop from frontier
+      edges[.(selected_edge$id), ":="(location = -2,
+                                      probability = 0)]
+    }
+  }
+  
+  return(edges[location == 1, ])
+}
+```
+
+The next function, `update_maze`, doubles the edges so that the maze follows a loop. The new connections trace the outline of the maze. This action mimics exploring the maze and following the path back to the start.
+
+```{r update_maze}
+#| code-fold: true
+#| code-summary: "[`update_maze` function]"
+
+update_maze <- function(edges) {
+  
+  # list out all possible edges
+  # (basically same code as setting up the maze)
+  # plus adds edges that stick out on the outside
+  size <- max(edges$x1) + 1
+  all_possible_edges <- CJ(
+    x1 = rep(seq(1, size), 2) - 1,
+    y1 = seq(1, size) - 1
+  )
+  all_possible_edges[, ":="(x2 = ifelse(.I %% 2 == 0, x1 + 1, x1),
+                            y2 = ifelse(.I %% 2 == 1, y1 + 1, y1))]
+  all_possible_edges <- all_possible_edges[(x1 != 0 | x2 != 0) &
+                                             (y1 != 0 | y2 != 0), ]
+  
+  edges <- edges[, .(x1, x2, y1, y2, id)]
+  
+  # merge maze and all possible edges to see which ones weren't used
+  all_possible_edges <- merge(all_possible_edges, edges,
+                              by = c("x1", "y1", "x2", "y2"),
+                              all.x = TRUE
+  )
+  
+  # This function subs in the new edges appropriately
+  # basically, any path edge needs to be updated to two edges so the maze
+  # starts at the bottom middle, travels through the maze, and back to the start
+  create_new_edges <- function(x1, y1, x2, y2, id) {
+    # if no edges, add block
+    if (is.na(id)) {
+      if (y1 == y2) { # horizontal edge
+        list(
+          x1_1 = 2 * x1,
+          y1_1 = 2 * y1 - 1,
+          x2_1 = 2 * x1,
+          y2_1 = 2 * y1,
+          x1_2 = 2 * x2 - 1,
+          y1_2 = 2 * y2 - 1,
+          x2_2 = 2 * x2 - 1,
+          y2_2 = 2 * y2
+        )
+      } else { # vertical edge
+        list(
+          x1_1 = 2 * x1 - 1,
+          y1_1 = 2 * y1,
+          x2_1 = 2 * x1,
+          y2_1 = 2 * y1,
+          x1_2 = 2 * x2 - 1,
+          y1_2 = 2 * y2 - 1,
+          x2_2 = 2 * x2,
+          y2_2 = 2 * y2 - 1
+        )
+      }
+    } else { # has edge, add connections
+      if (y1 == y2) { # horizontal edge
+        list(
+          x1_1 = 2 * x1,
+          y1_1 = 2 * y1 - 1,
+          x2_1 = 2 * x2 - 1,
+          y2_1 = 2 * y2 - 1,
+          x1_2 = 2 * x1,
+          y1_2 = 2 * y1,
+          x2_2 = 2 * x2 - 1,
+          y2_2 = 2 * y2
+        )
+      } else { # vertical edge
+        list(
+          x1_1 = 2 * x1 - 1,
+          y1_1 = 2 * y1,
+          x2_1 = 2 * x2 - 1,
+          y2_1 = 2 * y2 - 1,
+          x1_2 = 2 * x1,
+          y1_2 = 2 * y1,
+          x2_2 = 2 * x2,
+          y2_2 = 2 * y2 - 1
+        )
+      }
+    }
+  }
+  
+  # fill in blocks and paths
+  all_possible_edges[, c(
+    "x1_1", "y1_1", "x2_1", "y2_1",
+    "x1_2", "y1_2", "x2_2", "y2_2"
+  ) := create_new_edges(x1, y1, x2, y2, id),
+  by = seq_len(nrow(all_possible_edges))
+  ]
+  
+  # clean everything up
+  all_possible_edges[, ":="(x1 = NULL,
+                            y1 = NULL,
+                            x2 = NULL,
+                            y2 = NULL,
+                            id = NULL)]
+  
+  all_possible_edges <- melt(all_possible_edges,
+                             measure.vars = patterns("x1", "y1", "x2", "y2"),
+                             value.name = c("x1", "y1", "x2", "y2")
+  )[, variable := NULL]
+  
+  all_possible_edges <- all_possible_edges[(x1 > 0 &
+                                              y1 > 0 &
+                                              x2 < (2 * size - 1) &
+                                              y2 < (2 * size - 1)), ]
+}
+```
+
+The last external function, `maze_to_path`, puts all the edges in order from the bottom left corner, traveling through the loop and back to the beginning.
+
+```{r maze_to_path}
+#| code-fold: true
+#| code-summary: "[`maze_to_path` function]"
+
+maze_to_path <- function(edges) {
+  # set up id
+  edges[, id := .I]
+  setkey(edges, id)
+  
+  # set up nodes data set
+  nodes <- unique(rbind(edges[, .(x = x1, y = y1)]
+                        , edges[, .(x = x2, y = y2)]))
+  nodes[, id := .I]
+  setkey(nodes, id)
+  
+  # add node ids to edges data set
+  edges <- merge(edges, nodes,
+                 by.x = c("x1", "y1"), by.y = c("x", "y"),
+                 suffixes = c("", "_node_1"), all.x = TRUE
+  )
+  edges <- merge(edges, nodes,
+                 by.x = c("x2", "y2"), by.y = c("x", "y"),
+                 suffixes = c("", "_node_2"), all.x = TRUE
+  )
+  
+  # nodes to edges look up table
+  nodes_edges <- unique(rbind(
+    edges[, .(id = id_node_1, edge = id, connecting_node = id_node_2)],
+    edges[, .(id = id_node_2, edge = id, connecting_node = id_node_1)]
+  ))
+  setkey(nodes_edges, id)
+  
+  # save spot for path
+  path <- vector(mode = "numeric")
+  
+  # variables to keep track of progress through the maze
+  current_node <- nodes[y == 1 & x == 1, id]
+  first_node <- current_node
+  
+  # update path
+  path <- append(path, current_node)
+  previous_node <- current_node
+  
+  # keep going to unexplored nodes
+  current_node <- nodes_edges[.(current_node), 
+  ][connecting_node != previous_node
+    , connecting_node][1]
+  
+  # continue through the whole path
+  while (current_node != first_node) {
+    path <- append(path, current_node)
+    future_node <- nodes_edges[.(current_node), 
+    ][connecting_node != previous_node
+      , connecting_node]
+    previous_node <- current_node
+    current_node <- future_node
+  }
+  
+  path <- data.table(
+    order = seq(1, length(path)),
+    node = path
+  )
+  path <- merge(path, nodes, by.x = c("node"), by.y = c("id"))
+}
+```
+
+The main workhorse utilizes the previous functions to get a set of connections.
+
+The color scheme code follows a random circle in the HCL color space. There are ten points equidistant around the circle. Sometimes the first random circle will produce invalid color values. So the code loops until it finds a complete set. The circle's center is saved and used as a border for the images and fills small circles where the connections meet.
+
+Finally, a sine wave with a random number of waves determines the connections' sizes.
+
+```{r generate_output}
+#| code-fold: show
+#| code-summary: "[`generate_output` code]"
+
+library(data.table)
+library(ggplot2)
+
+source("get_maze.R")
+source("update_maze.R")
+source("maze_to_path.R")
+
+get_set <- function(size) {
+  set <- get_maze(size)
+  set <- update_maze(set)
+  set <- maze_to_path(set)
+  
+  set[, ":="(x = x - (size + .5),
+             y = y - (size + .5))]
+  
+  set <- set[order(order), ]
+  set[, ':=' (xend = shift(x, type = "lead", fill = 1 - (size + .5) ),
+              yend = shift(y, type = "lead", fill = 1 - (size + .5) ))]
+}
+
+# Get color scheme by finding a random circle in HCL color space
+get_colors <- function() {
+  
+  # two random vectors
+  v1 <- runif(3, -1, 1)
+  v2 <- runif(3, -1, 1)
+  # orthogonal
+  v2 <- v2 - c(v1 %*% v2 / v1 %*% v1 ) * v1
+  # unit
+  v1 <- v1 / sqrt(c(v1 %*% v1))
+  v2 <- v2 / sqrt(c(v2 %*% v2))
+  
+  # random point
+  p <- runif(3, -30, 30) + c(0, 0, 50)
+  
+  # random radius
+  r <- runif(1, 10, 30)
+  
+  # ten points around the circle
+  # need to keep both end points even though they're the same value
+  # for scale_color_gradientn to loop back around
+  t <- seq(0, 2 * pi, length.out = 11)
+  
+  colors <- data.table(p1 = p[1],
+                       p2 = p[2],
+                       p3 = p[3],
+                       r = r,
+                       t = t,
+                       v11 = v1[1],
+                       v12 = v1[2],
+                       v13 = v1[3],
+                       v21 = v2[1],
+                       v22 = v2[2],
+                       v23 = v2[3])
+  
+  colors[, ':=' (x = p1 + r * cos(t) * v11 + r * sin(t) * v21,
+                 y = p2 + r * cos(t) * v12 + r * sin(t) * v22,
+                 z = p3 + r * cos(t) * v13 + r * sin(t) * v23)]
+  colors[, ":=" (H = (atan2(y, x) * 180/pi) %% 360,
+                 C = sqrt(x^2 + y^2),
+                 L = z)]
+  
+  
+  colors[, ':=' (hex_value = ifelse(L < 0 | L > 100, NA_character_, 
+                                    hcl(H, C, L, fixup = FALSE))), 
+         by = seq_len(nrow(colors))]
+
+  return(colors)
+}
+
+# Sometimes the circle will be out of range,
+# so try again until all the colors are valid
+get_color_scheme <- function() {
+  colors <- get_colors()
+
+  while(any(is.na(colors$hex_value))) {
+    colors <- get_colors()
+  }
+  
+  return(colors)
+}
+
+# Create 10 outputs
+set.seed(10101010)
+for(i in 1:10) {
+  size <- 10
+  set <- get_set(size)
+  
+  colors <- get_color_scheme()
+  
+  # Save center of the circle
+  color_center <- hcl(h = (atan2(colors$p2[1], colors$p1[1]) * 180/pi) %% 360,
+                      c = sqrt(colors$p1[1]^2 + colors$p2[1]^2),
+                      l = colors$p3[1])
+  
+  color_scheme <- colors[["hex_value"]]
+  
+  # Get boundaries of white background square
+  boundaries <- data.table(x = c(min(set$x), max(set$x), max(set$x), min(set$x)),
+                           y = c(min(set$y), min(set$y), max(set$y), max(set$y)))
+  boundaries[, ':=' (x = x * 1.1,
+                     y = y * 1.1)]
+  
+  # Set up connections size
+  # order goes from 1 to 400
+  # 400 / waves = num segments per wave
+  waves <- round(runif(1, 70, 130))
+  offset <- runif(1, 0, 2*pi)
+  set[, size := order / max(order) * 2*pi]
+  set[, size := (sin(waves * size + offset) + 1) * 2.5 ]
+  
+  ggplot() +
+    geom_polygon(data = boundaries,
+                 aes(x, y),
+                 color = "white",
+                 fill = "white") +
+    geom_segment(data = set,
+                 aes(x, y,
+                     xend = xend, yend = yend, 
+                     color = order, size = size),
+                 alpha = .5,
+                 lineend = "round") +
+    geom_segment(data = set,
+                 aes(x, y,
+                     xend = xend, yend = yend, 
+                     color = order, size = size / 5),
+                 alpha = 1,
+                 lineend = "round") +
+    geom_point(data = set,
+               aes(x, y), 
+               color = color_center,
+               size = .5) +
+    scale_color_gradientn(colours = color_scheme) +
+    theme_void() +
+    theme(legend.position = "none") +
+    coord_equal()
+  ggsave(paste0("output/output_", i, ".jpeg"), height = 5, width = 5, bg = color_center)
+}
+```
+
+<hr>
+
+<center>
+
+<h2>Output</h2>
+
+</center>
+
+<hr>
+
+::: {layout-ncol="2"}
+![Output 1](output_1.jpeg)
+
+![Output 2](output_2.jpeg)
+
+![Output 3](output_3.jpeg)
+
+![Output 4](output_4.jpeg)
+
+![Output 5](output_5.jpeg)
+
+![Output 6](output_6.jpeg)
+
+![Output 7](output_7.jpeg)
+
+![Output 8](output_8.jpeg)
+
+![Output 9](output_9.jpeg)
+
+![Output 10](output_10.jpeg)
+:::

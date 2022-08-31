@@ -4,7 +4,7 @@ project:
 website:
   favicon: favicon.png
   navbar:
-    background: "#1E271A"
+    background: primary
     left:
       - text: "Home"
         file: index.qmd
@@ -22,10 +22,12 @@ website:
         href: https://twitter.com/w_tyler_bradley
   page-footer: 
     center: "Copyright 2022, William Tyler Bradley"
-    background: "#263121"
+    background: primary
 format:
   html:
-    theme: default
+    theme: 
+      - default
+      - calathea.scss
     css: styles.css
     highlight-style: calathea.theme
     code-copy: true

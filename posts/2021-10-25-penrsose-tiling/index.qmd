@@ -1,0 +1,35 @@
+---
+title: "Penrose Tiling"
+description: "R package for Penrose tiling patterns"
+date: "2021-10-19"
+categories: [R, Generative Art]
+image: "penrosetiling.png"
+execute: 
+  eval: false
+---
+
+<hr>
+<center><h2>R package</h2></center>
+<hr>
+
+I recently worked on a generative art project around [Penrose tiling](https://en.wikipedia.org/wiki/Penrose_tiling) patterns. As I worked through the functions, I decided to throw them into a package, `penrosetiling`. You can find it [here](https://williamtylerbradley.github.io/penrosetiling/). This package has base data sets and functions to substitute the pattern down through the shapes. There are also vignettes to help get started, use `purrr` for looping, and clean up images. Hopefully, it will work for you.
+
+![penrosetiling hex sticker](penrosetiling.png){height=175px}
+
+<hr>
+<center><h2>Outputs</h2></center>
+<hr>
+
+The outputs from the project are displayed below. The code can be found [here](https://github.com/WilliamTylerBradley/penrosetiling_art).
+
+![Variations 1](variations1.png)
+
+![Variations 2](variations2.png)
+
+![Cathedral](cathedral.jpeg)
+
+![Warnings](warnings.png)
+
+![Vacay](vacay.jpeg)
+
+![SBWN (Standard Black and White Noise)](sbwn.gif)

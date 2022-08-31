@@ -1,24 +1,5 @@
 /* css styles */
 
-/* Titles */
-.title {
-  color: white;
-}
-
-/* Smaller banner at the top */
-.quarto-title-banner {
-  background-color: #263121;
-  padding-top: 1.5em;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-/* Lines on home page between posts */
-div.quarto-post {
-  border-bottom: 1px solid;
-  border-image: linear-gradient(to right, #C29CB7 5%, #263121 5%, #263121 95%, #C29CB7 95%) 5;
-}
-
 /* nav bar background */
 .navbar {
   background-image: url('nav_bar.png');
@@ -26,3 +7,4 @@ div.quarto-post {
   background-attachment: fixed;
   background-size: cover;
 }
+

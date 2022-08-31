@@ -1,0 +1,506 @@
+---
+title: 'GENUARY 2021'
+description: "GENUARY 2021: Art and Experience"
+date: "2021-01-31"
+categories: [R, Generative Art]
+image: "JAN_01.png"
+execute: 
+  eval: false
+---
+
+This post goes through my experience of using R for [GENUARY 2021](https://genuary2021.github.io/). GENUARY is a set of daily prompts for generative art. It was a challenge, but I got a lot of it. 
+
+The three main takeaways from my experience are:
+
+1. Having a 'times-up-step-away-from-the-keyboard' attitude was vital for getting me through this project.  Unfortunately, several works ended up unfinished for what I wanted, and there are probably bugs left in the code. Normally I hate that, but time-based stopping surprisingly set up a good attitude the next day. Having a plan to avoid burn-out is a necessity (like GENUARY warns). 
+
+2. Going wide instead of deep was great for the first GENUARY. I tried as many new packages, programming techniques, and art styles as I could. I'll mark the packages on at least the first day throughout this post. The R community’s numerous packages and blogposts are incredibly helpful.
+
+3. `ggplot2` is amazing to use. This package saves an incredible amount of time. I have an advantage from previous experience, but it is so easy to wrap up a lot of data prep into something nice.
+
+You can check out the code [here](https://github.com/WilliamTylerBradley/genuary2021). 
+
+# JAN.1 // TRIPLE NESTED LOOP
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I started out avoiding for loops (spoiler alert: used on day three). So for this one, I created a double nested tibble to get three layers. The first layer lists coefficients and standard deviations to generate data for a regression. The number of observations and then the raw data are the final two layers. The code runs through linear models for each data set. The output graphs the number of observations on the y axis, the estimated coefficient on x, and the summary statistic for sigma as the size. Color also maps to x. The effect isn’t a complicated picture, but I do like the bubbling up action. I used `dplyr`, `purrr`, `tidyr`, and `ggplot2`.
+
+
+:::
+
+::: {}
+![JAN_01](JAN_01.png)
+:::
+
+::::
+
+# JAN.2 Rule 30 (elementary cellular automaton)
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I used `data.table` for data manipulation. The rules increase the dataset by adding new columns and using shift (lead/lag) to get the input subsets. The outcome was supposed to emphasize that each cell depends on three other cells, but I ran out of time before I got anywhere.
+
+:::
+
+::: {}
+![JAN_02](JAN_02.png)
+:::
+
+::::
+
+# JAN.3 Make something human.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+The `gganatogram` package produces the human diagrams. `viridis` helps with color and `gridExtra` for layout. The output is accidentally oddly shaped.
+
+:::
+
+::: {}
+![JAN_03](JAN_03.png)
+:::
+
+::::
+
+# JAN.4 Small areas of symmetry.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+Blackwork cross stitch serves as the basis here. The small patterns are hardcoded, and I'll probably try generating them randomly one day.
+
+:::
+
+::: {}
+![JAN_04](JAN_04.png)
+:::
+
+::::
+
+# JAN.5 Do some code golf! How little code can you write to make something interesting? Share the sketch and its code together if you can.
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">For today’s <a href="https://twitter.com/hashtag/genuary?src=hash&amp;ref_src=twsrc%5Etfw">#genuary</a> <a href="https://twitter.com/hashtag/genuary2021?src=hash&amp;ref_src=twsrc%5Etfw">#genuary2021</a> prompt, I tried to use <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> to recreate Georg Nees&#39; Schotter. My goal was to get something close to the original, have the code fit in a tweet, and give base R a good shot before using other packages. Here’s what I got:</p>&mdash; Tyler (@w_tyler_bradley) <a href="https://twitter.com/w_tyler_bradley/status/1346675381772955650?ref_src=twsrc%5Etfw">January 6, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+```{r JAN.05Code, eval = FALSE, echo = TRUE} 
+f=function(i){l=ceiling(i/12);u=2*(l-1);
+t=(c(1,3,5,7)*45+runif(1,-u,u))*.0174;
+m=rnorm(2,0,l/90);s=.707;
+x=c(s*cos(t)+m[1]+i%%12,NA);
+y=c(s*sin(t)+m[2]-l,NA);
+data.frame(x,y)}
+df=do.call(rbind,lapply(1:288,f));
+plot(-5:25,-30:0,"n",ax=F,an=F,as=1);
+polygon(df$x,df$y)
+```
+:::
+
+::: {}
+![JAN_05](JAN_05_tweet.png)
+:::
+
+::::
+
+# JAN.6 Triangle subdivision.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+A function subdivides the triangles but keeps the same pattern of either lightening or darkening the base color. The `colorspace` package provides the color manipulation capabilities.
+
+:::
+
+::: {}
+![JAN_06](JAN_06.png)
+:::
+
+::::
+
+# JAN.7 Generate some rules, then follow them by hand on paper.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I didn't do this one. I took time off because of my birthday and to keep up with the (unrelated) coup attempt.
+
+:::
+
+::: {}
+
+<center>
+`NA`
+</center>
+
+:::
+
+::::
+
+# JAN.8 Curve only.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+Pursuit curves set up this work. Several trails of points chase after one point moving around in a circle. The `deSolve` package handles most of the math.
+
+:::
+
+::: {}
+![JAN_08](JAN_08.png)
+:::
+
+::::
+
+# JAN.9 Interference patterns.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+`ggforce` provides the geom for circles. I'm not sure I really get inference patterns and I feel like this was a swing and a miss from me.
+
+:::
+
+::: {}
+![JAN_09](JAN_09.png)
+:::
+
+::::
+
+# JAN.10 // TREE
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+Code using `ape`, `phytools`, and `stringr` create and draw a random phylogenetic tree. Where parenthesizes and dashes fall in a string determine the tree's structure.
+
+:::
+
+::: {}
+![JAN_10](JAN_10.png)
+:::
+
+::::
+
+# JAN.11 Use something other than a computer as an autonomous process (or use a non-computer random source).
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+[Cloudflare's use of lava lamps for randomness](https://blog.cloudflare.com/lavarand-in-production-the-nitty-gritty-technical-details/) inspired this work. I picked a gif of a lava lamp and convert it to binary using the `magick` package.
+
+:::
+
+::: {}
+![JAN_11](JAN_11.gif)
+:::
+
+::::
+
+# JAN.12 Use an API (e.g. the weather). Here’s [a huge list of free public APIs](https://github.com/public-apis/public-apis).
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I use `tidycensus`, `tidyverse`, `sf`, and `ggridges` to pull population by county, group by state/territory, average over longitude to create ridges, and center them. I tried this out in Joy Division's Unknown Pleasures style, but it was too busy for me.
+
+:::
+
+::: {}
+![JAN_12](JAN_12.png)
+:::
+
+::::
+
+# JAN.13 Do not repeat.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I avoided repeating by basing the work on prime numbers using the `primes` package. I also used the built-in `as.roman()` function to convert numbers to Roman numerals.
+
+:::
+
+::: {}
+![JAN_13](JAN_13.png)
+:::
+
+::::
+
+# JAN.14 // SUBDIVISION
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I really struggled on this one. There are supposed to be four images colored by `tvthemes`, one for each of the Avatar: The Last Airbender nations. I couldn't get it to work with any shape that wasn't a square. I think the real issue is that `sf` just wasn't built for what I was trying to do.
+
+:::
+
+::: {}
+![JAN_14](JAN_14.png)
+:::
+
+::::
+
+# JAN.15 Let someone else decide the general rules of your piece.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+The rules are from the snakes and ladders board game. The code generates a random board, simulates through several players, and graphs the results. I got to use a while loop since the game doesn't end until falling precisely on the 100th square.
+
+:::
+
+::: {}
+![JAN_15](JAN_15.png)
+:::
+
+::::
+
+# JAN.16 Circles only
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+A phyllotaxis arrangement places the circles for this work. This is one of the most simple outputs but still one of my favorites. The 100 small circles repeat in the 16 sets, but sizes change based on their order modulo 16. Within each set, the locations are all the same.
+
+:::
+
+::: {}
+![JAN_16](JAN_16.png)
+:::
+
+::::
+
+# JAN.17 Draw a line, pick a new color, move a bit.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+The endpoints of the lines are points on two bounded random walks. I used `grid` to draw and move separately. The `colorspace` mixes colors from the endpoint locations. The `ragg` package helps with drawing over a million lines.
+
+:::
+
+::: {}
+![JAN_17](JAN_17.png)
+:::
+
+::::
+
+# JAN.18 One process grows, another process prunes.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+This work samplings points from several normal distributions using `MASS` for growth. Then samples from smaller normal distributions, find the closest point from the first set, and removes them. The `anti_join()` function made the pruning very easy. `hexbin` graphs the final dataset.
+
+:::
+
+::: {}
+![JAN_18](JAN_18.png)
+:::
+
+::::
+
+# JAN.19 Increase the randomness along the Y-axis.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I had a lot of problems with this one too. It was supposed to be based on multi-level modeling, but I couldn't get it working and ran out of time. This one ended up as samples from t-distributions with decreasing degrees of freedom. The top one is a Cauchy distribution.
+
+:::
+
+::: {}
+![JAN_19](JAN_19.png)
+:::
+
+::::
+
+# JAN.20 No loops.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I wanted something that looked like the code would have loops but then not actually use any. That's not too difficult with R. The patterns are various hypotrochoids on a grid background.
+
+:::
+
+::: {}
+![JAN_20](JAN_20.png)
+:::
+
+::::
+
+# JAN.21 function f(x) { DRAW(x); f(1 * x / 4); f(2 * x / 4); f(3 * x / 4); }
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+The recursive code starts with veins growing out of the middle towards the edges of a triangle. They increase in number based on one parameter and decrease in length based on the other. If you look really closely, some lines are drawn over points instead of having all the lines drawn then points. That is done using `grid`.
+
+:::
+
+::: {}
+![JAN_21](JAN_21.png)
+:::
+
+::::
+
+# JAN.22 Draw a line. Wrong answers only.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+This isn't a line. It's a circle, a great circle. The additional `rnaturalearth`, `rnaturalearthdata`, and `geosphere` packages provide the data and functions. I had a lot of issues getting randomly drawn maps to look good. So there is only one. I like that it fell on New Zealand, where R originated. 
+
+:::
+
+::: {}
+![JAN_22](JAN_22.png)
+:::
+
+::::
+
+# JAN.23 #264653 #2a9d8f #e9c46a #f4a261 #e76f51, no gradients. Optionally, you can use a black or white background.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+The Copperajah Pokemon is the foundation here. The colors match the prompt, and the Pokemon's design provides the shapes. They repeat on grids based on primes numbers, but I don't think that showed nicely. 
+
+:::
+
+::: {}
+![JAN_23](JAN_23.png)
+:::
+
+::::
+
+# JAN.24 500 lines.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+This is supposed to be a drawing of my family's dog. It's just the head. The eyes, nose, and ears are the darker sections. I use the `png` package to read in the image and determine the path using `TSP` to solve the traveling salesman problem. The sampling of points could be a lot better, especially on the edges. Although, I'm not sure 500 lines will cut it here.
+
+:::
+
+::: {}
+![JAN_24](JAN_24.png)
+:::
+
+::::
+
+# JAN.25 Make a grid of permutations of something.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+Permutations of quadratic bézier curves provide the grid. The endpoints of each curve are separated one unit horizontally. The interior control points permute around pentagons centered on the endpoints. The change along the x-axis adjusts the first control point while the y-axis has the second. Then, additional bézier curves are created between sets on the same line to connect them nicely.
+
+:::
+
+::: {}
+![JAN_25](JAN_25.png)
+:::
+
+::::
+
+# JAN.26 2D Perspective.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+A Hilbert curve is given a few glitches and bent to give a 2D perspective illusion. The Hilbert curve code uses look-up tables for the rules with `data.table`.
+
+:::
+
+::: {}
+![JAN_26](JAN_26.png)
+:::
+
+::::
+
+# JAN.27 Monochrome gradients without lines.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+The output is not monochrome because the prompt didn't specify that at the beginning of the month. I had the tab open and never hit refresh. So I didn't know about the update until after I finished. I like the colors from `katiejolly/nationalparkcolors` and decided to keep them. The shapes are Poisson disk sampled using `coolbutuseless/poissoned` and outlined using Voronoi diagrams from `ggvoronoi`. There are multiple layers with decreasing alpha values.
+
+:::
+
+::: {}
+![JAN_27](JAN_27.png)
+:::
+
+::::
+
+# JAN.28 Use sound.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I used Spotify data with the `charlie86/spotifyr` package for the sound requirement. Each of the lines is a different top 50 song with parameters from their data. The `moldach/vapoRwave` package provides the colors.
+
+:::
+
+::: {}
+![JAN_28](JAN_28.png)
+:::
+
+::::
+
+# JAN.29 Any shape, none can touch.
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+`ggrepel` made this a pretty easy prompt. I copied the text from the Introduction to R section on the [R website](https://www.r-project.org/about.html) for the shapes. Their locations are sampled from the R logo. The R logo image is read in and manipulated using `imager`.
+
+:::
+
+::: {}
+![JAN_29](JAN_29.png)
+:::
+
+::::
+
+# JAN.30 Replicate a natural concept (e.g. gravity, flocking, path following).
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I finally got to use `rayshader`. This gif is supposed to replicate tides. The terrain comes from sampling font with `extrafont` combined with noise from `ambient`.
+
+:::
+
+::: {}
+
+<center>
+[Too big to fit. So click here.](https://github.com/WilliamTylerBradley/genuary2021/blob/main/JAN_30.gif)
+</center>
+
+:::
+
+::::
+
+# JAN.31 10 SEARCH FOR "ENO'S OBLIQUE STRATEGIES" 20 OBTAIN ONE 30 THAT IS YOUR PROMPT FOR TODAY    
+
+:::: {style="display: grid; grid-template-columns: 1fr 1fr; align-items: center; grid-column-gap: 10px; align-items: start;"}
+::: {}
+
+I got ['Emphasize repetitions'](http://stoney.sb.org/eno/oblique.html){target="blank"}. This work is motivated by the repetitive act of knitting. The shading is normal error on top of an arima model that zig-zags up the y-axis.
+
+:::
+
+::: {}
+![JAN_31](JAN_31.png)
+:::
+
+::::

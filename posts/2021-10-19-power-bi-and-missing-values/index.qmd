@@ -1,0 +1,533 @@
+---
+title: "Power BI and Missing Values"
+description: "Presentation write-up on Power BI and Missing Values"
+date: "2021-10-19"
+categories: [Power BI, Presentations]
+image: "screenshots_1_960x700.png"
+execute: 
+  eval: false
+---
+
+This presentation covers how to handle missing values in Power BI. The focus is on missing months, but other features will fit the setups mentioned here. You can check out the project on Github  [here](https://github.com/WilliamTylerBradley/powerbi_missing_values_pres) or go [here](https://williamtylerbradley.github.io/powerbi_missing_values_pres/presentation.html) and press 's' to get speaker notes.
+
+:::{#slide_1 style="clear: both;"}
+::: presentation_slide
+![](screenshots_1_960x700.png)
+:::
+
+This presentation comes from a project I worked on involving these issues with missing values in Power BI. For this presentation, I'm assuming you have some familiarity with Power BI. So, I won't walk through all the basics like pulling in data but start after the beginning steps.
+:::
+
+:::{#slide_2 style="clear: both;"}
+::: presentation_slide
+![](screenshots_2_960x700.png)
+:::
+
+For today's setup, we'll cover a background example that explains the issues, go through some basic strategies that might solve your problem, a better strategy that's more work but a lot more robust, and then some additional options for polishing the dashboard.
+:::
+
+:::{#slide_3 style="clear: both;"}
+::: presentation_slide
+![](screenshots_3_960x700.png)
+:::
+
+We'll start with an orders table called orders_small. Each row is an order that contains the order number, the product that was sold, a customer id, the date, and the dollar amount. The goal here is to get information on sales over time for each product. So we basically need to sum the dollar amount by date.
+:::
+
+:::{#slide_4 style="clear: both;"}
+::: presentation_slide
+![](screenshots_4_960x700.png)
+:::
+
+Showing the data by day will be too granular, so we want to get it into months. We can add in some DAX code to create a new column for the month of each order. We'll also just use the date as a date hierarchy and compare the methods.
+:::
+
+:::{#slide_5 style="clear: both;"}
+::: presentation_slide
+![](screenshots_5_960x700.png)
+:::
+
+This graph uses the month column we just created. You can see there are some missing values at the start and end of the dark blue line. However, the orange line is suspiciously straight.
+:::
+
+:::{#slide_6 style="clear: both;"}
+::: presentation_slide
+![](screenshots_6_960x700.png)
+:::
+
+This graph uses the date column from the data at the month level. You still see the missing values for the dark blue line, but now the orange line has missing values. This is because the other graph was just connecting the segments across January to November.
+:::
+
+:::{#slide_7 style="clear: both;"}
+::: presentation_slide
+![](screenshots_7_960x700.png)
+:::
+
+Looking closely at the graph, we see that these three products sell at different times of the year. Product A sells year-round. Product B is only in the summer, while product C is only in the winter. 
+:::
+
+:::{#slide_8 style="clear: both;"}
+::: presentation_slide
+![](screenshots_8_960x700.png)
+:::
+
+What we really want to see are all the lines filled in down to zero. The poorly drawn lines display what we want to get at the end.
+:::
+
+:::{#slide_9 style="clear: both;"}
+::: presentation_slide
+![](screenshots_9_960x700.png)
+:::
+
+We can also see that this can mess up any calculations. In this example, the monthly_average is wrong because distinct_months is incorrect for selling over an entire year.
+:::
+
+:::{#slide_10 style="clear: both;"}
+::: presentation_slide
+![](screenshots_10_960x700.png)
+:::
+
+For this presentation, we'll focus on creating an end product that has the following features. Line graphs and tables by product over time. Graphs and tables for dollar amounts, number of distinct customers, and number of orders. The ability to filter by product and month. And finally, fill in zeros when the product was available.
+:::
+
+:::{#slide_11 style="clear: both;"}
+::: presentation_slide
+![](screenshots_11_960x700.png)
+:::
+
+The following section will cover some basic strategies to fill in zeros for missing values. These techniques will handle a lot of problems and are pretty easy to implement.
+:::
+
+:::{#slide_12 style="clear: both;"}
+::: presentation_slide
+![](screenshots_12_960x700.png)
+:::
+
+If you click on the down arrow on your axis, there will be an option for 'Show items with no data'. This is always the first option I try. Unfortunately, it only works in some situations and doesn't work in this example.
+:::
+
+:::{#slide_13 style="clear: both;"}
+::: presentation_slide
+![](screenshots_13_960x700.png)
+:::
+
+We can just fix the math if you know it's a constant. All we need to do is add 0 to the end of our measure, and it will fill in for us. But, unfortunately, this only fixes the graph and not the table.
+:::
+
+:::{#slide_14 style="clear: both;"}
+::: presentation_slide
+![](screenshots_14_960x700.png)
+:::
+
+We can fix the table by skipping the DISTINCTCOUNT on months and replace it all with 12. This will get the correct monthly_average. However, this only works when we know it's always 12. Also, it doesn't fix the graph.
+:::
+
+:::{#slide_15 style="clear: both;"}
+::: presentation_slide
+![](screenshots_15_960x700.png)
+:::
+
+Finally, we can always just fix the issues in the data. For example, we can clean up data by importing monthly data from the start and importing rows with zeros. There are ways to do that in SQL and Power Query. We won't go into them in this presentation, but it's a great option if you know you'll never need more granular data.
+:::
+
+:::{#slide_16 style="clear: both;"}
+::: presentation_slide
+![](screenshots_16_960x700.png)
+:::
+
+These strategies tend to work very easily. None of them took a lot of effort to implement from where we started. However, they tend to not be extendable. We have to mix and match these strategies to get everything, and that's annoying. They can fall apart for more advanced calculations and become messy when trying to keep it all together. In my experience, if you just need basic graphs and tables, these are great. However, a more thorough setup can be better if you know you'll need more advanced calculations and interactivity.
+:::
+
+:::{#slide_17 style="clear: both;"}
+::: presentation_slide
+![](screenshots_17_960x700.png)
+:::
+
+This next section goes through that more thorough setup. We'll reset everything and build a stronger start that enables us to get any calculations we need.
+:::
+
+:::{#slide_18 style="clear: both;"}
+::: presentation_slide
+![](screenshots_18_960x700.png)
+:::
+
+There's still a year of data but a lot more products. There are other trends, including decreasing or increasing over time, and even products that only sold for one month (those are the points). We'll call this orders_big.
+:::
+
+:::{#slide_19 style="clear: both;"}
+::: presentation_slide
+![](screenshots_19_960x700.png)
+:::
+
+This is just a reminder of what we're looking to create by the end. Line graphs and tables by product over time. Graphs and tables for dollar amounts, number of distinct customers, and number of orders. The ability to filter by product and month. And finally, fill in zeros when the product was available.
+:::
+
+:::{#slide_20 style="clear: both;"}
+::: presentation_slide
+![](screenshots_20_960x700.png)
+:::
+
+There are three parts to this section. The first part is setting up a calendar table to use as a date dimension.
+:::
+
+:::{#slide_21 style="clear: both;"}
+::: presentation_slide
+![](screenshots_21_960x700.png)
+:::
+
+A calendar table is a table created in Power BI that contains all the dates you need and associated information. We'll use the Calendar Dax function. This function requires a start and end date. It'll then fill out all the dates in between (including the start and end dates). We'll go through three examples.
+:::
+
+:::{#slide_22 style="clear: both;"}
+::: presentation_slide
+![](screenshots_22_960x700.png)
+:::
+
+We have three different ways to create a date table using the CALENDAR function. The first way provides specific dates. This is useful if you need the graph to keep the same date range even if your data changes. The second way uses the TODAY function to get the current date. This will keep your dashboard current no matter what happens with your data. The last way pulls the start and end dates from the data. This will keep your graphs matching the data even if it doesn't refresh. I tend to use either of the last two depending on the business need.
+
+There are other options like CALENDARAUTO or setting a date table, but we'll stick with CALENDAR for this presentation. It's definitely worth your time to spend an afternoon looking into the other options if you're going to implement this at your work.
+:::
+
+:::{#slide_23 style="clear: both;"}
+::: presentation_slide
+![](screenshots_23_960x700.png)
+:::
+
+Since we'll want to group by month, we'll add in a month column. We'll also change the format to match our data. You typically always want it to match as this can speed up calculations.
+:::
+
+:::{#slide_24 style="clear: both;"}
+::: presentation_slide
+![](screenshots_24_960x700.png)
+:::
+
+Then the last step here is connecting the date table to our data.
+:::
+
+:::{#slide_25 style="clear: both;"}
+::: presentation_slide
+![](screenshots_25_960x700.png)
+:::
+
+The next step for a great setup is using a star schema.
+:::
+
+:::{#slide_26 style="clear: both;"}
+::: presentation_slide
+![](screenshots_26_960x700.png)
+:::
+
+The star schema will work by placing the main orders_big table in the middle. Then have essential dimensions on the outside, like our date table. Often you'll see this has a 'suggestion' from Microsoft, but it's almost always a good idea from the beginning.
+:::
+
+:::{#slide_27 style="clear: both;"}
+::: presentation_slide
+![](screenshots_27_960x700.png)
+:::
+
+Let's add in two other dimension tables, product, and customer. We'll just summarize the columns from the orders_big table. If they were in other tables in a database, you could bring them in separately. We can sort of see the star shape. It's just missing the two legs at the bottom. This setup will make our data easy to use with functions.
+:::
+
+:::{#slide_28 style="clear: both;"}
+::: presentation_slide
+![](screenshots_28_960x700.png)
+:::
+
+That brings us to our last step with using the ADDMISSINGITEMS function. This will complete our setup.
+:::
+
+:::{#slide_29 style="clear: both;"}
+::: presentation_slide
+![](screenshots_29_960x700.png)
+:::
+
+This function is defined as 'Adds rows with empty values to a table returned by SUMMARIZECOLUMNS.' from the Microsoft documentation or 'Add the rows with empty measure values back.' from the Dax guide. I don't find either of those definitions intuitive, but working through the parameters, output, and examples will help explain what it does.
+:::
+
+:::{#slide_30 style="clear: both;"}
+::: presentation_slide
+![](screenshots_30_960x700.png)
+:::
+
+There are four parameters. ShowAll_ColumnName is what you want to fill in. The Table parameter will be output from SUMMARIZECOLUMNS with the missing data. It'll be based on orders_big for us. The GroupBy_ColumnName is also what you want to fill in unless you're using ROLLUP. We won't be using ROLLUP in any of the examples, so it'll always match ShowAll_ColumnName. Finally, you can add filter tables to remove filled-in values you don't actually want to add.
+:::
+
+:::{#slide_31 style="clear: both;"}
+::: presentation_slide
+![](screenshots_31_960x700.png)
+:::
+
+For our setup, we'll want to fill in any missing combinations of month and product. We can pull these from our dimensions in the star schema. The Table parameter is the sum of the dollar_amount by month and product. Ideally, we'll see all combinations of month and product with the dollar_amount summed if there were sales that month.
+:::
+
+:::{#slide_32 style="clear: both;"}
+::: presentation_slide
+![](screenshots_32_960x700.png)
+:::
+
+Putting it all into the ADDMISSINGITEMS function, you can see ShowAll_ColumnName cal_month and product, the table is the SUMMARIZECOLUMNS, the GroupBy_ColumnName is the same as the ShowAll_ColumnName, no filters for now. This is basically a full join between calendar months and products, then a left join to our summarized data. Finally, we can see some of the missing months in the image.
+:::
+
+:::{#slide_33 style="clear: both;"}
+::: presentation_slide
+![](screenshots_33_960x700.png)
+:::
+
+I like to add in the amount filled, but you can replace the amount if you want.
+:::
+
+:::{#slide_34 style="clear: both;"}
+::: presentation_slide
+![](screenshots_34_960x700.png)
+:::
+
+And now we finally have the graph we wanted.
+:::
+
+:::{#slide_35 style="clear: both;"}
+::: presentation_slide
+![](screenshots_35_960x700.png)
+:::
+
+If you have a lot of data, you might get a warning about not seeing all the data in the top corner. There's an option that samples the data to increase speed. You can turn that off to see more lines. There's not a strict cutoff on data size. It just depends on what you're graphing.
+:::
+
+:::{#slide_36 style="clear: both;"}
+::: presentation_slide
+![](screenshots_36_960x700.png)
+:::
+
+Now we can compare the summary stats. We can see all the months are filled in, so the average monthly amount is now correct.
+:::
+
+:::{#slide_37 style="clear: both;"}
+::: presentation_slide
+![](screenshots_37_960x700.png)
+:::
+
+Now that we have the main setup, we can move to the last big section on polishing up the dashboard.
+:::
+
+:::{#slide_38 style="clear: both;"}
+::: presentation_slide
+![](screenshots_38_960x700.png)
+:::
+
+The first part is filtering the data to exclude months where the product wasn't available for sale. We should end up with filled-in months only when the product was an option.
+:::
+
+:::{#slide_39 style="clear: both;"}
+::: presentation_slide
+![](screenshots_39_960x700.png)
+:::
+
+Let's say different products were available for different months. We'll have this in a table called product_dates. This would be saved in a database then pulled into Power BI.
+:::
+
+:::{#slide_40 style="clear: both;"}
+::: presentation_slide
+![](screenshots_40_960x700.png)
+:::
+
+We can join this to our products table. In the product_dates table, there are multiple rows per product for cases when there are jumps in the dates. So, for example, products available during the summer could have a row for January to March 2020 and a row for November to December 2020. Therefore you can't just join to orders_big table because that would be a many-to-many join.
+:::
+
+:::{#slide_41 style="clear: both;"}
+::: presentation_slide
+![](screenshots_41_960x700.png)
+:::
+
+We're going to build a table with months filled down by using CROSSJOIN on our date table and product_dates. Then filter down to the combinations we want. (There are other ways to do this, especially when bringing the data into Power BI)
+:::
+
+:::{#slide_42 style="clear: both;"}
+::: presentation_slide
+![](screenshots_42_960x700.png)
+:::
+
+Then we just join to our other tables.
+:::
+
+:::{#slide_43 style="clear: both;"}
+::: presentation_slide
+![](screenshots_43_960x700.png)
+:::
+
+To use this table as a filter, we just need to add it to the end of our ADDMISSINGITEMS call. This will filter out combinations that weren't in our product_availability table.
+:::
+
+:::{#slide_44 style="clear: both;"}
+::: presentation_slide
+![](screenshots_44_960x700.png)
+:::
+
+Same as previous orders_zeros_added table, but with product_availability used as a filter.
+:::
+
+:::{#slide_45 style="clear: both;"}
+::: presentation_slide
+![](screenshots_45_960x700.png)
+:::
+
+Now we can see gaps in the data where there are months without product availability. However, it's still not quite right. Notice the orange line across the middle.
+:::
+
+:::{#slide_46 style="clear: both;"}
+::: presentation_slide
+![](screenshots_46_960x700.png)
+:::
+
+To fix the issue of joining over missing dates, the X-axis needs to be set to Categorical. And now, everything is good.
+:::
+
+:::{#slide_47 style="clear: both;"}
+::: presentation_slide
+![](screenshots_47_960x700.png)
+:::
+
+Checking the summary tables shows everything is working here too.
+:::
+
+:::{#slide_48 style="clear: both;"}
+::: presentation_slide
+![](screenshots_48_960x700.png)
+:::
+
+Let's say you either don't want the X-axis to be categorical, or you want all the months missing for no product availability. We'll go back before we filter on availability and reset a little bit.
+:::
+
+:::{#slide_49 style="clear: both;"}
+::: presentation_slide
+![](screenshots_49_960x700.png)
+:::
+
+We'll create a new star schema around our orders_big table. We can't reuse the same tables, or we'll get a circular dependency error. So, we'll add in product and date dimensions and recreate the table to check product availability. We can reduce our date table to just months since we have already summarized the data.
+:::
+
+:::{#slide_50 style="clear: both;"}
+::: presentation_slide
+![](screenshots_50_960x700.png)
+:::
+
+On this slide, we can see the two star schemas.
+:::
+
+:::{#slide_51 style="clear: both;"}
+::: presentation_slide
+![](screenshots_51_960x700.png)
+:::
+
+To incorporate the product availability check, we'll create a measure using LOOKUPVALUE to see if the month-product combination existed. Then build another measure to fill in zeros or keep the missing value.
+:::
+
+:::{#slide_53 style="clear: both;"}
+::: presentation_slide
+![](screenshots_53_960x700.png)
+:::
+
+We have our continuous axis graph. Note that you need to use cal_table_month for the axis.
+:::
+
+:::{#slide_53 style="clear: both;"}
+::: presentation_slide
+![](screenshots_53_960x700.png)
+:::
+
+Our summary tables are still good.
+:::
+
+:::{#slide_54 style="clear: both;"}
+::: presentation_slide
+![](screenshots_54_960x700.png)
+:::
+
+One big catch for mixing missing and zeros in Power BI is that BLANK is not like SQL NULL. BLANK will convert to 0 in summations and substractions but will stay BLANK in division and multiplication. For example, if you had this equation and B is BLANK, the left side will equal 1 because A divided by B is BLANK, then 1 minus BLANK is 1. However, the right side is BLANK because B minus A is negative A, then negative A divided by B is BLANK. Even though these should match. So, depending on how you set up your measures, you can get different results. You'll need to watch this in calculations.
+:::
+
+:::{#slide_55 style="clear: both;"}
+::: presentation_slide
+![](screenshots_55_960x700.png)
+:::
+
+In addition to the amount, we wanted measures for customers and orders.
+:::
+
+:::{#slide_56 style="clear: both;"}
+::: presentation_slide
+![](screenshots_56_960x700.png)
+:::
+
+All we need to add is DISTINCTCOUNT of customer_id and carry through, exactly like using amount.
+:::
+
+:::{#slide_57 style="clear: both;"}
+::: presentation_slide
+![](screenshots_57_960x700.png)
+:::
+
+We can see the appropriate graph.
+:::
+
+:::{#slide_58 style="clear: both;"}
+::: presentation_slide
+![](screenshots_58_960x700.png)
+:::
+
+And the appropriate tables.
+:::
+
+:::{#slide_59 style="clear: both;"}
+::: presentation_slide
+![](screenshots_59_960x700.png)
+:::
+
+Adding in the number of orders is also exactly the same.
+:::
+
+:::{#slide_60 style="clear: both;"}
+::: presentation_slide
+![](screenshots_60_960x700.png)
+:::
+
+Similar graphs.
+:::
+
+:::{#slide_61 style="clear: both;"}
+::: presentation_slide
+![](screenshots_61_960x700.png)
+:::
+
+Similar tables.
+:::
+
+:::{#slide_62 style="clear: both;"}
+::: presentation_slide
+![](screenshots_62_960x700.png)
+:::
+
+In some cases, you'll need to use DISTINCTCOUNT after filling in the missing months. Like if you need more advanced filtering or calculations. For example, distinct customers over a year will only equal the sum of distinct customers every month if there are no repeated customers. To solve this problem, you can bring customer_id in the SUMMARIZECOLUMNS in ADDMISSINGITEMS but not place it in the ShowAll_ColumnName parameter. This will bring the individual customer_id's through but not fill in missing months for them. You'll end up with month-product rows that have missing values for customer_id and order_id.
+:::
+
+:::{#slide_63 style="clear: both;"}
+::: presentation_slide
+![](screenshots_63_960x700.png)
+:::
+
+Finally, the last step is to add filters for product and month.
+:::
+
+:::{#slide_64 style="clear: both;"}
+::: presentation_slide
+![](screenshots_64_960x700.png)
+:::
+
+You can use built-in filters for the table either in the filter panel or slicers. You can also build out a star schema again if you want. That's pretty much it. All the usual Power BI features work from here.
+:::
+
+:::{#slide_65 style="clear: both;"}
+::: presentation_slide
+![](screenshots_65_960x700.png)
+:::
+
+And that's the presentation. Thanks!
+:::

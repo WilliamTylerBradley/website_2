@@ -1,0 +1,14 @@
+{
+  "hash": "fb1468f6d62a629b81878f6d1976273a",
+  "result": {
+    "markdown": "---\ntitle: \"AZ-900 Exam Flashcards\"\ndescription: \"R code to create a flashcard presentation\"\ndate: \"2021-12-20\"\ncategories: [R, Azure]\nimage: \"test_1_960x700.png\"\nexecute: \n  eval: false\n---\n\n\nI recently passed the [AZ-900: Microsoft Azure Fundamentals](https://docs.microsoft.com/en-us/learn/certifications/exams/az-900) exam. To help study, I created a set of flashcards using a reveal.js presentation from an Excel file of terms/definitions. The repo is [here](https://github.com/WilliamTylerBradley/az_900), with the presentation found [here](https://williamtylerbradley.github.io/az_900/az_900_flashcards.html#/) The terms come from the official skills measured document for 2021.\n\nThe R code is pretty simple. To set up the presentation, you’ll need the latest version of the revealjs package (Any version of reveal.js past version 4 should work for the r-stack option.). The following front-matter setup should work fine. You can turn on the shuffle option to shuffle the cards every time the document is re-knitted.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n---\noutput: \n  revealjs::revealjs_presentation:\n    incremental: false\n    transition: 'none'\n    background_transition: 'none'\n    slide_level: 1\n    css: custom.css\n    reveal_options:\n      controls: false\n      slideNumber: false\n      progress: false\n      # shuffle: true # uncomment to randomize cards\n    self_contained: false\n---\n```\n:::\n\n\nThe following code is the only markdown needed. It’ll read in the Excel file and loop through the rows to create the presentation. Each flashcard is a different slide. The term is the first fragment with the definition second because the r-stack places them on top of each other. The data-fragment-index is the same for both, so the term will fade out while the definition fades in on the same click. The line of breaks moves the term up a little. I just think it looks a little better.\n\n````r\n```{r results='asis', echo=FALSE}\nlibrary(readxl)\nterms <- read_excel(here::here(\"az 900 Skills.xlsx\"))\n\nfor(i in 1:nrow(terms)) {\n  term <- terms$Term[i]\n  definition <- terms$Definition[i]\n  \n  cat(paste(\"\n    <section class=\\\"center\\\">\\n\n    <div class=\\\"r-stack\\\">\\n\n    <div class=\\\"fragment fade-out\\\" data-fragment-index=\\\"1\\\"><b>\",\n    term,\n    \"</b><br> \\n <br> \\n <br>\n    </div>\\n\"))\n  \n  cat(paste(\n    \"<div class=\\\"fragment fade-in\\\" data-fragment-index=\\\"1\\\">\",\n    definition,\n    \"</div>\\n\n    </div>\\n\n    </section>\"))\n}\n```\n````\n\nThere are opportunities to color the slides based on the subject area, add additional information in the notes, or filter the terms.",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

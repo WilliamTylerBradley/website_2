@@ -1,0 +1,62 @@
+---
+title: "AZ-900 Exam Flashcards"
+description: "R code to create a flashcard presentation"
+date: "2021-12-20"
+categories: [R, Azure]
+image: "test_1_960x700.png"
+execute: 
+  eval: false
+---
+
+I recently passed the [AZ-900: Microsoft Azure Fundamentals](https://docs.microsoft.com/en-us/learn/certifications/exams/az-900) exam. To help study, I created a set of flashcards using a reveal.js presentation from an Excel file of terms/definitions. The repo is [here](https://github.com/WilliamTylerBradley/az_900), with the presentation found [here](https://williamtylerbradley.github.io/az_900/az_900_flashcards.html#/) The terms come from the official skills measured document for 2021.
+
+The R code is pretty simple. To set up the presentation, you’ll need the latest version of the revealjs package (Any version of reveal.js past version 4 should work for the r-stack option.). The following front-matter setup should work fine. You can turn on the shuffle option to shuffle the cards every time the document is re-knitted.
+
+```{r page_setup}
+---
+output: 
+  revealjs::revealjs_presentation:
+    incremental: false
+    transition: 'none'
+    background_transition: 'none'
+    slide_level: 1
+    css: custom.css
+    reveal_options:
+      controls: false
+      slideNumber: false
+      progress: false
+      # shuffle: true # uncomment to randomize cards
+    self_contained: false
+---
+```
+
+The following code is the only markdown needed. It’ll read in the Excel file and loop through the rows to create the presentation. Each flashcard is a different slide. The term is the first fragment with the definition second because the r-stack places them on top of each other. The data-fragment-index is the same for both, so the term will fade out while the definition fades in on the same click. The line of breaks moves the term up a little. I just think it looks a little better.
+
+````r
+```{r results='asis', echo=FALSE}`r ''`
+library(readxl)
+terms <- read_excel(here::here("az 900 Skills.xlsx"))
+
+for(i in 1:nrow(terms)) {
+  term <- terms$Term[i]
+  definition <- terms$Definition[i]
+  
+  cat(paste("
+    <section class=\"center\">\n
+    <div class=\"r-stack\">\n
+    <div class=\"fragment fade-out\" data-fragment-index=\"1\"><b>",
+    term,
+    "</b><br> \n <br> \n <br>
+    </div>\n"))
+  
+  cat(paste(
+    "<div class=\"fragment fade-in\" data-fragment-index=\"1\">",
+    definition,
+    "</div>\n
+    </div>\n
+    </section>"))
+}
+```
+````
+
+There are opportunities to color the slides based on the subject area, add additional information in the notes, or filter the terms.

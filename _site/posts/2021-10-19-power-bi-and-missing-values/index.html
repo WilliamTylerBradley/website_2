@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.132">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2021-10-19">
+<meta name="description" content="Presentation write-up on Power BI and Missing Values">
+
+<title>Power BI and Missing Values</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/WilliamTylerBradley"><i class="bi bi-github" role="img" aria-label="github">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"><i class="bi bi-twitter" role="img" aria-label="twitter">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Power BI and Missing Values</h1>
+                  <div>
+        <div class="description">
+          Presentation write-up on Power BI and Missing Values
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Power BI</div>
+                <div class="quarto-category">Presentations</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 19, 2021</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>This presentation covers how to handle missing values in Power BI. The focus is on missing months, but other features will fit the setups mentioned here. You can check out the project on Github <a href="https://github.com/WilliamTylerBradley/powerbi_missing_values_pres">here</a> or go <a href="https://williamtylerbradley.github.io/powerbi_missing_values_pres/presentation.html">here</a> and press ‘s’ to get speaker notes.</p>
+<div id="slide_1" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_1_960x700.png" class="img-fluid"></p>
+</div>
+<p>This presentation comes from a project I worked on involving these issues with missing values in Power BI. For this presentation, I’m assuming you have some familiarity with Power BI. So, I won’t walk through all the basics like pulling in data but start after the beginning steps.</p>
+</div>
+<div id="slide_2" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_2_960x700.png" class="img-fluid"></p>
+</div>
+<p>For today’s setup, we’ll cover a background example that explains the issues, go through some basic strategies that might solve your problem, a better strategy that’s more work but a lot more robust, and then some additional options for polishing the dashboard.</p>
+</div>
+<div id="slide_3" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_3_960x700.png" class="img-fluid"></p>
+</div>
+<p>We’ll start with an orders table called orders_small. Each row is an order that contains the order number, the product that was sold, a customer id, the date, and the dollar amount. The goal here is to get information on sales over time for each product. So we basically need to sum the dollar amount by date.</p>
+</div>
+<div id="slide_4" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_4_960x700.png" class="img-fluid"></p>
+</div>
+<p>Showing the data by day will be too granular, so we want to get it into months. We can add in some DAX code to create a new column for the month of each order. We’ll also just use the date as a date hierarchy and compare the methods.</p>
+</div>
+<div id="slide_5" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_5_960x700.png" class="img-fluid"></p>
+</div>
+<p>This graph uses the month column we just created. You can see there are some missing values at the start and end of the dark blue line. However, the orange line is suspiciously straight.</p>
+</div>
+<div id="slide_6" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_6_960x700.png" class="img-fluid"></p>
+</div>
+<p>This graph uses the date column from the data at the month level. You still see the missing values for the dark blue line, but now the orange line has missing values. This is because the other graph was just connecting the segments across January to November.</p>
+</div>
+<div id="slide_7" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_7_960x700.png" class="img-fluid"></p>
+</div>
+<p>Looking closely at the graph, we see that these three products sell at different times of the year. Product A sells year-round. Product B is only in the summer, while product C is only in the winter.</p>
+</div>
+<div id="slide_8" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_8_960x700.png" class="img-fluid"></p>
+</div>
+<p>What we really want to see are all the lines filled in down to zero. The poorly drawn lines display what we want to get at the end.</p>
+</div>
+<div id="slide_9" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_9_960x700.png" class="img-fluid"></p>
+</div>
+<p>We can also see that this can mess up any calculations. In this example, the monthly_average is wrong because distinct_months is incorrect for selling over an entire year.</p>
+</div>
+<div id="slide_10" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_10_960x700.png" class="img-fluid"></p>
+</div>
+<p>For this presentation, we’ll focus on creating an end product that has the following features. Line graphs and tables by product over time. Graphs and tables for dollar amounts, number of distinct customers, and number of orders. The ability to filter by product and month. And finally, fill in zeros when the product was available.</p>
+</div>
+<div id="slide_11" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_11_960x700.png" class="img-fluid"></p>
+</div>
+<p>The following section will cover some basic strategies to fill in zeros for missing values. These techniques will handle a lot of problems and are pretty easy to implement.</p>
+</div>
+<div id="slide_12" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_12_960x700.png" class="img-fluid"></p>
+</div>
+<p>If you click on the down arrow on your axis, there will be an option for ‘Show items with no data’. This is always the first option I try. Unfortunately, it only works in some situations and doesn’t work in this example.</p>
+</div>
+<div id="slide_13" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_13_960x700.png" class="img-fluid"></p>
+</div>
+<p>We can just fix the math if you know it’s a constant. All we need to do is add 0 to the end of our measure, and it will fill in for us. But, unfortunately, this only fixes the graph and not the table.</p>
+</div>
+<div id="slide_14" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_14_960x700.png" class="img-fluid"></p>
+</div>
+<p>We can fix the table by skipping the DISTINCTCOUNT on months and replace it all with 12. This will get the correct monthly_average. However, this only works when we know it’s always 12. Also, it doesn’t fix the graph.</p>
+</div>
+<div id="slide_15" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_15_960x700.png" class="img-fluid"></p>
+</div>
+<p>Finally, we can always just fix the issues in the data. For example, we can clean up data by importing monthly data from the start and importing rows with zeros. There are ways to do that in SQL and Power Query. We won’t go into them in this presentation, but it’s a great option if you know you’ll never need more granular data.</p>
+</div>
+<div id="slide_16" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_16_960x700.png" class="img-fluid"></p>
+</div>
+<p>These strategies tend to work very easily. None of them took a lot of effort to implement from where we started. However, they tend to not be extendable. We have to mix and match these strategies to get everything, and that’s annoying. They can fall apart for more advanced calculations and become messy when trying to keep it all together. In my experience, if you just need basic graphs and tables, these are great. However, a more thorough setup can be better if you know you’ll need more advanced calculations and interactivity.</p>
+</div>
+<div id="slide_17" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_17_960x700.png" class="img-fluid"></p>
+</div>
+<p>This next section goes through that more thorough setup. We’ll reset everything and build a stronger start that enables us to get any calculations we need.</p>
+</div>
+<div id="slide_18" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_18_960x700.png" class="img-fluid"></p>
+</div>
+<p>There’s still a year of data but a lot more products. There are other trends, including decreasing or increasing over time, and even products that only sold for one month (those are the points). We’ll call this orders_big.</p>
+</div>
+<div id="slide_19" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_19_960x700.png" class="img-fluid"></p>
+</div>
+<p>This is just a reminder of what we’re looking to create by the end. Line graphs and tables by product over time. Graphs and tables for dollar amounts, number of distinct customers, and number of orders. The ability to filter by product and month. And finally, fill in zeros when the product was available.</p>
+</div>
+<div id="slide_20" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_20_960x700.png" class="img-fluid"></p>
+</div>
+<p>There are three parts to this section. The first part is setting up a calendar table to use as a date dimension.</p>
+</div>
+<div id="slide_21" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_21_960x700.png" class="img-fluid"></p>
+</div>
+<p>A calendar table is a table created in Power BI that contains all the dates you need and associated information. We’ll use the Calendar Dax function. This function requires a start and end date. It’ll then fill out all the dates in between (including the start and end dates). We’ll go through three examples.</p>
+</div>
+<div id="slide_22" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_22_960x700.png" class="img-fluid"></p>
+</div>
+<p>We have three different ways to create a date table using the CALENDAR function. The first way provides specific dates. This is useful if you need the graph to keep the same date range even if your data changes. The second way uses the TODAY function to get the current date. This will keep your dashboard current no matter what happens with your data. The last way pulls the start and end dates from the data. This will keep your graphs matching the data even if it doesn’t refresh. I tend to use either of the last two depending on the business need.</p>
+<p>There are other options like CALENDARAUTO or setting a date table, but we’ll stick with CALENDAR for this presentation. It’s definitely worth your time to spend an afternoon looking into the other options if you’re going to implement this at your work.</p>
+</div>
+<div id="slide_23" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_23_960x700.png" class="img-fluid"></p>
+</div>
+<p>Since we’ll want to group by month, we’ll add in a month column. We’ll also change the format to match our data. You typically always want it to match as this can speed up calculations.</p>
+</div>
+<div id="slide_24" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_24_960x700.png" class="img-fluid"></p>
+</div>
+<p>Then the last step here is connecting the date table to our data.</p>
+</div>
+<div id="slide_25" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_25_960x700.png" class="img-fluid"></p>
+</div>
+<p>The next step for a great setup is using a star schema.</p>
+</div>
+<div id="slide_26" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_26_960x700.png" class="img-fluid"></p>
+</div>
+<p>The star schema will work by placing the main orders_big table in the middle. Then have essential dimensions on the outside, like our date table. Often you’ll see this has a ‘suggestion’ from Microsoft, but it’s almost always a good idea from the beginning.</p>
+</div>
+<div id="slide_27" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_27_960x700.png" class="img-fluid"></p>
+</div>
+<p>Let’s add in two other dimension tables, product, and customer. We’ll just summarize the columns from the orders_big table. If they were in other tables in a database, you could bring them in separately. We can sort of see the star shape. It’s just missing the two legs at the bottom. This setup will make our data easy to use with functions.</p>
+</div>
+<div id="slide_28" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_28_960x700.png" class="img-fluid"></p>
+</div>
+<p>That brings us to our last step with using the ADDMISSINGITEMS function. This will complete our setup.</p>
+</div>
+<div id="slide_29" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_29_960x700.png" class="img-fluid"></p>
+</div>
+<p>This function is defined as ‘Adds rows with empty values to a table returned by SUMMARIZECOLUMNS.’ from the Microsoft documentation or ‘Add the rows with empty measure values back.’ from the Dax guide. I don’t find either of those definitions intuitive, but working through the parameters, output, and examples will help explain what it does.</p>
+</div>
+<div id="slide_30" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_30_960x700.png" class="img-fluid"></p>
+</div>
+<p>There are four parameters. ShowAll_ColumnName is what you want to fill in. The Table parameter will be output from SUMMARIZECOLUMNS with the missing data. It’ll be based on orders_big for us. The GroupBy_ColumnName is also what you want to fill in unless you’re using ROLLUP. We won’t be using ROLLUP in any of the examples, so it’ll always match ShowAll_ColumnName. Finally, you can add filter tables to remove filled-in values you don’t actually want to add.</p>
+</div>
+<div id="slide_31" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_31_960x700.png" class="img-fluid"></p>
+</div>
+<p>For our setup, we’ll want to fill in any missing combinations of month and product. We can pull these from our dimensions in the star schema. The Table parameter is the sum of the dollar_amount by month and product. Ideally, we’ll see all combinations of month and product with the dollar_amount summed if there were sales that month.</p>
+</div>
+<div id="slide_32" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_32_960x700.png" class="img-fluid"></p>
+</div>
+<p>Putting it all into the ADDMISSINGITEMS function, you can see ShowAll_ColumnName cal_month and product, the table is the SUMMARIZECOLUMNS, the GroupBy_ColumnName is the same as the ShowAll_ColumnName, no filters for now. This is basically a full join between calendar months and products, then a left join to our summarized data. Finally, we can see some of the missing months in the image.</p>
+</div>
+<div id="slide_33" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_33_960x700.png" class="img-fluid"></p>
+</div>
+<p>I like to add in the amount filled, but you can replace the amount if you want.</p>
+</div>
+<div id="slide_34" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_34_960x700.png" class="img-fluid"></p>
+</div>
+<p>And now we finally have the graph we wanted.</p>
+</div>
+<div id="slide_35" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_35_960x700.png" class="img-fluid"></p>
+</div>
+<p>If you have a lot of data, you might get a warning about not seeing all the data in the top corner. There’s an option that samples the data to increase speed. You can turn that off to see more lines. There’s not a strict cutoff on data size. It just depends on what you’re graphing.</p>
+</div>
+<div id="slide_36" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_36_960x700.png" class="img-fluid"></p>
+</div>
+<p>Now we can compare the summary stats. We can see all the months are filled in, so the average monthly amount is now correct.</p>
+</div>
+<div id="slide_37" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_37_960x700.png" class="img-fluid"></p>
+</div>
+<p>Now that we have the main setup, we can move to the last big section on polishing up the dashboard.</p>
+</div>
+<div id="slide_38" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_38_960x700.png" class="img-fluid"></p>
+</div>
+<p>The first part is filtering the data to exclude months where the product wasn’t available for sale. We should end up with filled-in months only when the product was an option.</p>
+</div>
+<div id="slide_39" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_39_960x700.png" class="img-fluid"></p>
+</div>
+<p>Let’s say different products were available for different months. We’ll have this in a table called product_dates. This would be saved in a database then pulled into Power BI.</p>
+</div>
+<div id="slide_40" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_40_960x700.png" class="img-fluid"></p>
+</div>
+<p>We can join this to our products table. In the product_dates table, there are multiple rows per product for cases when there are jumps in the dates. So, for example, products available during the summer could have a row for January to March 2020 and a row for November to December 2020. Therefore you can’t just join to orders_big table because that would be a many-to-many join.</p>
+</div>
+<div id="slide_41" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_41_960x700.png" class="img-fluid"></p>
+</div>
+<p>We’re going to build a table with months filled down by using CROSSJOIN on our date table and product_dates. Then filter down to the combinations we want. (There are other ways to do this, especially when bringing the data into Power BI)</p>
+</div>
+<div id="slide_42" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_42_960x700.png" class="img-fluid"></p>
+</div>
+<p>Then we just join to our other tables.</p>
+</div>
+<div id="slide_43" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_43_960x700.png" class="img-fluid"></p>
+</div>
+<p>To use this table as a filter, we just need to add it to the end of our ADDMISSINGITEMS call. This will filter out combinations that weren’t in our product_availability table.</p>
+</div>
+<div id="slide_44" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_44_960x700.png" class="img-fluid"></p>
+</div>
+<p>Same as previous orders_zeros_added table, but with product_availability used as a filter.</p>
+</div>
+<div id="slide_45" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_45_960x700.png" class="img-fluid"></p>
+</div>
+<p>Now we can see gaps in the data where there are months without product availability. However, it’s still not quite right. Notice the orange line across the middle.</p>
+</div>
+<div id="slide_46" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_46_960x700.png" class="img-fluid"></p>
+</div>
+<p>To fix the issue of joining over missing dates, the X-axis needs to be set to Categorical. And now, everything is good.</p>
+</div>
+<div id="slide_47" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_47_960x700.png" class="img-fluid"></p>
+</div>
+<p>Checking the summary tables shows everything is working here too.</p>
+</div>
+<div id="slide_48" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_48_960x700.png" class="img-fluid"></p>
+</div>
+<p>Let’s say you either don’t want the X-axis to be categorical, or you want all the months missing for no product availability. We’ll go back before we filter on availability and reset a little bit.</p>
+</div>
+<div id="slide_49" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_49_960x700.png" class="img-fluid"></p>
+</div>
+<p>We’ll create a new star schema around our orders_big table. We can’t reuse the same tables, or we’ll get a circular dependency error. So, we’ll add in product and date dimensions and recreate the table to check product availability. We can reduce our date table to just months since we have already summarized the data.</p>
+</div>
+<div id="slide_50" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_50_960x700.png" class="img-fluid"></p>
+</div>
+<p>On this slide, we can see the two star schemas.</p>
+</div>
+<div id="slide_51" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_51_960x700.png" class="img-fluid"></p>
+</div>
+<p>To incorporate the product availability check, we’ll create a measure using LOOKUPVALUE to see if the month-product combination existed. Then build another measure to fill in zeros or keep the missing value.</p>
+</div>
+<div id="slide_53" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_53_960x700.png" class="img-fluid"></p>
+</div>
+<p>We have our continuous axis graph. Note that you need to use cal_table_month for the axis.</p>
+</div>
+<div id="slide_53" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_53_960x700.png" class="img-fluid"></p>
+</div>
+<p>Our summary tables are still good.</p>
+</div>
+<div id="slide_54" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_54_960x700.png" class="img-fluid"></p>
+</div>
+<p>One big catch for mixing missing and zeros in Power BI is that BLANK is not like SQL NULL. BLANK will convert to 0 in summations and substractions but will stay BLANK in division and multiplication. For example, if you had this equation and B is BLANK, the left side will equal 1 because A divided by B is BLANK, then 1 minus BLANK is 1. However, the right side is BLANK because B minus A is negative A, then negative A divided by B is BLANK. Even though these should match. So, depending on how you set up your measures, you can get different results. You’ll need to watch this in calculations.</p>
+</div>
+<div id="slide_55" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_55_960x700.png" class="img-fluid"></p>
+</div>
+<p>In addition to the amount, we wanted measures for customers and orders.</p>
+</div>
+<div id="slide_56" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_56_960x700.png" class="img-fluid"></p>
+</div>
+<p>All we need to add is DISTINCTCOUNT of customer_id and carry through, exactly like using amount.</p>
+</div>
+<div id="slide_57" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_57_960x700.png" class="img-fluid"></p>
+</div>
+<p>We can see the appropriate graph.</p>
+</div>
+<div id="slide_58" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_58_960x700.png" class="img-fluid"></p>
+</div>
+<p>And the appropriate tables.</p>
+</div>
+<div id="slide_59" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_59_960x700.png" class="img-fluid"></p>
+</div>
+<p>Adding in the number of orders is also exactly the same.</p>
+</div>
+<div id="slide_60" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_60_960x700.png" class="img-fluid"></p>
+</div>
+<p>Similar graphs.</p>
+</div>
+<div id="slide_61" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_61_960x700.png" class="img-fluid"></p>
+</div>
+<p>Similar tables.</p>
+</div>
+<div id="slide_62" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_62_960x700.png" class="img-fluid"></p>
+</div>
+<p>In some cases, you’ll need to use DISTINCTCOUNT after filling in the missing months. Like if you need more advanced filtering or calculations. For example, distinct customers over a year will only equal the sum of distinct customers every month if there are no repeated customers. To solve this problem, you can bring customer_id in the SUMMARIZECOLUMNS in ADDMISSINGITEMS but not place it in the ShowAll_ColumnName parameter. This will bring the individual customer_id’s through but not fill in missing months for them. You’ll end up with month-product rows that have missing values for customer_id and order_id.</p>
+</div>
+<div id="slide_63" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_63_960x700.png" class="img-fluid"></p>
+</div>
+<p>Finally, the last step is to add filters for product and month.</p>
+</div>
+<div id="slide_64" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_64_960x700.png" class="img-fluid"></p>
+</div>
+<p>You can use built-in filters for the table either in the filter panel or slicers. You can also build out a star schema again if you want. That’s pretty much it. All the usual Power BI features work from here.</p>
+</div>
+<div id="slide_65" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="screenshots_65_960x700.png" class="img-fluid"></p>
+</div>
+<p>And that’s the presentation. Thanks!</p>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2022, William Tyler Bradley</div>
+  </div>
+</footer>
+
+
+
+</body></html>

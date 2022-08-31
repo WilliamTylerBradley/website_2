@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.132">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-04-16">
+<meta name="description" content="This blog post and the next one cover the code for making the site images. The first post pulls the data, and the second one creates the images. The setup first pulls the contents from the Data Science page of Wikipedia to get the letter frequencies. The code then pulls the overall letter frequencies for the English language. Finally, it saves them together to graph later.">
+
+<title>Website Design: Part 1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/WilliamTylerBradley"><i class="bi bi-github" role="img" aria-label="github">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"><i class="bi bi-twitter" role="img" aria-label="twitter">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Website Design: Part 1</h1>
+                  <div>
+        <div class="description">
+          This blog post and the next one cover the code for making the site images. The first post pulls the data, and the second one creates the images. The setup first pulls the contents from the <a href="https://en.wikipedia.org/wiki/Data_science">Data Science</a> page of Wikipedia to get the letter frequencies. The code then pulls the overall letter frequencies for the English language. Finally, it saves them together to graph later.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Blog</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 16, 2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p><b>NOTE: This post is about the old blog design. The images are not used on this site.</b></p>
+<p>This blog post and the next one cover the code for making the site images. The first post pulls the data, and the second one creates the images. The setup first pulls the contents from the <a href="https://en.wikipedia.org/wiki/Data_science">Data Science</a> page of Wikipedia to get the letter frequencies. The code then pulls the overall letter frequencies for the English language. Finally, it saves them together to graph later.</p>
+<p>This first section just lists out the R libraries. The <code>here</code> and <code>ggplot2</code> libraries are standard for most of my projects. The main additional library is <code>rvest</code>, which pulls the content from web pages.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#----------</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Libraries</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#----------</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Library for getting html</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(html_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The second section pulls the Data Science Wikipedia page, cleans up the result a little, and graphs the data to check it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--------------------</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 'Data Science' data</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#--------------------</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Scrape the Data Science data</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>data_science <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://en.wikipedia.org/wiki/Data_science"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull out main title</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>heading1 <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(data_science, <span class="st">"h1"</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>heading1</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull out body text</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>body <span class="ot">&lt;-</span> <span class="fu">html_text</span>(<span class="fu">html_nodes</span>(data_science, <span class="st">"p"</span>))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(body)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Add main title</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>body[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">paste</span>(heading1, body[<span class="dv">1</span>])</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>body[<span class="dv">1</span>]</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Crush together</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>body <span class="ot">&lt;-</span> <span class="fu">paste</span>(body, <span class="at">collapse =</span> <span class="st">" "</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># barplot of counts</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>ds_letter <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">table</span>(</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strsplit</span>(<span class="fu">tolower</span>(<span class="fu">gsub</span>(<span class="st">"[^[:alpha:]]"</span>, <span class="st">""</span>, body)), <span class="st">""</span>)))</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ds_letter) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Letter"</span>, <span class="st">"Frequency"</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>ds_letter<span class="sc">$</span>Frequency <span class="ot">&lt;-</span> ds_letter<span class="sc">$</span>Frequency <span class="sc">/</span> <span class="fu">sum</span>(ds_letter<span class="sc">$</span>Frequency) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>ds_letter</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ds_letter, <span class="fu">aes</span>(Letter, Frequency)) <span class="sc">+</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Data Science Wikipedia Page"</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"images"</span>, <span class="st">"ds_letter.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="ds_letter.png" class="img-fluid"></p>
+<p>The next section is like the previous one. Instead of pulling the text from a Wikipedia page, the code pulls data out of a table for letter frequencies.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Overall data</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get overall letter counts page</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>letter_frequency <span class="ot">&lt;-</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  xml2<span class="sc">::</span><span class="fu">read_html</span>(<span class="st">"https://en.wikipedia.org/wiki/Letter_frequency"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the right table</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Thanks Robert Lewand and Pavel Micka</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">html_nodes</span>(letter_frequency, <span class="st">"table"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>overall_letter <span class="ot">&lt;-</span> <span class="fu">html_table</span>(tables[<span class="dv">1</span>], <span class="at">fill =</span> <span class="cn">TRUE</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>overall_letter <span class="ot">&lt;-</span> overall_letter[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(overall_letter) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Letter"</span>, <span class="st">"Frequency"</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>overall_letter</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> overall_letter, <span class="fu">aes</span>(Letter, Frequency)) <span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Overall"</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"images"</span>, <span class="st">"overall_letter.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="overall_letter.png" class="img-fluid"></p>
+<p>The last two sections combine the data and save it for future use.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#-------------</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine data</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#-------------</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>overall_letter<span class="sc">$</span>Source <span class="ot">&lt;-</span> <span class="st">"Overall"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ds_letter<span class="sc">$</span>Source <span class="ot">&lt;-</span> <span class="st">"Data Science"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>freqs <span class="ot">&lt;-</span> <span class="fu">rbind</span>(overall_letter, ds_letter)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>freqs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>The final data set</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Letter </th>
+   <th style="text-align:right;"> Frequency </th>
+   <th style="text-align:left;"> Source </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> a </td>
+   <td style="text-align:right;"> 8.50 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> b </td>
+   <td style="text-align:right;"> 1.49 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> c </td>
+   <td style="text-align:right;"> 2.20 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> d </td>
+   <td style="text-align:right;"> 4.25 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> e </td>
+   <td style="text-align:right;"> 11.16 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> f </td>
+   <td style="text-align:right;"> 2.23 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 2.02 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> h </td>
+   <td style="text-align:right;"> 6.09 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> i </td>
+   <td style="text-align:right;"> 7.55 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> j </td>
+   <td style="text-align:right;"> 0.15 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> k </td>
+   <td style="text-align:right;"> 1.29 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> l </td>
+   <td style="text-align:right;"> 4.03 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> m </td>
+   <td style="text-align:right;"> 2.41 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> n </td>
+   <td style="text-align:right;"> 6.75 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> o </td>
+   <td style="text-align:right;"> 7.51 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> p </td>
+   <td style="text-align:right;"> 1.93 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> q </td>
+   <td style="text-align:right;"> 0.10 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> r </td>
+   <td style="text-align:right;"> 7.59 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> s </td>
+   <td style="text-align:right;"> 6.33 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> t </td>
+   <td style="text-align:right;"> 9.36 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> u </td>
+   <td style="text-align:right;"> 2.76 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> v </td>
+   <td style="text-align:right;"> 0.98 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> w </td>
+   <td style="text-align:right;"> 2.56 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:right;"> 0.15 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> y </td>
+   <td style="text-align:right;"> 1.99 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> z </td>
+   <td style="text-align:right;"> 0.08 </td>
+   <td style="text-align:left;"> Overall </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> a </td>
+   <td style="text-align:right;"> 10.72 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> b </td>
+   <td style="text-align:right;"> 1.31 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> c </td>
+   <td style="text-align:right;"> 5.06 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> d </td>
+   <td style="text-align:right;"> 5.08 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> e </td>
+   <td style="text-align:right;"> 11.53 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> f </td>
+   <td style="text-align:right;"> 2.01 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 1.94 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> h </td>
+   <td style="text-align:right;"> 2.87 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> i </td>
+   <td style="text-align:right;"> 9.38 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> j </td>
+   <td style="text-align:right;"> 0.22 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> k </td>
+   <td style="text-align:right;"> 0.34 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> l </td>
+   <td style="text-align:right;"> 3.65 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> m </td>
+   <td style="text-align:right;"> 2.31 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> n </td>
+   <td style="text-align:right;"> 8.21 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> o </td>
+   <td style="text-align:right;"> 5.88 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> p </td>
+   <td style="text-align:right;"> 1.77 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> q </td>
+   <td style="text-align:right;"> 0.19 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> r </td>
+   <td style="text-align:right;"> 4.97 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> s </td>
+   <td style="text-align:right;"> 7.71 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> t </td>
+   <td style="text-align:right;"> 9.50 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> u </td>
+   <td style="text-align:right;"> 2.01 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> v </td>
+   <td style="text-align:right;"> 0.72 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> w </td>
+   <td style="text-align:right;"> 1.02 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:right;"> 0.15 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> y </td>
+   <td style="text-align:right;"> 1.26 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> z </td>
+   <td style="text-align:right;"> 0.19 </td>
+   <td style="text-align:left;"> Data Science </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the file in case it's needed later after Wikipedia updates</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(freqs,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"freqs.csv"</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The source code file is found <a href="https://github.com/WilliamTylerBradley/site_design/blob/master/scrape_wiki.R">here</a>. This data will be read back into R to create the images in the <a href="https://www.willtybrad.com/2020-04-16-website-design-part-2/">next post</a>.</p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2022, William Tyler Bradley</div>
+  </div>
+</footer>
+
+
+
+</body></html>

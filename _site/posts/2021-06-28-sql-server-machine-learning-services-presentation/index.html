@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.132">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2021-06-28">
+<meta name="description" content="Presentation write-up on SQL Server’s Machine Learning Services">
+
+<title>SQL Server’s Machine Learning Services Presentation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/WilliamTylerBradley"><i class="bi bi-github" role="img" aria-label="github">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"><i class="bi bi-twitter" role="img" aria-label="twitter">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">SQL Server’s Machine Learning Services Presentation</h1>
+                  <div>
+        <div class="description">
+          Presentation write-up on SQL Server’s Machine Learning Services
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">SQL</div>
+                <div class="quarto-category">Presentations</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 28, 2021</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>This post is a write-up on a presentation I gave last year. You can check out the project on Github <a href="https://github.com/WilliamTylerBradley/sql_server_mls_presentation">here</a> or go <a href="https://williamtylerbradley.github.io/sql_server_mls_presentation/sql_server_mls_presentation.html">here</a> and press ‘s’ to get speaker notes.</p>
+<div id="slide_1" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_1.png" class="img-fluid"></p>
+</div>
+<p>I initially gave this presentation in November 2020 for the Asheville SQL Meetup. It covers the basics of SQL Server’s Machine Learning Services. Hopefully, it provides enough information to help people decide if this tech is a good solution for them.</p>
+</div>
+<div id="slide_2" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_2.png" class="img-fluid"></p>
+</div>
+<p>This presentation covers some background on Machine Learning Services, like what it is and why you would want to use it. There’s a demo section that showcases three different ways to use R in production with SQL Server. Finally, there’s a section for some tips and tricks that helped me when I set up and use this tech.</p>
+</div>
+<div id="slide_3" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_3.png" class="img-fluid"></p>
+</div>
+<p>The first section is just on the background.</p>
+</div>
+<div id="slide_4" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_4.png" class="img-fluid"></p>
+</div>
+<p>Machine Learning Services is a SQL Server feature that allows you to bring analytics into the database by running the analytics programming language in-database. It first started in 2016 with R and later added Python support. Some old documentation will call it R services because that was the name before adding Python. This is not a standalone server. It’s a regular SQL Server with added features. There is another option for a standalone server. That might be a better choice for your needs, but we’ll not cover that in this presentation.</p>
+</div>
+<div id="slide_5" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_5.png" class="img-fluid"></p>
+</div>
+<p>If you’re wondering if this would be a good addition to your tech stack, here are some excellent use cases: forecasting next month’s revenue, customer churn to predict when types of customers are mostly like to leave, and finding potential fraud in claims data. Basically, anything that is a best guess or probability. It’s not for pulling data or summaries. You can do that, but it won’t be better than using SQL typically. You can do some predictive modeling with just SQL, but usually, using R or Python has more features and is easier to use. Also, for this presentation, when I say ‘model’, I’m talking about a predictive or statistical model, not a data model that’s commonly used in SQL settings.</p>
+</div>
+<div id="slide_6" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_6.png" class="img-fluid"></p>
+</div>
+<p>Speeding up predictive model processing is the main reason to add this tech. By bringing the analysis to the data, you don’t have to move large data sets out of SQL Server to get the results you need. This can cut out a huge amount of time and processing power. You get to utilize SQL for the data prep and R or Python for the analysis. This brings you the best of both worlds. SQL tends to be a lot more stable and optimized for data prep, while R and Python can handle the large machine learning models that would too difficult to code in SQL. Also, Machine Learning Services outputs within SQL Server, which is easily used for reporting or an ETL.</p>
+</div>
+<div id="slide_7" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_7.png" class="img-fluid"></p>
+</div>
+<p>This setup also allows you to have clean analytics projects in production. There’s no need for large wonky code sets to get everything glued together. You can use all the standard SQL objects, like stored procedures and jobs. So, you don’t need another tool for scheduling or error reporting. There is less pipeline work since you’re not moving data in and out of SQL Server. So there are fewer ETLs, permissions issues, and other places for things to break.</p>
+<p>I think the addition of ‘fewer things to break’ for this work is an important selling point. If you’re adding in tech, then you’re also adding in more options for failure. That’s made up for to get the predictive modeling capabilities but reducing all the other code helps put this option ahead of other predictive modeling tools. There are a variety of setups, but you can pick a specific one for your team or organization. The flexibility is nice, so this tool works for most companies. Then when you get a setup for your team, you can set standards, so everything follows a pattern for documentation and code.</p>
+</div>
+<div id="slide_8" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_8.png" class="img-fluid"></p>
+</div>
+<p>This tech is a great setup because it can ease collaboration between data scientists and DBAs. It utilizes SQL permissions. So no one needs to learn a new setup for that, and it can fit nicely into your current structure. It has Microsoft-approved security. You’re not bringing in unvalidated software on your server. And it has options for resource controls. If you’re worried about data science work taking over everything, you can put up gates to prevent that. As a side note, I’ve never needed to use this feature. Most resource-intensive data science work happens during development, not running them in production, and I build the models in a different environment.</p>
+</div>
+<div id="slide_9" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_9.png" class="img-fluid"></p>
+</div>
+<p>The real-time analysis can be too slow. We’ll compare different options during the demo section, so you’ll see the fast ones. If you can wait a few seconds to return results or run everything in a batch the night before you need them, you’re good to go. If machine learning services are too slow, then SQL Server is probably too slow.</p>
+<p>The big data operations can be too small. This is more of a limitation of SQL Server again. Depending on your data size, this might not be big enough, but then SQL Server is probably not the right tool anyways.</p>
+<p>This doesn’t work as well with Power BI and other interfaces as you might expect, especially for interactivity. If you can’t run a stored procedure or run all the options before pulling out the data, you’ll have a lot of limitations here.</p>
+</div>
+<div id="slide_10" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_10.png" class="img-fluid"></p>
+</div>
+<p>When you’re planning out setting this up, there are a few things to figure out. You should have some idea of the roles you want involved. Machine learning services gives teams a whole spectrum of responsibilities that can be used to set expectations and tasks between DBAs and data scientist. So, you can have a setup with a ton of DBA involvement or very little work, depending on what you want at your company. You’ll want to know about the use cases you’ll have. In the demo section, we’ll walk through a few options. Determining which setup is best for your team is pretty much determined by your use cases. The number of people involved can also play a factor. You can easily interfere with other people’s work if you’re not careful, so some setups are better with larger teams. Overall, there is a lot of flexibility but no strong consensus on how to use this tech.</p>
+</div>
+<div id="slide_11" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_11.png" class="img-fluid"></p>
+</div>
+<p>Now for the demo section.</p>
+</div>
+<div id="slide_12" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_12.png" class="img-fluid"></p>
+</div>
+<p>You need to have SQL Server installed first. I’m using the 2017 Developer Edition. You’ll go through normal installation for most of this. (https://www.microsoft.com/en-us/sql-server/sql-server-2017 - ‘Free download’ link near the bottom)</p>
+</div>
+<div id="slide_13" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_13.png" class="img-fluid"></p>
+</div>
+<p>The main catch is making sure to check the boxes for Machine Learning Services (In-Database). You can pick R, Python, or both.</p>
+<p>Do not pick Machine Learning Server (Standalone). That’s a different product.</p>
+</div>
+<div id="slide_14" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_14.png" class="img-fluid"></p>
+</div>
+<p>You’ll go through a few more options and restarts. You can test that it’s working with a little ‘Hello World’ script.</p>
+</div>
+<div id="slide_15" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_15.png" class="img-fluid"></p>
+</div>
+<p>The primary function you’ll use is sp_execute_external_script. It’s the way to access an external language. There are a bunch of parameters. The specific language (R or Python). The actual script to run. The input data set. The output data that gets returned. And a lot of other options too.</p>
+</div>
+<div id="slide_16" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_16.png" class="img-fluid"></p>
+</div>
+<p>For a big disclaimer. I’ll run some code that creates predictive models, but I’m taking a lot of shortcuts. I’m not working through choosing a model, testing, and checking. I’m just getting a small model setup for the demo. The SQL objects and functions are fine to use. That’s the main focus of this presentation and can be adapted very easily for your company.</p>
+</div>
+<div id="slide_17" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_17.png" class="img-fluid"></p>
+</div>
+<p>– run 1_set_up_checks.sql</p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* EXEC sp_configure  'external scripts enabled', 1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">RECONFIGURE WITH OVERRIDE */</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- EXECUTE sp_configure  'external scripts enabled'</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script  @language <span class="op">=</span> N<span class="st">'R'</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ot">@script = N'</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>OutputDataSet <span class="op">&lt;-</span> InputDataSet;</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">',</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">@input_data_1 = N'</span>SELECT <span class="dv">1</span> <span class="kw">AS</span> hello<span class="st">'</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="st">WITH RESULT SETS (([hello] int not null));</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="st">GO</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="st">-- Check Version</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="st">EXECUTE sp_execute_external_script @language = N'</span>R<span class="st">'</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="st">    , @script = N'</span>print(version)<span class="st">';</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="st">GO</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="st">-- R Packages</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="st">EXEC sp_execute_external_script @language = N'</span>R<span class="st">'</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="st">    , @script = N'</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>OutputDataSet <span class="op">&lt;-</span> <span class="kw">data</span>.frame(installed.<span class="kw">packages</span>()[,c(<span class="ot">"Package"</span>, <span class="ot">"Version"</span>, <span class="ot">"Depends"</span>, <span class="ot">"License"</span>, <span class="ot">"LibPath"</span>)]);<span class="st">'</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="st">WITH result sets((</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="st">            Package NVARCHAR(255)</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="st">            , Version NVARCHAR(100)</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="st">            , Depends NVARCHAR(4000)</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="st">            , License NVARCHAR(1000)</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="st">            , LibPath NVARCHAR(2000)</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="st">            ));</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This shows that everything looks good.</p>
+<p>– run 2_create_mtcars.sql</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- mtcars database</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> dbo.mtcars(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    mpg <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    cyl <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    disp <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    hp <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    drat <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">2</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    wt <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">3</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    qsec <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">2</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    vs <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    am <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    gear <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    carb <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> dbo.mtcars</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'MTCars &lt;- mtcars;'</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    , @input_data_1 <span class="op">=</span> N<span class="st">''</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    , @output_data_1_name <span class="op">=</span> N<span class="st">'MTCars'</span>;</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> dbo.mtcars;</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">--DROP TABLE dbo.mtcars;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This builds out a test data set for us to use.</p>
+<p>– run 3_mtcars_sql.sql</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Input data set</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> mpg, cyl, hp, wt <span class="kw">FROM</span> dbo.mtcars;</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1974 Motor Trends</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- miles per gallon</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- number of cylinders</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- horse power</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- weight (1000 lbs)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- Build the model -----------------------------------------------------------------------</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'cars_model &lt;- lm(mpg ~ cyl + hp + wt, data = mtcars_data);</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="st">        trained_model &lt;- data.frame(model = as.raw(serialize(cars_model, connection=NULL)));'</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    , @input_data_1 <span class="op">=</span> N<span class="st">'SELECT mpg, cyl, hp, wt FROM dbo.mtcars'</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    , @input_data_1_name <span class="op">=</span> N<span class="st">'mtcars_data'</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    , @output_data_1_name <span class="op">=</span> N<span class="st">'trained_model'</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WITH</span> RESULT SETS ((model VARBINARY(<span class="fu">max</span>)))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> predictive_models (</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    model_name <span class="dt">varchar</span>(<span class="dv">30</span>) <span class="kw">not</span> <span class="kw">null</span> <span class="kw">default</span>(<span class="st">'default model'</span>) <span class="kw">primary</span> <span class="kw">key</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    model varbinary(<span class="fu">max</span>) <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> predictive_models(model)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'cars_model &lt;- lm(mpg ~ cyl + hp + wt, data = mtcars_data);</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="st">        trained_model &lt;- data.frame(model = as.raw(serialize(cars_model, connection=NULL)));'</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    , @input_data_1 <span class="op">=</span> N<span class="st">'SELECT mpg, cyl, hp, wt FROM MTCars'</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    , @input_data_1_name <span class="op">=</span> N<span class="st">'mtcars_data'</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    , @output_data_1_name <span class="op">=</span> N<span class="st">'trained_model'</span>;</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> [<span class="kw">master</span>].[dbo].[predictive_models];</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> predictive_models</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="kw">SET</span> model_name <span class="op">=</span> <span class="st">'lm_'</span> <span class="op">+</span> format(getdate(), <span class="st">'dd-MM-yy'</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> model_name <span class="op">=</span> <span class="st">'default model'</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> [<span class="kw">master</span>].[dbo].[predictive_models];</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co">--DROP TABLE dbo.predictive_models;</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="co">-- Run model ---------------------------------------------------------------------------</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> @selected_lmmodel varbinary(<span class="fu">max</span>) <span class="op">=</span> </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> model <span class="kw">FROM</span> dbo.predictive_models <span class="kw">WHERE</span> model_name <span class="op">=</span> <span class="st">'lm_17-11-20'</span>);</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="st">            current_model &lt;- unserialize(as.raw(lmmodel));</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="st">            new &lt;- data.frame(mtcars_data);</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="st">            predicted.am &lt;- predict(current_model, new);</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="st">            str(predicted.am);</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="st">            OutputDataSet &lt;- cbind(new, predicted.am);</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="st">            '</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    , @input_data_1 <span class="op">=</span> N<span class="st">'SELECT cyl, hp, wt FROM dbo.mtcars'</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    , @input_data_1_name <span class="op">=</span> N<span class="st">'mtcars_data'</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    , @params <span class="op">=</span> N<span class="st">'@lmmodel varbinary(max)'</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    , @lmmodel <span class="op">=</span> @selected_lmmodel</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> RESULT SETS ((cyl <span class="dt">INT</span>, hp <span class="dt">INT</span>, wt <span class="dt">DECIMAL</span>(<span class="dv">10</span>, <span class="dv">2</span>), predicted_mpg <span class="dt">DECIMAL</span>(<span class="dv">10</span>, <span class="dv">2</span>)));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This builds a model, saves it to a new table, and scores data with the new model. You can add more models to this table or update the existing ones. This is the most basic setup. Everything’s pretty much kept in SQL Server with basic functionalities.</p>
+<div id="slide_18" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_18.png" class="img-fluid"></p>
+</div>
+<p>There is an option for Native Scoring. This doesn’t use the overhead of R and Python but uses another format. The trade-off is there is a smaller list of possible models, but these are the most common. You’ll use RevoScaleR or revoscalepy, depending on if you’re using R or Python. The main function here is PREDICT. So look for that in the code. (Open Neural Network Exchange (ONNX))</p>
+</div>
+<div id="slide_19" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_19.png" class="img-fluid"></p>
+</div>
+<p>– run 4_mtcars_nativescoring.sql</p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Input data set</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> mpg, cyl, hp, wt <span class="kw">FROM</span> dbo.mtcars;</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Build the model -----------------------------------------------------------------------</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> @model varbinary(<span class="fu">max</span>);</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">EXECUTE</span> sp_execute_external_script</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  , @script <span class="op">=</span> N<span class="st">'</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">    cars_model &lt;- rxLinMod(mpg ~ cyl + hp + wt, data = mtcars_data)</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="st">    model &lt;- rxSerializeModel(cars_model, realtimeScoringOnly = TRUE)'</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  , @input_data_1 <span class="op">=</span> N<span class="st">'SELECT mpg, cyl, hp, wt FROM dbo.mtcars'</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  , @input_data_1_name <span class="op">=</span> N<span class="st">'mtcars_data'</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  , @params <span class="op">=</span> N<span class="st">'@model varbinary(max) OUTPUT'</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  , @model <span class="op">=</span> @model OUTPUT</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">INSERT</span> [dbo].[predictive_models]([model_name], [model])</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">VALUES</span>(<span class="st">'native_scoring'</span>, @model) ;</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> [<span class="kw">master</span>].[dbo].[predictive_models];</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">--DROP TABLE dbo.predictive_models;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">-- Run model ---------------------------------------------------------------------------</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> @model varbinary(<span class="fu">max</span>) <span class="op">=</span> (</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> model</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> [<span class="kw">master</span>].[dbo].[predictive_models]</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> model_name <span class="op">=</span> <span class="st">'native_scoring'</span>);</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> d.<span class="op">*</span>, p.<span class="op">*</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> PREDICT(MODEL <span class="op">=</span> @model, <span class="kw">DATA</span> <span class="op">=</span> dbo.mtcars <span class="kw">as</span> d)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WITH</span>(mpg_Pred <span class="dt">float</span>) <span class="kw">as</span> p;</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co">--DROP TABLE dbo.predictive_models;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This builds the model, adds it to the table, and scores some data. You can see it is very similar to the other setup.</p>
+<div id="slide_20" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_20.png" class="img-fluid"></p>
+</div>
+<p>The last way to run a model in production I’ll talk about is using an R package. R packages are a pretty common mechanism to wrap up a lot of R code. You’ll see them for almost everything. This provides the most separation between R and SQL by wrapping up most of the R code in the package then using SQL to pass data to it. You can make changes to the package to change the model instead of changing any SQL code. You’ll just need to use an ALTER statement to update it. This is probably the cleanest route for when a lot of R code needs to run.</p>
+</div>
+<div id="slide_21" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_21.png" class="img-fluid"></p>
+</div>
+<p>When you’re creating a model to use in a package, there might be some versioning issues. Using these settings might resolve them.</p>
+</div>
+<div id="slide_22" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_22.png" class="img-fluid"></p>
+</div>
+<p>– run 5_mtcars_rpackage.sql</p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> EXTERNAL <span class="kw">LIBRARY</span> mtcarsmodel</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (CONTENT <span class="op">=</span> <span class="st">'mtcarsmodel_0.1.0.zip'</span>) <span class="kw">WITH</span> (LANGUAGE <span class="op">=</span> <span class="st">'R'</span>); <span class="co">--pull from GitHub</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">OutputDataSet &lt;- data.frame(installed.packages()[,c("Package", "Version", "Depends", "License", "LibPath")]);'</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> result sets((</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="kw">Package</span> <span class="dt">NVARCHAR</span>(<span class="dv">255</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            , Version <span class="dt">NVARCHAR</span>(<span class="dv">100</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            , Depends <span class="dt">NVARCHAR</span>(<span class="dv">4000</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            , License <span class="dt">NVARCHAR</span>(<span class="dv">1000</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            , LibPath <span class="dt">NVARCHAR</span>(<span class="dv">2000</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            ));</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">-- !!! </span><span class="al">NOTE</span><span class="co"> THE DIFFERENT LIBPATH !!! ---</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">-- DROP EXTERNAL LIBRARY mtcarsmodel;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="ot">@language =N'R', </span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="ot">@script=N'library(mtcarsmodel)';</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">-- Note the warning message about R 4.0.0</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">-- Run model ---------------------------------------------------------------------------</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="st">            library(mtcarsmodel)</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="st">            OutputDataSet &lt;- mtcarsmodel::predict_mtcars(mtcars_data);'</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    , @input_data_1 <span class="op">=</span> N<span class="st">'SELECT cyl, hp, wt FROM dbo.mtcars'</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    , @input_data_1_name <span class="op">=</span> N<span class="st">'mtcars_data'</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> RESULT SETS ((cyl <span class="dt">INT</span>, hp <span class="dt">INT</span>, wt <span class="dt">DECIMAL</span>(<span class="dv">10</span>, <span class="dv">2</span>), predicted_mpg <span class="dt">DECIMAL</span>(<span class="dv">10</span>, <span class="dv">2</span>)));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>–(Make sure to have the package pulled from GitHub and saved in as a zipfile.)</p>
+<p>This code uploads an R package that contains a pre-built model. It then uses machine learning services to score data with that package.</p>
+<div id="slide_23" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_23.png" class="img-fluid"></p>
+</div>
+<p>– run 6_mt_cars_big.sql</p>
+<p><br> <br> <br> <br> <br> <br> <br> <br> <br></p>
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- mtcars big table</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> dbo.mtcars_big(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    mpg <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    cyl <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    disp <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">1</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    hp <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    drat <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">2</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    wt <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">3</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    qsec <span class="dt">decimal</span>(<span class="dv">10</span>, <span class="dv">2</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    vs <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    am <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    gear <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    carb <span class="dt">int</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> dbo.mtcars_big</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'MTCars &lt;- mtcars[sample(1:nrow(mtcars), 1000000, replace = TRUE), ];'</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    , @input_data_1 <span class="op">=</span> N<span class="st">''</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    , @output_data_1_name <span class="op">=</span> N<span class="st">'MTCars'</span>;</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">--DROP TABLE dbo.mtcars_big;</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> #mtcars_big_predictions (</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    cyl <span class="dt">INT</span>, </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    hp <span class="dt">INT</span>, </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    wt <span class="dt">DECIMAL</span>(<span class="dv">10</span>, <span class="dv">2</span>), </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    mpg_Pred <span class="dt">FLOAT</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">/* SQL */</span> <span class="co">-------------------------------------------------------------------------------------------      </span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> @lmmodel varbinary(<span class="fu">max</span>) <span class="op">=</span> </span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> model <span class="kw">FROM</span> dbo.predictive_models <span class="kw">WHERE</span> model_name <span class="op">=</span> <span class="st">'lm_17-11-20'</span>); <span class="co">-- MAKE SURE TO CHANGE THE MODEL NAME</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> #mtcars_big_predictions</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="st">            current_model &lt;- unserialize(as.raw(lmmodel));</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="st">            new &lt;- data.frame(mtcars_data);</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="st">            predicted.am &lt;- predict(current_model, new, type = "response");</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="st">            str(predicted.am);</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="st">            OutputDataSet &lt;- cbind(new, predicted.am);</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="st">            '</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    , @input_data_1 <span class="op">=</span> N<span class="st">'SELECT cyl, hp, wt FROM dbo.mtcars_big'</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    , @input_data_1_name <span class="op">=</span> N<span class="st">'mtcars_data'</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    , @params <span class="op">=</span> N<span class="st">'@lmmodel varbinary(max)'</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    , @lmmodel <span class="op">=</span> @lmmodel;</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">-- Seconds: 16</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="co">-- check results </span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> TOP <span class="dv">1000</span> <span class="op">*</span> <span class="kw">FROM</span> #mtcars_big_predictions;</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="kw">TRUNCATE</span> <span class="kw">TABLE</span> #mtcars_big_predictions;</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co">/* Native Scoring */</span> <span class="co">-------------------------------------------------------------------------------------------</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> @model varbinary(<span class="fu">max</span>) <span class="op">=</span> (</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> model</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> [<span class="kw">master</span>].[dbo].[predictive_models]</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> model_name <span class="op">=</span> <span class="st">'native_scoring'</span>);</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> #mtcars_big_predictions</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> d.cyl, d.hp, d.wt, p.<span class="op">*</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> PREDICT(MODEL <span class="op">=</span> @model, <span class="kw">DATA</span> <span class="op">=</span> dbo.mtcars_big <span class="kw">as</span> d)</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WITH</span>(mpg_Pred <span class="dt">float</span>) <span class="kw">as</span> p;</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="co">-- Seconds: 8</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="co">-- check results </span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> TOP <span class="dv">1000</span> <span class="op">*</span> <span class="kw">FROM</span> #mtcars_big_predictions;</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="kw">TRUNCATE</span> <span class="kw">TABLE</span> #mtcars_big_predictions;</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="co">/* R Package */</span> <span class="co">---------------------------------------------------------------------------------------------</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> #mtcars_big_predictions</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_execute_external_script</span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>    @language <span class="op">=</span> N<span class="st">'R'</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    , @script <span class="op">=</span> N<span class="st">'</span></span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="st">            library(mtcarsmodel)</span></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a><span class="st">            OutputDataSet &lt;- mtcarsmodel::predict_mtcars(mtcars_data);'</span></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>    , @input_data_1 <span class="op">=</span> N<span class="st">'SELECT cyl, hp, wt FROM dbo.mtcars_big'</span></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>    , @input_data_1_name <span class="op">=</span> N<span class="st">'mtcars_data'</span>;</span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="co">--WITH RESULT SETS ((cyl INT, hp INT, wt DECIMAL(10, 2), predicted_mpg DECIMAL(10, 2)));</span></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="co">-- Seconds: 14</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="co">-- check results </span></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> TOP <span class="dv">1000</span> <span class="op">*</span> <span class="kw">FROM</span> #mtcars_big_predictions;</span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="kw">TRUNCATE</span> <span class="kw">TABLE</span> #mtcars_big_predictions;</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="co">-- DROP TABLE dbo.mtcars_big;</span></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="co">-- Try this with clearing cache</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This code builds out a bigger data set to see run time comparisons. It’s good for a lot of batch analytics, and the native scoring is the best.</p>
+<div id="slide_24" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_24.png" class="img-fluid"></p>
+</div>
+<p>Now for the tips and tricks section.</p>
+</div>
+<div id="slide_25" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_25.png" class="img-fluid"></p>
+</div>
+<p>Small catches and errors will definitely be the most painful part. You’ll hit a lot of minor mistakes the first time you try to get something working. Here are a few to watch out for in your work. R and Python are case-sensitive. So the input data names have to match exactly, unlike SQL. Input/output formats can trouble. This includes the number of columns, names, and data types. R, Python, and SQL Server have slightly different data types. So, you might hit a weird issue, especially with conversions. Error messaging can be cloudy at best. You’ll get a lot of weird messages that are either a downstream effect of the real problem or are just some esoteric response. You can get this if there’s something wrong in the R code, but you’ll get the final issue as a SQL problem.</p>
+<p>There is also a whole world of versioning that we won’t get to in this presentation. You’ll need to look into upgrading versions of Machine Learning Services. Probably choose something using miniCran, R Open, and the checkpoint package. Finally, you’ll need to figure out any dependencies for the packages of predictive models you might have. The tech on the last bullet point can help you out here.</p>
+</div>
+<div id="slide_26" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_26.png" class="img-fluid"></p>
+</div>
+<p>A lot of documentation and blog posts are hit or miss because they deal with outdated practices or features that don’t work with your setup. If you search around enough, you will find some help eventually though.</p>
+<p>You can use all the standard SQL objects/tools. Everything can be wrapped up in a stored procedure, which can be very nice. You can save and update models in a temporal table to compare model performance over time. And you can use a separate for all models or a different database for each project to keep data pulls, reference tables, and outputs altogether.</p>
+</div>
+<div id="slide_27" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_27.png" class="img-fluid"></p>
+</div>
+<p>Make sure to write documentation as you go. Then at the end, delete the setup and restart following the documentation. You’ll probably want to delete and restart several times. There will be little catches you’ll need to remember later, and having them written down will save you.</p>
+<p>I like to script everything. I find it easier for reproducibility and to pass off stuff to coworkers. If you mainly have an R shop, the sqlmlutils package will be helpful. If you’re mainly SQL, you can use standard SQL code for everything. At my job, everything gets passed off to another developer for putting models on our production server. I’ve got scripts that pick up the R packages, place them in the right spot, and test everything.</p>
+</div>
+<div id="slide_28" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_28.png" class="img-fluid"></p>
+</div>
+<p>Lastly, sometimes in development Machine Learning Services will stop working. The main place to check is restarting the launchpad. This will fix it most of the time. There’s nothing really special about this slide. Just to know to do this because you’ll almost definitely run into this issue.</p>
+</div>
+<div id="slide_29" style="clear: both;">
+<div class="presentation_slide">
+<p><img src="slide_29.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2022, William Tyler Bradley</div>
+  </div>
+</footer>
+
+
+
+</body></html>
