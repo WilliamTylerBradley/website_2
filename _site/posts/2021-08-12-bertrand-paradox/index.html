@@ -129,10 +129,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Bertrand Paradox">
 <meta property="og:description" content="Generative art based on the Bertrand Paradox">
-<meta property="og:image" content="thumbnail.jpeg">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2021-08-12-bertrand-paradox/thumbnail.jpeg">
 <meta name="twitter:title" content="Bertrand Paradox">
 <meta name="twitter:description" content="Generative art based on the Bertrand Paradox">
-<meta name="twitter:image" content="thumbnail.jpeg">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2021-08-12-bertrand-paradox/thumbnail.jpeg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -633,7 +633,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

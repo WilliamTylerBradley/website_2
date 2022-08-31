@@ -129,10 +129,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Website Design: Part 2">
 <meta property="og:description" content="This post continues the work from the previous one. This code takes the saved data and creates the images.">
-<meta property="og:image" content="color_scheme_thumbnail.png">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2020-04-16-website-design-part-2/color_scheme_thumbnail.png">
+<meta property="og:image:height" content="480">
+<meta property="og:image:width" content="480">
 <meta name="twitter:title" content="Website Design: Part 2">
 <meta name="twitter:description" content="This post continues the work from the previous one. This code takes the saved data and creates the images.">
-<meta name="twitter:image" content="color_scheme_thumbnail.png">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2020-04-16-website-design-part-2/color_scheme_thumbnail.png">
+<meta name="twitter:image-height" content="480">
+<meta name="twitter:image-width" content="480">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -466,7 +470,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

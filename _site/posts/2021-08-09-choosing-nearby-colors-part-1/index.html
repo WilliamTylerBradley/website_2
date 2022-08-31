@@ -129,10 +129,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Choosing Nearby Colors Part 1">
 <meta property="og:description" content="Attempting to select colors close to a chosen one by sampling colors in a ellipse in the HCL color space">
-<meta property="og:image" content="h_c_plane.jpeg">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2021-08-09-choosing-nearby-colors-part-1/h_c_plane.jpeg">
 <meta name="twitter:title" content="Choosing Nearby Colors Part 1">
 <meta name="twitter:description" content="Attempting to select colors close to a chosen one by sampling colors in a ellipse in the HCL color space">
-<meta name="twitter:image" content="h_c_plane.jpeg">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2021-08-09-choosing-nearby-colors-part-1/h_c_plane.jpeg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -1419,7 +1419,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

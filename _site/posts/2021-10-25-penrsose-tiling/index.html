@@ -66,10 +66,14 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Penrose Tiling">
 <meta property="og:description" content="R package for Penrose tiling patterns">
-<meta property="og:image" content="penrosetiling.png">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2021-10-25-penrsose-tiling/penrosetiling.png">
+<meta property="og:image:height" content="600">
+<meta property="og:image:width" content="600">
 <meta name="twitter:title" content="Penrose Tiling">
 <meta name="twitter:description" content="R package for Penrose tiling patterns">
-<meta name="twitter:image" content="penrosetiling.png">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2021-10-25-penrsose-tiling/penrosetiling.png">
+<meta name="twitter:image-height" content="600">
+<meta name="twitter:image-width" content="600">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -313,7 +317,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

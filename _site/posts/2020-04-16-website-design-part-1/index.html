@@ -132,10 +132,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Website Design: Part 1">
 <meta property="og:description" content="This blog post and the next one cover the code for making the site images. The first post pulls the data, and the second one creates the images. The setup first pulls the contents from the Data Science page of Wikipedia to get the letter frequencies. The code then pulls the overall letter frequencies for the English language. Finally, it saves them together to graph later.">
-<meta property="og:image" content="ds_letter_thumbnail.png">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2020-04-16-website-design-part-1/ds_letter_thumbnail.png">
+<meta property="og:image:height" content="418">
+<meta property="og:image:width" content="750">
 <meta name="twitter:title" content="Website Design: Part 1">
 <meta name="twitter:description" content="This blog post and the next one cover the code for making the site images. The first post pulls the data, and the second one creates the images. The setup first pulls the contents from the Data Science page of Wikipedia to get the letter frequencies. The code then pulls the overall letter frequencies for the English language. Finally, it saves them together to graph later.">
-<meta name="twitter:image" content="ds_letter_thumbnail.png">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2020-04-16-website-design-part-1/ds_letter_thumbnail.png">
+<meta name="twitter:image-height" content="418">
+<meta name="twitter:image-width" content="750">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -693,7 +697,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

@@ -129,10 +129,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="SQL Server’s Machine Learning Services Presentation">
 <meta property="og:description" content="Presentation write-up on SQL Server’s Machine Learning Services">
-<meta property="og:image" content="slide_1.png">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2021-06-28-sql-server-machine-learning-services-presentation/slide_1.png">
+<meta property="og:image:height" content="700">
+<meta property="og:image:width" content="960">
 <meta name="twitter:title" content="SQL Server’s Machine Learning Services Presentation">
 <meta name="twitter:description" content="Presentation write-up on SQL Server’s Machine Learning Services">
-<meta name="twitter:image" content="slide_1.png">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2021-06-28-sql-server-machine-learning-services-presentation/slide_1.png">
+<meta name="twitter:image-height" content="700">
+<meta name="twitter:image-width" content="960">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -785,7 +789,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

@@ -66,10 +66,10 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Cross-validation: A Toy Example">
 <meta property="og:description" content="Presentation on cross-validation using toys">
-<meta property="og:image" content="thumbnail.JPG">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2022-05-20-cross-validation-a-toy-example/thumbnail.JPG">
 <meta name="twitter:title" content="Cross-validation: A Toy Example">
 <meta name="twitter:description" content="Presentation on cross-validation using toys">
-<meta name="twitter:image" content="thumbnail.JPG">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2022-05-20-cross-validation-a-toy-example/thumbnail.JPG">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -818,7 +818,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

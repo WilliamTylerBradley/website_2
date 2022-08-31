@@ -129,10 +129,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Cohesive Graphs">
 <meta property="og:description" content="Connecting graphs throughout a document">
-<meta property="og:image" content="plot_12.png">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2022-03-01-cohesive-graphs/plot_12.png">
+<meta property="og:image:height" content="1500">
+<meta property="og:image:width" content="1500">
 <meta name="twitter:title" content="Cohesive Graphs">
 <meta name="twitter:description" content="Connecting graphs throughout a document">
-<meta name="twitter:image" content="plot_12.png">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2022-03-01-cohesive-graphs/plot_12.png">
+<meta name="twitter:image-height" content="1500">
+<meta name="twitter:image-width" content="1500">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -800,7 +804,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

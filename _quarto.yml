@@ -5,6 +5,7 @@ website:
   favicon: favicon.png
   twitter-card: true
   open-graph: true
+  site-url: https://www.willtybrad.com
   navbar:
     background: primary
     left:
