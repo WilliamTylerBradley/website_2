@@ -3,7 +3,8 @@
 /* nav bar background */
 .navbar {
   background-image: url('nav_bar.png');
+  background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  position: relative;
   background-size: cover;
 }

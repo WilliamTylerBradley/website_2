@@ -110,3 +110,8 @@ ul.pagination li {
 .presentation_slide p {
   margin-bottom: 0;
 }
+
+/* Stop annoying white bar between nav-bar and header */
+body {
+  background-image: linear-gradient(to bottom, #263121 66px, #FEFFFD 66px);
+}
