@@ -126,4 +126,4 @@ write.csv(freqs,
           row.names = FALSE)
 ```
 
-The source code file is found [here](https://github.com/WilliamTylerBradley/site_design/blob/master/scrape_wiki.R). This data will be read back into R to create the images in the [next post](https://www.willtybrad.com/2020-04-16-website-design-part-2/).
+The source code file is found [here](https://github.com/WilliamTylerBradley/site_design/blob/master/scrape_wiki.R). This data will be read back into R to create the images in the [next post](https://www.willtybrad.com/posts/2020-04-16-website-design-part-2/).
