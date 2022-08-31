@@ -3,6 +3,8 @@ project:
 
 website:
   favicon: favicon.png
+  twitter-card: true
+  open-graph: true
   navbar:
     background: primary
     left:
