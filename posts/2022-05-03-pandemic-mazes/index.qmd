@@ -24,6 +24,7 @@ The program works in five steps:
 * Add in the images for signs
 * Finally, add the background and save
 
+<br>
 <hr>
 <center><h2>Create a base maze</h2></center>
 <hr>
@@ -142,6 +143,7 @@ The following image displays the base maze layout. The edges are numbered with t
 
 ![Maze edges with labyrinth highlighted](post_1.png)
 
+<br>
 <hr>
 <center><h2>Update the maze to double all the edges</h2></center>
 <hr>
@@ -283,6 +285,7 @@ This image shows the cleaned-up final output for this function. The unconnected 
 
 ![Cleaned-up output](post_4.png)
 
+<br>
 <hr>
 <center><h2>Move through all edges in one path</h2></center>
 <hr>
@@ -355,6 +358,7 @@ maze_to_path <- function(edges) {
 }
 ```
 
+<br>
 <hr>
 <center><h2>Add in the images for signs</h2></center>
 <hr>
@@ -898,6 +902,7 @@ get_image_data <- function(path, structure_parameter) {
 }
 ```
 
+<br>
 <hr>
 <center><h2>Finally, add the background and save</h2></center>
 <hr>

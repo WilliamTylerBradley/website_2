@@ -14,6 +14,7 @@ This post looks into what happens if you just start with a "sphere" based on Hue
 
 [^1]: If you understand the difference between polar and Cartesian coordinates pretty well, this blog post will be obvious to you. But I'm bad at math and needed to see a lot of graphs to understand what was happening. So I figured I'd throw this in a blog post.
 
+<br>
 <hr>
 <center><h2>Base Point Location</h2></center>
 <hr>
@@ -254,6 +255,7 @@ Then we can look at the plane tangent to the H-L Curve to see the space perpendi
 
 After the base color is understood, we can see what happens if you extend out to a sphere.
 
+<br>
 <hr>
 <center><h2>xyL Perimeter</h2></center>
 <hr>
@@ -655,6 +657,7 @@ The next two images both have the Luminance values along the y-axis but cut the 
 ![xyL: Parallel Distance-L by Perpendicular Distance cuts](xyl_par_l.jpeg)
 :::
 
+<br>
 <hr>
 <center><h2>HCL Perimeter</h2></center>
 <hr>
@@ -856,6 +859,7 @@ We also get a squished version for the image on the left. There are fewer cuts b
 
 It is a little unwieldy to compare the different main sections apart, so we'll add them together in the next one.
 
+<br>
 <hr>
 <center><h2>Compare Perimeters</h2></center>
 <hr>
@@ -1056,6 +1060,7 @@ The second comparison has the samples sorted by Hue (like the first comparison),
 
 For the final two main sections, we'll change only the Chroma value. First, we'll move everything closer to the center.
 
+<br>
 <hr>
 <center><h2>Lower Chroma Value</h2></center>
 <hr>
@@ -1172,6 +1177,7 @@ Finally, we can compare the sampled colors directly.
 ![Lower C: Samples H by C](C_lower_samples2.jpeg)
 :::
 
+<br>
 <hr>
 <center><h2>Higher Chroma Value</h2></center>
 <hr>

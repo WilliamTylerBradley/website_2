@@ -16,6 +16,7 @@ I recently worked on a generative art project around [Penrose tiling](https://en
 
 ![penrosetiling hex sticker](penrosetiling.png){height=175px}
 
+<br>
 <hr>
 <center><h2>Outputs</h2></center>
 <hr>

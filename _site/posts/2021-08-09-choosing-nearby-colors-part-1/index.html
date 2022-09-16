@@ -218,6 +218,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <p>This blog post talks about selecting colors nearby to a chosen one. This color selection process is needed for a generative art project I’m programming. For some background, I’m using the HCL color space. I’m not going to go into a lot of details on HCL for this post. You only need to HCL specifies unique colors by <strong>H</strong>ue, <strong>C</strong>hroma, and <strong>L</strong>uminance using polar coordinates. Hue, degrees around the circle, determines the location on the color wheel (like red, blue, green). Chroma, the distance from the circle’s center, specifies how much color is involved ranging from gray in the center to intense shades at the edges. Luminance is the brightness and ranges from 0 for black and 100 for white along the z-axis. Playing around hclwizard color picker <a href="http://hclwizard.org:3000/hclcolorpicker/">(here)</a> will help your understanding of how the parameters work. Lastly, this color space is perceptually uniform, so moving one unit distance in any direction gives colors that look about the same difference. More details can be found <a href="https://en.wikipedia.org/wiki/HCL_color_space">here</a> and <a href="https://en.wikipedia.org/wiki/CIELUV#Cylindrical_representation_.28CIELCH.29">here</a>.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -504,6 +505,7 @@ Now for the R code
 </figure>
 </div>
 <p>This shows the plane perpendicular to the C-L Plane at C = 60. A horizontal line drawn at the point on this image matches where the black intersects the H-C plane in the previous graph. This image isn’t super helpful here, but it will be when we check shapes later.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -717,6 +719,7 @@ Nearby points in a sphere
 </figure>
 </div>
 <p>Now to expand this technique out a little more, we can stretch the sphere in different ways.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -842,6 +845,7 @@ Nearby points in an ellipse
 </figure>
 </div>
 <p>While we’re transforming the original sphere, we can add in tilting.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -980,6 +984,7 @@ Nearby points in a tilted ellipse
 </figure>
 </div>
 <p>So far, this setup has a lot of flexibility but is also fragile. So, we’ll bulk up the sampling function.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -1056,6 +1061,7 @@ Clean up the final function
 <span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a>                                 perpendicular_C_L_radius,</span>
 <span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a>                                 tilt_theta, H_bound)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -1100,6 +1106,7 @@ Compare previous samples
 </figure>
 </div>
 <p>Here, we can see the differences in samples based on the different parameters. By changing the parameters, we can get a variety of color sampling, even when starting with the same base point. The rest of the graphs can be created for comparing the outputs, but they aren’t that interesting since they’re just repeats of the previous image.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
