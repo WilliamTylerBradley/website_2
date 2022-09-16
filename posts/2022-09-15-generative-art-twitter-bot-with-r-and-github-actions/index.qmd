@@ -1,7 +1,7 @@
 ---
 title: "Generative Art Twitter Bot with R and GitHub Actions"
 description: "Automatic art generated daily"
-date: "2022-08-31"
+date: "2022-09-15"
 categories: [R, Generative Art]
 image: "flowfieldfigments.png"
 execute: 
@@ -234,7 +234,7 @@ The `steps:` section accesses the repo, sets up R, installs `rtweet`, and runs t
 
 To test everything, under "Actions" there should be an option under "Workflows" for your code. Click "Run workflow" to get it started. Sometimes it takes a few minutes. So make sure to chill out a second instead of clicking it a bunch of times.
 
-![Actions](actions.png)
+![Actions Screenshot](actions.png)
 
 Your bot's Twitter account should have a new "This is a test tweet again." tweet. If you try this again without changing the message, you'll probably get an error about creating tweets with the same status in a row.
 
