@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2022-08-31-generative-art-twitter-bot-with-r-and-github-actions/index.html",
       "/posts/2022-05-28-circuitry/index.html",
       "/posts/2022-05-20-cross-validation-a-toy-example/index.html",
       "/posts/2022-05-03-pandemic-mazes/index.html",

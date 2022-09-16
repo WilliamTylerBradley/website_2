@@ -10,6 +10,7 @@ execute:
 
 This blog post talks about selecting colors nearby to a chosen one. This color selection process is needed for a generative art project I'm programming. For some background, I'm using the HCL color space. I'm not going to go into a lot of details on HCL for this post. You only need to HCL specifies unique colors by **H**ue, **C**hroma, and **L**uminance using polar coordinates. Hue, degrees around the circle, determines the location on the color wheel (like red, blue, green). Chroma, the distance from the circle's center, specifies how much color is involved ranging from gray in the center to intense shades at the edges. Luminance is the brightness and ranges from 0 for black and 100 for white along the z-axis. Playing around hclwizard color picker [(here)](http://hclwizard.org:3000/hclcolorpicker/) will help your understanding of how the parameters work. Lastly, this color space is perceptually uniform, so moving one unit distance in any direction gives colors that look about the same difference. More details can be found [here](https://en.wikipedia.org/wiki/HCL_color_space) and [here](https://en.wikipedia.org/wiki/CIELUV#Cylindrical_representation_.28CIELCH.29).
 
+<br>
 <hr>
 <center><h2>Now for the R code</h2></center>
 <hr>
@@ -293,6 +294,7 @@ graph_C_tangent_plane(C_tangent_plane, color_points, color_hex)
 
 This shows the plane perpendicular to the C-L Plane at C = 60. A horizontal line drawn at the point on this image matches where the black intersects the H-C plane in the previous graph. This image isn't super helpful here, but it will be when we check shapes later.
 
+<br>
 <hr>
 <center><h2>Nearby points in a sphere</h2></center>
 <hr>
@@ -497,6 +499,7 @@ p1 + p2
 
 Now to expand this technique out a little more, we can stretch the sphere in different ways.
 
+<br>
 <hr>
 <center><h2>Nearby points in an ellipse</h2></center>
 <hr>
@@ -610,6 +613,7 @@ p1 + p2
 
 While we're transforming the original sphere, we can add in tilting.
 
+<br>
 <hr>
 <center><h2>Nearby points in a tilted ellipse</h2></center>
 <hr>
@@ -739,6 +743,7 @@ p1 + p2
 
 So far, this setup has a lot of flexibility but is also fragile. So, we'll bulk up the sampling function.
 
+<br>
 <hr>
 <center><h2>Clean up the final function</h2></center>
 <hr>
@@ -817,6 +822,7 @@ color_points <- get_color_points(250^2, 10,
 
 ```
 
+<br>
 <hr>
 <center><h2>Compare previous samples</h2></center>
 <hr>
@@ -857,6 +863,7 @@ p1 + p2 + p3
 
 Here, we can see the differences in samples based on the different parameters. By changing the parameters, we can get a variety of color sampling, even when starting with the same base point. The rest of the graphs can be created for comparing the outputs, but they aren't that interesting since they're just repeats of the previous image.
 
+<br>
 <hr>
 <center><h2>Trying some other parameters</h2></center>
 <hr>

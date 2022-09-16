@@ -172,6 +172,7 @@ Background
 <p>I used X1 and X2 instead of x and y since y is often reserved for the class, but x and y can be used. People will move on and off the grid as the toys move in and out of hold-out sets for different folds. Predictive models are built and tested to determine the best one. There are many variations on this idea, so feel free to change this up to suit your situation.</p>
 <p>I’d recommend starting with a brief explanation of cross-validation and when/why it is used. I usually have slides with a curve of data (like y = x^2 + noise). Then show three models: a line, a curve, and one that goes through all data points but is very squiggly. Then add in some data to estimate and show that the curve fits best. Or something similar to get the general picture.</p>
 <p>(As a side note, this presentation was inspired by the <a href="https://en.wikipedia.org/wiki/Dance_Your_Ph.D.">Dance Your Ph.D.&nbsp;contest</a>. I’m not good with music, but if you are, I’m pretty confident this could be a dance instead.)</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -188,6 +189,7 @@ Setup
 </div>
 <p>The exercise aims to create models using ribbons, to separate the mammals from dinosaurs. The ribbons are different lengths to represent the different flexibility of models. Then, we’ll test each of the models using cross-validation to estimate how well each one would perform on new data.</p>
 <p>I created test data sets to determine the toys’ positions and folds until I got some with the desired attributes. I used twelve animals, but your number will depend on the people you have. There are three folds and three models. Each fold has four animals, two mammals and two dinosaurs. The three models are a straight line, a curve, and a squiggle. I wanted some variety with accuracy, none of the models to be perfect, and have Model 2 to be the best. I created a decision boundary of a curve to get started. All animals are positioned on integers, with African mammals on the left/below the curve and dinosaurs on the right/above. Then I sampled data sets until I got some with the desired properties, compared them, and chose one with nice images. You can see the <a href="https://github.com/WilliamTylerBradley/cross-validation-example">code in this repo</a>.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -216,6 +218,7 @@ Full Data Set
 </div>
 </div>
 </div>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -230,8 +233,8 @@ Folds and Models
 <p></p><figcaption class="figure-caption">Folds Identification</figcaption><p></p>
 </figure>
 </div>
-<section id="fold-1" class="level1">
-<h1>Fold 1</h1>
+<section id="fold-1" class="level2">
+<h2 class="anchored" data-anchor-id="fold-1">Fold 1</h2>
 <p>So to set up the first fold, people with a fold ID of 1 move off the grid. These people are in the assessment set while everyone else is in the analysis set. (Sometimes called validation and training set.)</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -254,8 +257,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-1-model-1" class="level1">
-<h1>Fold 1 Model 1</h1>
+<section id="fold-1---model-1" class="level2">
+<h2 class="anchored" data-anchor-id="fold-1---model-1">Fold 1 - Model 1</h2>
 <p>For Model 1, we have a piece of ribbon that stretches to a line across the grid. For this model, the ribbon is always a straight line. The analysis set people attempt to set the line down to separate the mammals from the dinosaurs. In this case, a straight line cannot separate the animals. So, the elephant in the bottom right corner ends up on the wrong side. The graphic displays the error with a green on the outside (labeled as a dinosaur) and yellow on the inside (actually a mammal) dot. For the graphics, dots with two colors are mismatches.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -300,8 +303,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-2" class="level1">
-<h1>Fold 2</h1>
+<section id="fold-2" class="level2">
+<h2 class="anchored" data-anchor-id="fold-2">Fold 2</h2>
 <p>The people in fold 2 move off the grid for the next step. Then a straight line model is built.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -324,8 +327,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-2-model-1" class="level1">
-<h1>Fold 2 Model 1</h1>
+<section id="fold-2---model-1" class="level2">
+<h2 class="anchored" data-anchor-id="fold-2---model-1">Fold 2 - Model 1</h2>
 <p>In this example, the model built by code mismarks the dinosaur in the model. I choose to move the model and correct it for the picture. In an actual presentation, people will move these however they want. So they are unlikely to match the computer result every time. You can either keep track of both results or only focus on the computer output.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -369,8 +372,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-3" class="level1">
-<h1>Fold 3</h1>
+<section id="fold-3" class="level2">
+<h2 class="anchored" data-anchor-id="fold-3">Fold 3</h2>
 <p>Fold 3 repeats the same action with the last set of people.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -393,8 +396,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-3-model-1" class="level1">
-<h1>Fold 3 Model 1</h1>
+<section id="fold-3---model-1" class="level2">
+<h2 class="anchored" data-anchor-id="fold-3---model-1">Fold 3 - Model 1</h2>
 <p>We end up building a model again. This time everyone in the analysis set can be labeled correctly, but we’ll miss the elephant in the bottom right of the assessment set.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -437,8 +440,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-1-model-2" class="level1">
-<h1>Fold 1 Model 2</h1>
+<section id="fold-1---model-2" class="level2">
+<h2 class="anchored" data-anchor-id="fold-1---model-2">Fold 1 - Model 2</h2>
 <p>This set will mirror the first part of the exercise but use a different model. The new model is a longer piece of ribbon that can have a slight curve. Apart from that, everything is the same.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -482,8 +485,8 @@ Folds and Models
 </div>
 <p>For fold 1, we finally get an analysis set and an assessment set with 100% accuracy. This shows that adding some complexity to the model can help.</p>
 </section>
-<section id="fold-2-model-2" class="level1">
-<h1>Fold 2 Model 2</h1>
+<section id="fold-2---model-2" class="level2">
+<h2 class="anchored" data-anchor-id="fold-2---model-2">Fold 2 - Model 2</h2>
 <p>This follows the same pattern as the previous fold.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -526,8 +529,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-3-model-2" class="level1">
-<h1>Fold 3 Model 2</h1>
+<section id="fold-3---model-2" class="level2">
+<h2 class="anchored" data-anchor-id="fold-3---model-2">Fold 3 - Model 2</h2>
 <p>In this fold, we do have an error in the assessment set. I like to see at least one error for each model to demonstrate that it can be impossible to get everything correct.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -570,8 +573,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-1-model-3" class="level1">
-<h1>Fold 1 Model 3</h1>
+<section id="fold-1---model-3" class="level2">
+<h2 class="anchored" data-anchor-id="fold-1---model-3">Fold 1 - Model 3</h2>
 <p>We have the longest ribbon for the most flexible model for the final model. The exercise follows the previous steps.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -614,8 +617,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-2-model-3" class="level1">
-<h1>Fold 2 Model 3</h1>
+<section id="fold-2---model-3" class="level2">
+<h2 class="anchored" data-anchor-id="fold-2---model-3">Fold 2 - Model 3</h2>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
@@ -657,8 +660,8 @@ Folds and Models
 </div>
 </div>
 </section>
-<section id="fold-3-model-3" class="level1">
-<h1>Fold 3 Model 3</h1>
+<section id="fold-3---model-3" class="level2">
+<h2 class="anchored" data-anchor-id="fold-3---model-3">Fold 3 - Model 3</h2>
 <p>There is more room for the final model to move the ribbon. The flexibility can create new patterns that don’t capture the data as well.</p>
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -700,9 +703,10 @@ Folds and Models
 </div>
 </div>
 </div>
+<br>
 <hr>
 <center>
-<h2 class="anchored" data-anchor-id="fold-3-model-3">
+<h2 class="anchored">
 Overall Accuracy
 </h2>
 </center>

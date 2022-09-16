@@ -219,6 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <p>This project is based on the <a href="https://en.wikipedia.org/wiki/Bertrand_paradox_(probability)">Bertrand Paradox</a>. The Bertrand Paradox deals with patterns that develop from sampling points/chords in a circle. The paradox occurs when different sampling methods seem like they should have the same output but don’t. The first method for this project samples two points on the perimeter then connects them to get the line and the midpoint to get the point. The second method samples a radius at a random angle around the circle, then a random distance on that radius for the midpoint. The line at a right angle is the chord. The last method samples a random point at uniform in the circle for the midpoint. Then the line at a right angle to the segment from that point to the center is the chord. Each of these produces a different distribution of lines and points.</p>
 <p>The code can be found <a href="https://github.com/WilliamTylerBradley/bertrand_paradox">here</a>. We’ll walk through a subset of it in this post. For each method, we generate some features at random, then get lines and points from them.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -401,6 +402,7 @@ Randomization Methods
 <span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>                          <span class="at">point_y =</span> .<span class="sc">$</span>point_y), line_points))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we have the basic attributes for the three methods, we can talk about coloring them.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">
@@ -522,6 +524,7 @@ Color Selection
 </div>
 </div>
 <p>I tried picking the colors by algorithm, but I couldn’t get that to work as well as I wanted. I often ended up with too much brown or blue. So, the base colors are hand-picked.</p>
+<br>
 <hr>
 <center>
 <h2 class="anchored">

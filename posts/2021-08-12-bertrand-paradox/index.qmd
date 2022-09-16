@@ -12,6 +12,7 @@ This project is based on the [Bertrand Paradox](https://en.wikipedia.org/wiki/Be
 
 The code can be found [here](https://github.com/WilliamTylerBradley/bertrand_paradox). We'll walk through a subset of it in this post. For each method, we generate some features at random, then get lines and points from them.
 
+<br>
 <hr>
 <center><h2>Randomization Methods</h2></center>
 <hr>
@@ -201,6 +202,7 @@ lines <- lines %>%
 
 Now that we have the basic attributes for the three methods, we can talk about coloring them. 
 
+<br>
 <hr>
 <center><h2>Color Selection</h2></center>
 <hr>
@@ -253,6 +255,7 @@ Each of the lines is closer to the secondary colors in Hue than the points. For 
 
 I tried picking the colors by algorithm, but I couldn't get that to work as well as I wanted. I often ended up with too much brown or blue. So, the base colors are hand-picked.
 
+<br>
 <hr>
 <center><h2>Final Output</h2></center>
 <hr>

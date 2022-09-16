@@ -27,11 +27,18 @@ $font-family-monospace: Courier New !default;
   padding-bottom: 0em;
   margin-bottom: 0;
 }
+#title-block-header {
+  margin-block-end: 0;
+}
+#quarto-content > *{
+  padding-top: 0;
+}
 
 /* Lines on home page between posts */
 div.quarto-post {
   border-bottom: 1px solid;
   border-image: linear-gradient(to right, #C29CB7 5%, #263121 5%, #263121 95%, #C29CB7 95%) 5;
+  margin-bottom: 1em;
 }
 
 /* category blocks on posts */
@@ -43,9 +50,10 @@ div.quarto-post {
 .quarto-title-meta-heading {
   color: #CAD3C1;
 }
-.quarto-title-block {
+.quarto-title-block{
   background-color: #263121;
   padding-bottom: 1em;
+  margin-bottom: 5em;
 }
 .quarto-title-meta {
   color: #FCFFFB;
@@ -114,4 +122,12 @@ ul.pagination li {
 /* Stop annoying white bar between nav-bar and header */
 body {
   background-image: linear-gradient(to bottom, #263121 66px, #FEFFFD 66px);
+}
+
+/* Add border to figures */
+.img-fluid {
+ border: 1px solid #CAD3C1;
+}
+.figure-img {
+ border: 1px solid #CAD3C1;
 }

@@ -18,6 +18,8 @@ This post won't cover how much detail to remove since that's dependent on the si
 
 The graphs will appear side-by-side in the blog post but not in your actual document. So, there will be some redundancy (like having the legend in each one) on display. For each chart, imagine it's multiple pages or clicks away from the other ones.
 
+<br>
+
 <hr>
 
 <center>
@@ -32,47 +34,31 @@ People like your colors to match across all your graphs. The colors could be for
 
 For discrete color matches across charts, make sure to use the same color for the same entity. In this example, classes A and B's colors should be the same for all charts.
 
-<hr style="width:90%; margin: auto;">
+![Bad plots with changing color](plot_1.png)
 
-![](plot_1.png)
-
-<hr style="width:75%; margin: auto;">
-
-![](plot_2.png)
-
-<hr style="width:90%; margin: auto;">
+![Good plots with consistent color](plot_2.png)
 
 <br>
 
 Adding new levels will often break the matching colors. Here Class B changes drastically.
 
-<hr style="width:90%; margin: auto;">
+![Bad plots with changing color when adding new levels](plot_3.png)
 
-![](plot_3.png)
-
-<hr style="width:75%; margin: auto;">
-
-![](plot_4.png)
-
-<hr style="width:90%; margin: auto;">
+![Good plots with consistent color when adding new levels](plot_4.png)
 
 <br>
 
 For continuous color (and other scales), ensure the limits match across charts. If the charts need to be comparable, the color limits (and other limits, like the x-axis range) should match.
 
-<hr style="width:90%; margin: auto;">
+![Bad plots with changing color when expanding axes](plot_5.png)
 
-![](plot_5.png)
-
-<hr style="width:75%; margin: auto;">
-
-![](plot_6.png)
-
-<hr style="width:90%; margin: auto;">
+![Good plots with consistent color when expanding axes](plot_6.png)
 
 <br>
 
 This one is more of a judgment call than for discrete color. Sometimes you'll want to focus on some detail, and having the broader limits won't show that. So having different limits might be the better call as long as end-users can tell the differences quickly.
+
+<br>
 
 <hr>
 
@@ -86,25 +72,21 @@ This one is more of a judgment call than for discrete color. Sometimes you'll wa
 
 Even if color is cohesive or unused, the order also needs to stick.
 
-<hr style="width:90%; margin: auto;">
+![Bad plots with changing order](plot_7.png)
 
-![](plot_7.png)
-
-<hr style="width:75%; margin: auto;">
-
-![](plot_8.png)
-
-<hr style="width:90%; margin: auto;">
+![Good plots with consistent order](plot_8.png)
 
 <br>
 
 There are options for determining the order that might change across graphs. As long as it's evident that the change occurred because of the ordering process and that the process is more important than consistency, it should be fine.
 
-![](plot_9.png)
+![Order options](plot_9.png)
 
 You can set the main entity first if it's the most important or serves as a baseline.
 
-![](plot_10.png)
+![Order options with base level C](plot_10.png)
+
+<br>
 
 <hr>
 
@@ -121,9 +103,9 @@ Finally, ensuring consistency of the text across graphs smooths out transitions 
 In the following example, titles contain synonyms for "Customers" and "by Quarter." These might be incorrect if members, accounts, customers, and users are different, especially for various end-users. In addition, the disparity for "by Quarter" can add confusion if end-users believe there is a difference when there isn't one. Having consistency in the graphs' text reduces the cognitive load and makes focusing on what the charts are showing easy.
 
 ::: {layout-ncol="2"}
-![](plot_11.png)
+![Bad plots with changing text](plot_11.png)
 
-![](plot_12.png)
+![Good plots with consistent text](plot_12.png)
 :::
 
 ```{r example_code}

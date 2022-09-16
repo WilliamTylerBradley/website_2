@@ -225,6 +225,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>However, you probably need a lot of small charts that answer one big vague question, like “how’s this initiative going?” or “what’s the effect of a changing population?”. These questions don’t need detailed information on one metric but smoother information on several. When you have multiple metrics, you’ll end up with many graphs, and they’ll need to work together to answer the big question.</p>
 <p>This post won’t cover how much detail to remove since that’s dependent on the situation (sometimes you do need daily data), but it will focus on smoothing out differences in a set of charts. I’ll cover colors, order, and text. The process is pretty similar to branding, and following advice on that (<a href="https://drsimonj.svbtle.com/creating-corporate-colour-palettes-for-ggplot2">here</a> and <a href="https://michaeltoth.me/you-need-to-start-branding-your-graphs-heres-how-with-ggplot.html">here</a>) can help.</p>
 <p>The graphs will appear side-by-side in the blog post but not in your actual document. So, there will be some redundancy (like having the legend in each one) on display. For each chart, imagine it’s multiple pages or clicks away from the other ones.</p>
+<p><br></p>
 <hr>
 <center>
 <h2 class="anchored">
@@ -234,27 +235,49 @@ Color
 <hr>
 <p>People like your colors to match across all your graphs. The colors could be for discrete groups (like purple and green for different subpopulations), continuous scales (blue for low and yellow for high amounts), or emphasis (red for highlighting concern). We’ll compare inconsistent graphs to those that match in the following examples.</p>
 <p>For discrete color matches across charts, make sure to use the same color for the same entity. In this example, classes A and B’s colors should be the same for all charts.</p>
-<hr style="width:90%; margin: auto;">
-<p><img src="plot_1.png" class="img-fluid"></p>
-<hr style="width:75%; margin: auto;">
-<p><img src="plot_2.png" class="img-fluid"></p>
-<hr style="width:90%; margin: auto;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Bad plots with changing color</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Good plots with consistent color</figcaption><p></p>
+</figure>
+</div>
 <p><br></p>
 <p>Adding new levels will often break the matching colors. Here Class B changes drastically.</p>
-<hr style="width:90%; margin: auto;">
-<p><img src="plot_3.png" class="img-fluid"></p>
-<hr style="width:75%; margin: auto;">
-<p><img src="plot_4.png" class="img-fluid"></p>
-<hr style="width:90%; margin: auto;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Bad plots with changing color when adding new levels</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_4.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Good plots with consistent color when adding new levels</figcaption><p></p>
+</figure>
+</div>
 <p><br></p>
 <p>For continuous color (and other scales), ensure the limits match across charts. If the charts need to be comparable, the color limits (and other limits, like the x-axis range) should match.</p>
-<hr style="width:90%; margin: auto;">
-<p><img src="plot_5.png" class="img-fluid"></p>
-<hr style="width:75%; margin: auto;">
-<p><img src="plot_6.png" class="img-fluid"></p>
-<hr style="width:90%; margin: auto;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_5.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Bad plots with changing color when expanding axes</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_6.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Good plots with consistent color when expanding axes</figcaption><p></p>
+</figure>
+</div>
 <p><br></p>
 <p>This one is more of a judgment call than for discrete color. Sometimes you’ll want to focus on some detail, and having the broader limits won’t show that. So having different limits might be the better call as long as end-users can tell the differences quickly.</p>
+<p><br></p>
 <hr>
 <center>
 <h2 class="anchored">
@@ -263,16 +286,34 @@ Order
 </center>
 <hr>
 <p>Even if color is cohesive or unused, the order also needs to stick.</p>
-<hr style="width:90%; margin: auto;">
-<p><img src="plot_7.png" class="img-fluid"></p>
-<hr style="width:75%; margin: auto;">
-<p><img src="plot_8.png" class="img-fluid"></p>
-<hr style="width:90%; margin: auto;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_7.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Bad plots with changing order</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_8.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Good plots with consistent order</figcaption><p></p>
+</figure>
+</div>
 <p><br></p>
 <p>There are options for determining the order that might change across graphs. As long as it’s evident that the change occurred because of the ordering process and that the process is more important than consistency, it should be fine.</p>
-<p><img src="plot_9.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_9.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Order options</figcaption><p></p>
+</figure>
+</div>
 <p>You can set the main entity first if it’s the most important or serves as a baseline.</p>
-<p><img src="plot_10.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_10.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Order options with base level C</figcaption><p></p>
+</figure>
+</div>
+<p><br></p>
 <hr>
 <center>
 <h2 class="anchored">
@@ -285,10 +326,20 @@ Text
 <div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plot_11.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_11.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Bad plots with changing text</figcaption><p></p>
+</figure>
+</div>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="plot_12.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plot_12.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Good plots with consistent text</figcaption><p></p>
+</figure>
+</div>
 </div>
 </div>
 </div>

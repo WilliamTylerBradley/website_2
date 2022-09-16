@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.132">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-08-31">
+<meta name="description" content="Automatic art generated daily">
+
+<title>Generative Art Twitter Bot with R and GitHub Actions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Generative Art Twitter Bot with R and GitHub Actions">
+<meta property="og:description" content="Automatic art generated daily">
+<meta property="og:image" content="https://www.willtybrad.com/posts/2022-08-31-generative-art-twitter-bot-with-r-and-github-actions/flowfieldfigments.png">
+<meta property="og:image:height" content="600">
+<meta property="og:image:width" content="600">
+<meta name="twitter:title" content="Generative Art Twitter Bot with R and GitHub Actions">
+<meta name="twitter:description" content="Automatic art generated daily">
+<meta name="twitter:image" content="https://www.willtybrad.com/posts/2022-08-31-generative-art-twitter-bot-with-r-and-github-actions/flowfieldfigments.png">
+<meta name="twitter:image-height" content="600">
+<meta name="twitter:image-width" content="600">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/WilliamTylerBradley"><i class="bi bi-github" role="img" aria-label="github">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"><i class="bi bi-twitter" role="img" aria-label="twitter">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Generative Art Twitter Bot with R and GitHub Actions</h1>
+                  <div>
+        <div class="description">
+          Automatic art generated daily
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Generative Art</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 31, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<hr>
+<center>
+<h2 class="anchored">
+Introduction
+</h2>
+</center>
+<hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://twitter.com/flw_fld_fgmnts"><img src="twitter.png" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>This blog post covers my experience making a generative art Twitter bot with GitHub Actions and R. You can click <a href="https://twitter.com/flw_fld_fgmnts">here</a> or on the image above to see it. I’ve thought about building an automated daily-ish thing to produce generative art, but I wanted something free/low cost, simple, and easily shared. I’ve seen several Twitter bots from R code for a platform, and Github Actions provides a great engine. So all the pieces can go together nicely.</p>
+<p>This blog post is half tutorial/half list of mistakes I made and had to fix. So, it’s a little awkward. While you’re creating your work, I’d love for you to write better notes than this post and put them on your blog.</p>
+<p>Speaking of other blog posts, the following posts helped me a ton. I’d highly recommend reading through them before this one. I’ll reference them throughout this piece.</p>
+<ul>
+<li><p><a href="https://www.rostrum.blog/2020/09/21/londonmapbot/">Matt Dray’s “A Twitter bot with {rtweet} and GitHub Actions” post</a></p></li>
+<li><p><a href="https://github.com/jdjohn215/milwaukee-weather">John D. Johnson’s Automated Tufte-style weather graphs</a></p></li>
+<li><p><a href="https://oscarbaruffa.com/twitterbot/">Oscar Baruffa’s “Tips for building a Twitter bot with R and Github Actions” post</a></p></li>
+<li><p><a href="https://ryo-n7.github.io/2021-09-23-CanPL-GoogleDrive-GithubActions-Tutorial/">Ryo Nakagawara’s “Creating a data pipeline with Github Actions &amp; the {googledrive} package for the Canadian Premier League soccer data initiative!” post</a></p></li>
+</ul>
+<p>There are three pieces to making this work: R art code, a Twitter account, and setting up the GitHub Action. I’ll write about them in turn, and by the end, it’ll all work. I assume you’re familiar with Twitter terminology (tweet, post, etc.), have a GitHub account, and know how to push code to it.</p>
+<br>
+<hr>
+<center>
+<h2 class="anchored">
+R art code
+</h2>
+</center>
+<hr>
+<p>You’ll need some R code that creates an output file for the art. This can be a simple script or a set of functions. <a href="https://art-from-code.netlify.app/">Danielle Navarro</a> and <a href="https://www.data-imaginist.com/">Thomas Lin Pedersen</a> are great resources if you need some help.</p>
+<p>There are several options for the output files’ format. I used png for images and mp4 for animation. I initially used gifs for animation, but posting to Twitter sometimes made it look terrible. Many others have complained about this, so I encourage you to use an mp4 instead of a gif. You’ll want to double-check the options for Twitter and <code>rtweet</code> before writing the code. I use temporary files for the output, but you can save them somewhere. See <a href="https://github.com/jdjohn215/milwaukee-weather">John D. Johnson’s post</a> for an example of saving a new image daily. (Note: you might need to update the <code>rtweet</code> package to post mp4. <a href="https://github.com/ropensci/rtweet/issues/701">See this conversation</a>.)</p>
+<p>If you’ve never made an R package, a generative art one is a great place to start.</p>
+<ul>
+<li><p><strong>It’s low stakes.</strong> If your math is wrong, but the image looks good, it’s totally fine. You don’t have to do intense testing or submit to CRAN. You can cut corners, and everything’s good as long as it runs.</p></li>
+<li><p><strong>You’ll actually learn about package development.</strong> Unfortunately, copy-pasting code from a small “Hello World” example won’t teach you a lot about creating an R package. This project will probably cover dependencies, output files, and set up for automation. You can also create a <a href="https://williamtylerbradley.github.io/flowfieldfigments/">website</a>, hex-sticker, and documentation.</p></li>
+<li><p><strong>It’s your special baby.</strong> No one else has the same project as you. It’s not like every other student in a class has a 99% copy. It’s fun because it’s definitely yours.</p></li>
+</ul>
+<p>If you have your art code in a separate file or package, you’ll need to write a code file to create the actual output. This file will probably include the code to post to Twitter.</p>
+<p>If you’re using randomness generated from R, it’s good practice to set the seed (using set.seed or other capabilities). I used the current date in the “%Y%m%d” format for the seed (ex: 20220817). Then, if something breaks or looks bad, I can always recreate what happened because I have the seed saved.</p>
+<p>You also might need to choose other parameters for your code. I used the date here, too but took modulo of the day of the year to loop through the options. For example, August 17, 2022, is the 229th day. Taking mod 2 of this number and adding one will flip between 1 and 2 as the date increases. This setup can be used to flip between two options. I had three sets of options: layout (three levels), colors (two levels), and output format (five levels). By using modulo, I can flip through all 30 options in order.</p>
+<p>At this point, you should have code to produce your generative art into an output file. If you have the skills to do this, you have the skills to finish out the rest. The R code is the hardest part.</p>
+<br>
+<hr>
+<center>
+<h2 class="anchored">
+Twitter Account
+</h2>
+</center>
+<hr>
+<p>I list creating the Twitter account as the second step. However, doing this first can help match all the names. I created the package as “flowfieldfigments” and later found out Twitter usernames cannot be longer than 15 characters. That’s why the Twitter account is “flw_fld_fgmnts” instead.</p>
+<p>I had to log out of my other account to sign up for a new one. The process was pretty easy after that.</p>
+<p>I used <a href="https://oscarbaruffa.com/twitterbot/">Oscar Baruffa’s</a> trick of adding “+something” to the end of my normal Gmail account. So instead of “gmailaccount.gmail.com”, I have “gmailaccount+twitterbot01.gmail.com”. This setup sent all the emails to the usual account without any issues.</p>
+<p>You’ll need to add your phone number. I had an issue where I couldn’t use my usual phone number because it was associated with another account. So I had to take my number off my first account, use it for the new one, then, later on, take it off the new one, and add it back to the old one. You don’t have to add it back to the old one, but you’ll only receive texts for the associated account.</p>
+<p>To build out a bot, you’ll need to sign up for a <a href="https://developer.twitter.com/en">Developer Account</a>. Then, you’ll need to fill out all the information according to your situation.</p>
+<p>After creating the account, on the <a href="https://developer.twitter.com/en">Developer Portal</a>, you’ll need to apply for Elevated access. It says this can take a while, but it was under a minute for me. (If you don’t do this, you’ll end up with an error message like: “You currently have Essential access, which includes access to Twitter API v2 endpoints only. If you need access to this endpoint, you’ll need to apply for Elevated access via the Developer Portal. You can learn more <a href="https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api#v2-access-leve">here</a>”.)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="elevated_access_screenshot.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Elevated Access Screenshot</figcaption><p></p>
+</figure>
+</div>
+<p>You’ll also need to set up your user authentication settings.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="user_auth_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">User Authentication Settings Screenshot</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="user_auth_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">QAUTH Settings Screenshot</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="user_auth_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">General Authentication Settings Screenshot</figcaption><p></p>
+</figure>
+</div>
+<p>For this next section, we’ll test posting tweets using R code. This will involve using keys to your account. After testing, you’ll move them to an appropriate location, but until then, don’t push any of this code to GitHub. You can find them on the Developer Portal under your Project, under “Keys and tokens”, then “Regenerate” under “API Key and Secret” and “Access Token and Secret”. Copy these into an R file like the following one.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up rtweet</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rtweet)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">"auth"</span>, <span class="at">package =</span> <span class="st">"rtweet"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>auth <span class="ot">&lt;-</span> rtweet<span class="sc">::</span><span class="fu">rtweet_bot</span>(<span class="at">api_key =</span> <span class="st">"longstringofLETTERS&amp;numbers"</span>, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">api_secret =</span> <span class="st">"SECONDlongstringofLETTERS&amp;numbers"</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">access_token =</span> <span class="st">"THIRDlongstringofLETTERS&amp;numbers"</span>, </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">access_secret =</span> <span class="st">"FOURTHlongstringofLETTERS&amp;numbers"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>           </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>rtweet<span class="sc">::</span><span class="fu">post_tweet</span>(<span class="at">status =</span> <span class="st">"This is a test tweet."</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">token =</span> auth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hopefully, if I’ve written everything correctly and you followed it accordingly, you should have a tweet on your bot’s account saying, “This is a test tweet.” after you run that code.</p>
+<p>Now you can add your generative art. The following is the base code I used. For media, you’ll need to add alt text. For subsequent tweets, the status will have to change. I generate mine, so it changes every day. I saved this as <a href="https://github.com/WilliamTylerBradley/flowfieldfigmentsbot/blob/main/tweet_art.R">“tweet_art.R”</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rtweet)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>auth <span class="ot">&lt;-</span> rtweet<span class="sc">::</span><span class="fu">rtweet_bot</span>(<span class="at">api_key =</span> <span class="st">"longstringofLETTERS&amp;numbers"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">api_secret =</span> <span class="st">"SECONDlongstringofLETTERS&amp;numbers"</span>, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">access_token =</span> <span class="st">"THIRDlongstringofLETTERS&amp;numbers"</span>, </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">access_secret =</span> <span class="st">"FOURTHlongstringofLETTERS&amp;numbers"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>           </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Generative art code</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flowfieldfigments)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="fu">as.numeric</span>(<span class="fu">format</span>(<span class="fu">Sys.Date</span>(),<span class="st">"%Y%m%d"</span>)))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>day <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">strftime</span>(<span class="fu">Sys.Date</span>(), <span class="at">format =</span> <span class="st">"%j"</span>)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>seeds <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>, <span class="dv">3</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>size <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">50</span>, <span class="dv">1500</span>), <span class="dv">1</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>anchor_layout <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"random"</span>, <span class="st">"spiral"</span>, <span class="st">"grid"</span>)[day <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>color_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"full"</span>, <span class="st">"subset"</span>)[day <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>color_subset_center <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">360</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>color_subset_width <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">90</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>hue_turn <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">360</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>alpha_taper <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"both"</span>)[day <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># I used a temp file, but you can save and pull it instead</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".png"</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>flowfieldfigments<span class="sc">::</span><span class="fu">create_png</span>(<span class="at">seeds =</span> seeds, </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                              <span class="at">size =</span> size, </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                              <span class="at">anchor_layout =</span> anchor_layout, </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>                              <span class="at">hue_turn =</span> hue_turn, </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                              <span class="at">color_scheme =</span> color_scheme,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>                              <span class="at">color_subset_center =</span> color_subset_center, </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                              <span class="at">color_subset_width =</span> color_subset_width,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                              <span class="at">alpha_taper =</span> alpha_taper, </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                              <span class="at">output_file =</span> output_file)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"set.seed("</span>, seed, <span class="st">")"</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>alt_text <span class="ot">&lt;-</span> <span class="st">"Generative art featuring flow fields. Paths are various colors on a white background."</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>rtweet<span class="sc">::</span><span class="fu">post_tweet</span>(<span class="at">status =</span> status,</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>                   <span class="at">media =</span> output_file,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>                   <span class="at">token =</span> auth,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>                   <span class="at">media_alt_text =</span> alt_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>At this point, you should be able to post your generative art to your bot’s Twitter account. You’ll want to try out a lot of the options to make sure your output looks good. I’ve noticed videos can be grainy, but refreshing the page can fix it.</p>
+<br>
+<hr>
+<center>
+<h2 class="anchored">
+GitHub
+</h2>
+</center>
+<hr>
+<p>For the rest of the work, you’ll automate the process using <a href="https://docs.github.com/en/actions">GitHub Actions</a>. To do this, you’ll have to push all your code/setup onto GitHub’s computers and tell them to run it.</p>
+<p>To get GitHub to run everything, you’ll need to give:</p>
+<ul>
+<li><p>Keys to your Twitter account</p></li>
+<li><p>A file for setting up what you need to run the code file</p></li>
+<li><p>A code file to run</p></li>
+</ul>
+<p>You’ll need to create a blank <a href="https://github.com/WilliamTylerBradley/flowfieldfigmentsbot">GitHub repository</a> or one based on the R project you’re using (but make sure NOT to push up the code file with your Twitter keys!).</p>
+<section id="keys-to-your-twitter-account" class="level3">
+<h3 class="anchored" data-anchor-id="keys-to-your-twitter-account">Keys to your Twitter account</h3>
+<p>To give your bot’s keys to GitHub, you’ll save the “longstringofLETTERS&amp;numbers” from your R code to GitHub Actions secrets. These are under your repo’s “Settings” on the top ribbon, then under “Security” on the left side panel, then “Secrets”, then “Actions”. You’ll add a new repository secret (click “New Repository Secret) for each of the <code>rtweet::rtweet_bot</code>’s parameters (<code>api_key</code>, <code>api_secret</code>, <code>access_token</code>, and <code>access_secret</code>). I added a prefix to each of the names with the appropriate title. This way, I can use similar names for other Twitter bots. The”longstringofLETTERS&amp;numbers” goes in the “Secret*” box. Make sure you don’t add any whitespace to the front or back.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="secrets.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Secrets Screenshot</figcaption><p></p>
+</figure>
+</div>
+<p>Now, go back to the code file and update it to use the GitHub Secrets. All you have to do is replace the “longstringofLETTERS&amp;numbers” with “Sys.getenv(”SecretName”)“.</p>
+<p>You should be able to test it out with a small test file like this one (or just cut straight to your main file). I found running a small test file was way easier to debug. So, that’s what I recommend. Save this as “test.R” or something.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#...</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>auth <span class="ot">&lt;-</span> rtweet<span class="sc">::</span><span class="fu">rtweet_bot</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">api_key =</span> <span class="fu">Sys.getenv</span>(<span class="st">"FFF_TWITTER_API_KEY"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">api_secret =</span> <span class="fu">Sys.getenv</span>(<span class="st">"FFF_TWITTER_API_KEY_SECRET"</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">access_token =</span> <span class="fu">Sys.getenv</span>(<span class="st">"FFF_TWITTER_ACCESS_TOKEN"</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">access_secret =</span> <span class="fu">Sys.getenv</span>(<span class="st">"FFF_TWITTER_ACCESS_TOKEN_SECRET"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>rtweet<span class="sc">::</span><span class="fu">post_tweet</span>(<span class="at">status =</span> <span class="st">"This is a test tweet again."</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">token =</span> auth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="a-file-for-setting-up-what-you-need-to-run-the-code-file" class="level3">
+<h3 class="anchored" data-anchor-id="a-file-for-setting-up-what-you-need-to-run-the-code-file">A file for setting up what you need to run the code file</h3>
+<p>Now you’re going to set up the file for using GitHub Actions. I went to “Actions” under the repo’s top ribbon, then used the “Set up workflow yourself” option. You’ll want to create a file like this one:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> flowfieldfigmentsbot</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">flowfieldsfigmentbot-post</span><span class="kw">:</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> macOS-latest</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_API_KEY</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY }}</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_API_KEY_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY_SECRET }}</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN }}</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN_SECRET }}</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@main</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install rtweet package</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript -e 'install.packages("rtweet", dependencies = TRUE)'</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Create and post tweet</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript test.R</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>(You might have to pull the changes into your local repo, add the file, then push it up, but I can’t remember exactly. Somehow you need to end up with a similar file in your repo, under the .github/workflows folder.)</p>
+<p>I named this file “main.yml”. The <code>name</code> of the workflow is “flowfieldfigmentsbot”. The <code>on: workflow_dispatch:</code> allows you to click a button to run. We’ll update this to run on a schedule later.</p>
+<p>I used <code>macOS-latest</code> for the environment because I developed it on a mac. Feel free to change the <a href="https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners">runner image</a>.</p>
+<p>The <code>env:</code> information must match what you saved in the GitHub Secrets AND what you wrote in the “test.R” file for the part before the colon. GitHub accesses your Twitter account keys and passes them to R using these lines. I named mine the same for both parts for simplicity, but that’s not required.</p>
+<p>The <code>steps:</code> section accesses the repo, sets up R, installs <code>rtweet</code>, and runs the code in “test.R”.</p>
+<p>To test everything, under “Actions” there should be an option under “Workflows” for your code. Click “Run workflow” to get it started. Sometimes it takes a few minutes. So make sure to chill out a second instead of clicking it a bunch of times.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="actions.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Actions</figcaption><p></p>
+</figure>
+</div>
+<p>Your bot’s Twitter account should have a new “This is a test tweet again.” tweet. If you try this again without changing the message, you’ll probably get an error about creating tweets with the same status in a row.</p>
+<p>If you get a “Could not authenticate you.” error code 32 message, you missed adding the “GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}” line.</p>
+</section>
+<section id="a-code-file-to-run" class="level3">
+<h3 class="anchored">A code file to run</h3>
+<p>Now, you need to add the generative art piece back. For this example, I added <code>devtools</code> to install the package from GitHub. This way, GitHub has access to the generative art code. If you’re using a script instead, you can copy-paste in the code, <code>source</code> it, or run it in this file.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rtweet)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"WilliamTylerBradley/flowfieldfigments"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flowfieldfigments)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>auth <span class="ot">&lt;-</span> rtweet<span class="sc">::</span><span class="fu">rtweet_bot</span>(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">api_key =</span> <span class="fu">Sys.getenv</span>(<span class="st">"FFF_TWITTER_API_KEY"</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">api_secret =</span> <span class="fu">Sys.getenv</span>(<span class="st">"FFF_TWITTER_API_KEY_SECRET"</span>),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">access_token =</span> <span class="fu">Sys.getenv</span>(<span class="st">"FFF_TWITTER_ACCESS_TOKEN"</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">access_secret =</span> <span class="fu">Sys.getenv</span>(<span class="st">"FFF_TWITTER_ACCESS_TOKEN_SECRET"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>seed <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">format</span>(<span class="fu">Sys.Date</span>(),<span class="st">"%Y%m%d"</span>))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>day <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">strftime</span>(<span class="fu">Sys.Date</span>(), <span class="at">format =</span> <span class="st">"%j"</span>)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>seeds <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100000</span>, <span class="dv">3</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>size <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">50</span>, <span class="dv">1500</span>), <span class="dv">1</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>anchor_layout <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"random"</span>, <span class="st">"spiral"</span>, <span class="st">"grid"</span>)[day <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>color_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"full"</span>, <span class="st">"subset"</span>)[day <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>color_subset_center <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">360</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>color_subset_width <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">90</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>hue_turn <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">360</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>media <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"png"</span>, <span class="st">"gif"</span>, <span class="st">"png"</span>, <span class="st">"gif"</span>, <span class="st">"png"</span>)[day <span class="sc">%%</span> <span class="dv">5</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>movement <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"march"</span>, <span class="st">""</span>, <span class="st">"glide"</span>, <span class="st">""</span>)[day <span class="sc">%%</span> <span class="dv">5</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>alpha_taper <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"start"</span>, <span class="st">""</span>, <span class="st">"end"</span>, <span class="st">""</span>, <span class="st">"both"</span>)[day <span class="sc">%%</span> <span class="dv">5</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(media <span class="sc">==</span> <span class="st">"png"</span>) {</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  output_file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".png"</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  flowfieldfigments<span class="sc">::</span><span class="fu">create_png</span>(<span class="at">seeds =</span> seeds, </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>                                <span class="at">size =</span> size, </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>                                <span class="at">anchor_layout =</span> anchor_layout, </span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>                                <span class="at">hue_turn =</span> hue_turn, </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color_scheme =</span> color_scheme,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color_subset_center =</span> color_subset_center, </span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color_subset_width =</span> color_subset_width,</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>                                <span class="at">alpha_taper =</span> alpha_taper, </span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                                <span class="at">output_file =</span> output_file)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  output_file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".gif"</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>  flowfieldfigments<span class="sc">::</span><span class="fu">create_gif</span>(<span class="at">seeds =</span> seeds, </span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>                                <span class="at">size =</span> size, </span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>                                <span class="at">anchor_layout =</span> anchor_layout, </span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>                                <span class="at">hue_turn =</span> hue_turn, </span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color_scheme =</span> color_scheme,</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color_subset_center =</span> color_subset_center, </span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color_subset_width =</span> color_subset_width,</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>                                <span class="at">movement =</span> movement, </span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>                                <span class="at">output_file =</span> output_file)</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"set.seed("</span>, seed, <span class="st">")"</span>)</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>alt_text <span class="ot">&lt;-</span> <span class="st">"Generative art featuring flow fields. Paths are various colors on a white background."</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>rtweet<span class="sc">::</span><span class="fu">post_tweet</span>(<span class="at">status =</span> status,</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>                   <span class="at">media =</span> output_file,</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>                   <span class="at">token =</span> auth,</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>                   <span class="at">media_alt_text =</span> alt_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You might need to add a line to install <code>devtools</code> for the YAML file.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> flowfieldfigmentsbot</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">flowfieldsfigmentbot-post</span><span class="kw">:</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> macOS-latest</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">FFF_TWITTER_API_KEY</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY }}</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">FFF_TWITTER_API_KEY_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY_SECRET }}</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN }}</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN_SECRET }}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install rtweet package</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript -e 'install.packages("rtweet")'</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install devtools package</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript -e 'install.packages("devtools")'</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Create and post tweet</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript tweet_art.R</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can test this using the same method of clicking “Run workflow”. Hopefully, the bot posted your art to Twitter. Depending on your setup, you’ll have to play around with issues until it works.</p>
+<p>The final part is setting up the schedule. You’ll do this by changing the <code>workflow_dispatch:</code> line in the YAML file to a <code>schedule:</code> and adding a <a href="https://crontab.guru/every-weekday">cron expression</a>. I really wanted the bot to post at a random time each day, but I couldn’t figure out a clean setup for that. So I picked random-ish times throughout the day. GitHub Actions run on UTC, so I needed to add 5 hours to my EST time (or 4 for EDT). I use the date for the seed, so I needed to make sure every time was a different date on UTC and different on EST. You need to watch your edge case if you care about that. Also, it takes a little while for the GitHub Action to run, so posts often occur later.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> flowfieldfigmentsbot</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">schedule</span><span class="kw">:</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">cron</span><span class="kw">:</span><span class="at"> </span><span class="st">'38 20 * * 0'</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">cron</span><span class="kw">:</span><span class="at"> </span><span class="st">'34 16 * * 1'</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">cron</span><span class="kw">:</span><span class="at"> </span><span class="st">'24 13 * * 2'</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">cron</span><span class="kw">:</span><span class="at"> </span><span class="st">'54 21 * * 3'</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">cron</span><span class="kw">:</span><span class="at"> </span><span class="st">'12 22 * * 4'</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">cron</span><span class="kw">:</span><span class="at"> </span><span class="st">'7 19 * * 5'</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">cron</span><span class="kw">:</span><span class="at"> </span><span class="st">'45 18 * * 6'</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">flowfieldsfigmentbot-post</span><span class="kw">:</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> macOS-latest</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">FFF_TWITTER_API_KEY</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY }}</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">FFF_TWITTER_API_KEY_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY_SECRET }}</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN }}</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN_SECRET }}</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install rtweet package</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript -e 'install.packages("rtweet")'</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install devtools package</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript -e 'install.packages("devtools")'</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Create and post tweet</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript tweet_art.R</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>These times should match:</p>
+<p>Sunday 3:38 pm <br> Monday 11:34 am <br> Tuesday 9:24 am <br> Wednesday 4:54 pm <br> Thursday 5:12 pm <br> Friday 2:07 pm <br> Saturday 1:45 pm</p>
+<p>So now, your bot should be automatically posting generative art on your schedule!</p>
+<br>
+<hr>
+<center>
+<h2 class="anchored" data-anchor-id="a-code-file-to-run">
+Bonus
+</h2>
+</center>
+<hr>
+<p>You should be good to go at this point. However, there are a ton of options to speed up the process or add features. I picked a couple of them to try.</p>
+</section>
+<section id="add-a-timeout-option" class="level3">
+<h3 class="anchored" data-anchor-id="add-a-timeout-option">Add a timeout option</h3>
+<p>You can add an option to stop if the code takes too long. GitHub emails an error when this occurs so that you can check the code. You need to add the number of minutes this should take to the YAML file.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#...</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">flowfieldsfigmentbot-post</span><span class="kw">:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> macOS-latest</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">timeout-minutes</span><span class="kw">:</span><span class="at"> </span><span class="dv">25</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#...    </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note: the time includes setup, creating the art, and posting, not just creating the art.</p>
+</section>
+<section id="use-linux-for-the-runner" class="level3">
+<h3 class="anchored" data-anchor-id="use-linux-for-the-runner">Use Linux for the runner</h3>
+<p>The Linux options are cheaper for private repositories. You’ll need to change out <code>runs-on:</code> in the YAML file and add some new calls for libraries. I think I needed these for using the mp4 output files and installing R packages. The libraries you need might be different.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#...</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">flowfieldsfigmentbot-post</span><span class="kw">:</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">timeout-minutes</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_API_KEY</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY }}</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_API_KEY_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY_SECRET }}</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN }}</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN_SECRET }}</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> install libavfilter-dev</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>          sudo apt-get update</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>          sudo apt-get install libavfilter-dev</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install libcurl and libssl on Linux</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> </span><span class="st">'sudo apt-get -y install libcurl4-openssl-dev'</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> bash</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="add-renv-for-caching" class="level3">
+<h3 class="anchored" data-anchor-id="add-renv-for-caching">Add <code>renv</code> for caching</h3>
+<p>You can use the <code>renv</code> package to cache everything.</p>
+<p>You’ll need to run similar code in your R project and then push your project to GitHub to save everything.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(renv)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then in your YAML file, you need to add information to call the <code>actions/cache@v3</code> action. Again, there are several different ways to set this up, so search the internet.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#...</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">flowfieldsfigmentbot-post</span><span class="kw">:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">timeout-minutes</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">GITHUB_PAT</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_API_KEY</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY }}</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_API_KEY_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_API_KEY_SECRET }}</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN }}</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">FFF_TWITTER_ACCESS_TOKEN_SECRET</span><span class="kw">:</span><span class="at"> ${{ secrets.FFF_TWITTER_ACCESS_TOKEN_SECRET }}</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> install libavfilter-dev</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>          sudo apt-get update</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>          sudo apt-get install libavfilter-dev</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install libcurl and libssl on Linux</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> </span><span class="st">'sudo apt-get -y install libcurl4-openssl-dev'</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> bash</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">use-public-rspm</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="at">  </span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set RENV_PATHS_ROOT</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> bash</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>          echo "RENV_PATHS_ROOT=${{ runner.temp }}/renv" &gt;&gt; $GITHUB_ENV</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install and activate renv</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>          renv::activate()</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> Rscript {0}</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Get R and OS version</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">id</span><span class="kw">:</span><span class="at"> get-version</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>          cat("##[set-output name=os-version;]", sessionInfo()$running, "\n", sep = "")</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>          cat("##[set-output name=r-version;]", R.Version()$version.string, sep = "")</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> Rscript {0}</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Restore Renv package cache</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/cache@v3</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">path</span><span class="kw">:</span><span class="at"> ${{ env.RENV_PATHS_ROOT }}</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">key</span><span class="kw">:</span><span class="at"> ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles('renv.lock') }}</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">restore-keys</span><span class="kw">:</span><span class="at"> ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{inputs.cache-version }}-</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Restore packages</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> Rscript {0}</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>          renv::restore()</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Create and post tweet</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> Rscript tweet_art.R</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>Set RENV_PATHS_ROOT</code> step provides information to the <code>Install and activate renv</code> step that sets up <code>renv</code>. Next, the <code>Get R and OS version</code> step provides information for the <code>Restore Renv package cache</code> step to tell GitHub to use the cache. Finally, the <code>Restore packages</code> step uses <code>renv</code> to access the saved information. Part of this code looks up the runner system. That was useful when I switched between <code>mac-os-latest</code> and <code>ubuntu-latest</code>. So you might not need the exact same code.</p>
+<p>Sometimes when you make enough changes, the cache needs to be reset (or the first time you try this). You’ll get an error message in the logs like ‘Cache not found for input keys:’. Your code is probably fine; it just needs to reload everything. This will take longer than regular runs. So make sure your time-out option accounts for that.</p>
+<hr>
+<p>Creating an automated process for generative art is a big step for an artist. There’s no curation, so everything coded to happen can happen. Tyler Hobbs’ <a href="https://tylerxhobbs.com/essays/2021/the-rise-of-long-form-generative-art">“The Rise of Long-Form Generative Art”</a> covers this topic, and now you can experience it firsthand.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2022, William Tyler Bradley</div>
+  </div>
+</footer>
+
+
+
+</body></html>

@@ -20,6 +20,7 @@ execute:
 
 This small generative art project uses code from my previous work. I really liked the looped path objects and decided to try something else with them. This work expands the loop a little, adds a randomly generated color scheme, and uses a standard image style.
 
+<br>
 <hr>
 
 <center>
@@ -447,6 +448,7 @@ for(i in 1:10) {
 }
 ```
 
+<br>
 <hr>
 
 <center>
