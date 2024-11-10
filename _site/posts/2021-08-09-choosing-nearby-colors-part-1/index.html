@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.132">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -19,11 +19,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +35,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -48,43 +49,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -101,17 +72,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-53b2f635d03ca795124b4cf36c3844c7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-bc74ddde539835a3b22f840d334b18a7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -120,8 +97,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -139,40 +118,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html">Home</a>
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html">About</a>
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/WilliamTylerBradley"><i class="bi bi-github" role="img" aria-label="github">
+    <a class="nav-link" href="https://github.com/WilliamTylerBradley"> <i class="bi bi-github" role="img" aria-label="github">
 </i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"> <i class="bi bi-linkedin" role="img" aria-label="linkedin">
 </i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"><i class="bi bi-twitter" role="img" aria-label="twitter">
+    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"> <i class="bi bi-twitter" role="img" aria-label="twitter">
 </i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -203,6 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <p class="date">August 9, 2021</p>
       </div>
     </div>
+    
       
     </div>
     
@@ -213,6 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+
 
 
 
@@ -299,14 +284,14 @@ Now for the R code
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c_l_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Base Color: C-L Plane</figcaption><p></p>
+<figcaption>Base Color: C-L Plane</figcaption>
 </figure>
 </div>
 <p>We can see as the Luminance increases, the shades move from darker to lighter, and as Chroma moves out from 0, the color is more intense. The <code>get_C_L_plane</code> function returns a data set with points on that plane. For this blog post, functions that start with “get” return points we’re going to graph while functions that start with “graph” display them appropriately. This plane actually extends to the left, where the H value would be the current H + 180. I’m not graphing that section because this project will keep values close to the base color without changing the Hue too much.</p>
 <p>From here down, I’ll hide some of the code similar to previous sections to shorten the post. You can click on <span style="color: #C29CB7 ">[texts]</span> to show code if you want to see it.</p>
 <p>Next, we can see the color falls with all the other colors for the same Chroma value. I think about Chroma values as tree rings. So, this image takes the HCL color space, drills out the center for lower Chroma values, then has you stand in the middle facing the Hue value, pulling the shape away from behind you and laying it flat.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-L Curve Code]</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># H-L Curve ----</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>get_H_L_curve <span class="ot">&lt;-</span> <span class="cf">function</span>(C_point) {</span>
@@ -349,13 +334,13 @@ Now for the R code
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="h_l_curve.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Base Color: H-L Curve</figcaption><p></p>
+<figcaption>Base Color: H-L Curve</figcaption>
 </figure>
 </div>
 <p>You can see the odd shape of the HCL color space where the different Hues don’t stretch their Chroma values out at different Luminance values. This is the only graph that shows a flattened curve. Everything else displays a sharp slice. For all the H-L curve graphs, the Hue value is rotated to the center.</p>
 <p>Now we can look at cutting horizontally through the HCL color space where L = 68. (<code>L_point</code> = 68)</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-C Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># H-C plane ----</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>get_H_C_plane <span class="ot">&lt;-</span> <span class="cf">function</span>(L_point){</span>
@@ -395,13 +380,13 @@ Now for the R code
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="h_c_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Base Color: H-C Plane</figcaption><p></p>
+<figcaption>Base Color: H-C Plane</figcaption>
 </figure>
 </div>
 <p>We can see the different colors as Hue moves around a circle and their increased intensity as Chroma moves out to the edges. The shape is not circular because the HCL color space isn’t.</p>
 <p>There is one more graph to see. We looked at cutting the HCL color space along the Hue, Chroma, and Luminance values, but the Chroma image was a flattened curve. So instead, we can cut a plane at the Chroma value but tangent to the circle a constant Chroma value creates. The following image sets up the explanation, and then we’ll see the actual plane.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C Tangent Plane Setup Code]</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># C tangent plane ----</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>C_circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">H =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">360</span>),</span>
@@ -450,12 +435,12 @@ Now for the R code
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c_tangent_plane_setup.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">C Tangent Plane setup</figcaption><p></p>
+<figcaption>C Tangent Plane setup</figcaption>
 </figure>
 </div>
 <p>Chroma and Luminance move in straight lines, but Hue is circular. The image shows this with the white circle where Chroma and Luminance are constant, but Hue moves around the circle. This means looking at graphs of shapes can be distorted when graphing them flat. So we might want to see what happens as we move away from our specific color in a straight line perpendicular to the C-L Plane. That’s the black line. We’re going to cut the HCL space from top to bottom along this line.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C Tangent Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>get_C_tangent_plane <span class="ot">&lt;-</span> <span class="cf">function</span>(H_point, C_point) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_grid</span>(<span class="at">x =</span> C_point, <span class="co"># Plane perpendicular to H at C</span></span>
@@ -501,7 +486,7 @@ Now for the R code
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c_tangent_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Base Color: Plane Perpendicular to C-L Plane</figcaption><p></p>
+<figcaption>Base Color: Plane Perpendicular to C-L Plane</figcaption>
 </figure>
 </div>
 <p>This shows the plane perpendicular to the C-L Plane at C = 60. A horizontal line drawn at the point on this image matches where the black intersects the H-C plane in the previous graph. This image isn’t super helpful here, but it will be when we check shapes later.</p>
@@ -551,7 +536,7 @@ Nearby points in a sphere
 </div>
 <p>Here we see the values, base color, and sample points.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[Sphere Info Code]</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>graph_info <span class="ot">&lt;-</span> <span class="cf">function</span>(H_point, C_point, L_point) {</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  color_hex <span class="ot">&lt;-</span> <span class="fu">hcl</span>(H_point, </span>
@@ -592,12 +577,12 @@ Nearby points in a sphere
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sphere_info.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Sphere: Base Color and Sample Points</figcaption><p></p>
+<figcaption>Sphere: Base Color and Sample Points</figcaption>
 </figure>
 </div>
 <p>We can reuse the previous functions to graph the planes with our sphere in white to get the outline shape by using the new points as the <code>color_points</code> parameter. Then we can just graph the new points to see how they look. For example, in the following image, the left side has the previous C-L Plane image with points from the sphere blocked out in white. However, the right side has those same points with the correct color.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C-L Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>graph_C_L <span class="ot">&lt;-</span> <span class="cf">function</span>(color_points) {</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> color_points, <span class="fu">aes</span>(C, L, <span class="at">col =</span> color_value, <span class="at">fill =</span> color_value)) <span class="sc">+</span></span>
@@ -618,12 +603,12 @@ Nearby points in a sphere
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sphere_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Sphere: C-L Plane</figcaption><p></p>
+<figcaption>Sphere: C-L Plane</figcaption>
 </figure>
 </div>
 <p>Now, we can continue with the others, starting with the H-L Curve. It’s hard to tell in this image, but the shape isn’t a perfect circle. It’s slightly off because the Hue values curve through the sphere, then that intersection is flattened in the graph. This distortion is more evident for different values.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-L Curve Code]</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>graph_H_L <span class="ot">&lt;-</span> <span class="cf">function</span>(color_points, H_point) {</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> color_points, <span class="fu">aes</span>((H <span class="sc">+</span> (<span class="dv">180</span> <span class="sc">-</span> H_point)) <span class="sc">%%</span> <span class="dv">360</span>, L, </span>
@@ -646,12 +631,12 @@ Nearby points in a sphere
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sphere_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Sphere: H-L Curve”</figcaption><p></p>
+<figcaption>Sphere: H-L Curve”</figcaption>
 </figure>
 </div>
 <p>The next shape is a perfect circle because the plane perpendicular to the C-L Plane is already flat.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C Tangent Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>graph_perpendicular_from_C_L <span class="ot">&lt;-</span> <span class="cf">function</span>(color_points) {</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> color_points, <span class="fu">aes</span>(perpendicular_from_C_L, L, </span>
@@ -674,12 +659,12 @@ Nearby points in a sphere
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sphere_p_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Sphere: Plane Perpendicular to C-L Plane</figcaption><p></p>
+<figcaption>Sphere: Plane Perpendicular to C-L Plane</figcaption>
 </figure>
 </div>
 <p>The last image is of the H-C Plane and the sphere based on x-y coordinates. The black line on the right-side is at H = 112.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-C Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>graph_x_y <span class="ot">&lt;-</span> <span class="cf">function</span>(color_points, H_point) {</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">data =</span> color_points, <span class="fu">aes</span>(x, y, </span>
@@ -715,7 +700,7 @@ Nearby points in a sphere
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sphere_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Sphere: H-C Plane</figcaption><p></p>
+<figcaption>Sphere: H-C Plane</figcaption>
 </figure>
 </div>
 <p>Now to expand this technique out a little more, we can stretch the sphere in different ways.</p>
@@ -772,7 +757,7 @@ Nearby points in an ellipse
 <span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">row_value =</span> (row_value <span class="sc">%%</span> <span class="fu">sqrt</span>(n_points)) <span class="sc">+</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[Ellipse Info Code]</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_info</span>(H_point, C_point, L_point)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_sample</span>(color_points)</span>
@@ -782,12 +767,12 @@ Nearby points in an ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="ellipse_info.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Ellipse: Base Color and Sample Points</figcaption><p></p>
+<figcaption>Ellipse: Base Color and Sample Points</figcaption>
 </figure>
 </div>
 <p>In this section’s images, we can see how the sphere gets stretched. If you’re standing in the center of the HCL color space and face the point, the sphere was extended to your left and right by the <code>H_radius</code> amount, to and away from you by <code>C_radius</code>, and vertically by <code>L_radius.</code></p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C-L Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_C_L_plane</span>(C_L_plane, color_points, color_hex)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_C_L</span>(color_points)</span>
@@ -797,12 +782,12 @@ Nearby points in an ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="ellipse_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Ellipse: C-L Plane</figcaption><p></p>
+<figcaption>Ellipse: C-L Plane</figcaption>
 </figure>
 </div>
 <p>In the previous image, we can see the ellipse is <code>2 * L_radius</code> tall and <code>2 * C_radius</code> wide. In the following image, the ellipse is also <code>2 * L_radius</code> tall. It changed horizontally but not by <code>2 * H_radius</code>. This image displays the <code>C_point</code> radius circles as H changes through the HCL color space, so the distance of stretching is a function of the arc length of those circles. The next image has a width of <code>2 * H_radius</code>.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-L Curve Code]</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_H_L_curve</span>(H_L_curve, color_points, color_hex, H_point)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_H_L</span>(color_points, H_point)</span>
@@ -812,11 +797,11 @@ Nearby points in an ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="ellipse_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Ellipse: H-L Curve</figcaption><p></p>
+<figcaption>Ellipse: H-L Curve</figcaption>
 </figure>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C Tangent Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_C_tangent_plane</span>(C_tangent_plane, color_points, color_hex)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_perpendicular_from_C_L</span>(color_points)</span>
@@ -826,12 +811,12 @@ Nearby points in an ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="ellipse_p_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Ellipse: Plane Perpendicular to C-L Plane</figcaption><p></p>
+<figcaption>Ellipse: Plane Perpendicular to C-L Plane</figcaption>
 </figure>
 </div>
 <p>Finally, we see the H-C plane with an ellipse with one axis <code>2 * C_radius</code> long and the other of <code>2 * H_radius</code>. It’s pointing to the center, so which axis appears as height and width would change as H turns.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-C Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_H_C_plane</span>(H_C_plane, color_points, color_hex)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_x_y</span>(color_points, H_point)</span>
@@ -841,7 +826,7 @@ Nearby points in an ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="ellipse_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Ellipse: H-C Plane</figcaption><p></p>
+<figcaption>Ellipse: H-C Plane</figcaption>
 </figure>
 </div>
 <p>While we’re transforming the original sphere, we can add in tilting.</p>
@@ -910,7 +895,7 @@ Nearby points in a tilted ellipse
 <span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">row_value =</span> (row_value <span class="sc">%%</span> <span class="fu">sqrt</span>(n_points)) <span class="sc">+</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[Tilted Ellipse Info Code]</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_info</span>(H_point, C_point, L_point)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_sample</span>(color_points)</span>
@@ -920,12 +905,12 @@ Nearby points in a tilted ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="tilted_ellipse_info.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Tilted Ellipse: Base Color and Sample Points</figcaption><p></p>
+<figcaption>Tilted Ellipse: Base Color and Sample Points</figcaption>
 </figure>
 </div>
 <p>The following image shows the tilt the best. We can see that it now points to the tip of the triangle.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C-L Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_C_L_plane</span>(C_L_plane, color_points, color_hex)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_C_L</span>(color_points)</span>
@@ -935,12 +920,12 @@ Nearby points in a tilted ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="tilted_ellipse_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Tilted Ellipse: C-L Plane</figcaption><p></p>
+<figcaption>Tilted Ellipse: C-L Plane</figcaption>
 </figure>
 </div>
 <p>The right side isn’t quite symmetric across a horizontal line in the middle in the following image. The top is a little thinner than the bottom, so it’s more of an egg shape. That happens because the H values curve through the ellipse and flatten into this image. Different H values are obtained for different C values, and C and L are correlated in this shape. So in this image, as L changes, C also changes, which affects the H values reached by the edges. This graph won’t always result in an egg shape, but it does in this case.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-L Curve Code]</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_H_L_curve</span>(H_L_curve, color_points, color_hex, H_point)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_H_L</span>(color_points, H_point)</span>
@@ -950,12 +935,12 @@ Nearby points in a tilted ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="tilted_ellipse_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Tilted Ellipse: H-L Curve</figcaption><p></p>
+<figcaption>Tilted Ellipse: H-L Curve</figcaption>
 </figure>
 </div>
 <p>The next one is symmetric across a horizontal line in the middle. Checking this feature is one of the main reasons for this graph.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C Tangent Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_C_tangent_plane</span>(C_tangent_plane, color_points, color_hex)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_perpendicular_from_C_L</span>(color_points)</span>
@@ -965,12 +950,12 @@ Nearby points in a tilted ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="tilted_ellipse_p_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Tilted Ellipse: Plane Perpendicular to C-L Plane</figcaption><p></p>
+<figcaption>Tilted Ellipse: Plane Perpendicular to C-L Plane</figcaption>
 </figure>
 </div>
 <p>Finally, we see the H-C Plane. The length along the C-L Plane line is a function of the radii and tilt amount, but the perpendicular length is just <code>perpendicular_C_L_radius</code>.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-C Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_H_C_plane</span>(H_C_plane, color_points, color_hex)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_x_y</span>(color_points, H_point)</span>
@@ -980,7 +965,7 @@ Nearby points in a tilted ellipse
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="tilted_ellipse_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Tilted Ellipse: H-C Plane</figcaption><p></p>
+<figcaption>Tilted Ellipse: H-C Plane</figcaption>
 </figure>
 </div>
 <p>So far, this setup has a lot of flexibility but is also fragile. So, we’ll bulk up the sampling function.</p>
@@ -1102,7 +1087,7 @@ Compare previous samples
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_info.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Compare: Sample Points</figcaption><p></p>
+<figcaption>Compare: Sample Points</figcaption>
 </figure>
 </div>
 <p>Here, we can see the differences in samples based on the different parameters. By changing the parameters, we can get a variety of color sampling, even when starting with the same base point. The rest of the graphs can be created for comparing the outputs, but they aren’t that interesting since they’re just repeats of the previous image.</p>
@@ -1149,7 +1134,7 @@ Trying some other parameters
 <span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>                                 tilt_theta, H_bound)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[Outside Edge Info Code]</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_info</span>(H_point, C_point, L_point)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_sample</span>(color_points)</span>
@@ -1159,12 +1144,12 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outside_edge_info.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Outside Edge: Base Color and Sample Points</figcaption><p></p>
+<figcaption>Outside Edge: Base Color and Sample Points</figcaption>
 </figure>
 </div>
 <p>The following image shows that the ellipse should go outside the bounds, but there aren’t any color values for those points. So, the ellipse is clipped off by that bound. However, the square on the right in the previous image is filled in completely. If we started with a sample of the size we wanted at the end, the clipped points would be missing. The previous image worked because the original set of points was bigger, clipped, then sampled to the desired amount.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C-L Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_C_L_plane</span>(C_L_plane, color_points, color_hex)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_C_L</span>(color_points)</span>
@@ -1174,12 +1159,12 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outside_edge_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Outside Edge: C-L Plane</figcaption><p></p>
+<figcaption>Outside Edge: C-L Plane</figcaption>
 </figure>
 </div>
 <p>The next few images are the same kind that we have seen previously.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-L Curve Code]</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_H_L_curve</span>(H_L_curve, color_points, color_hex, H_point)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_H_L</span>(color_points, H_point)</span>
@@ -1189,11 +1174,11 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outside_edge_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Outside Edge: H-L Curve</figcaption><p></p>
+<figcaption>Outside Edge: H-L Curve</figcaption>
 </figure>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C Tangent Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_C_tangent_plane</span>(C_tangent_plane, color_points, color_hex)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_perpendicular_from_C_L</span>(color_points)</span>
@@ -1203,11 +1188,11 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outside_edge_p_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Outside Edge: Plane Perpendicular to C-L Plane</figcaption><p></p>
+<figcaption>Outside Edge: Plane Perpendicular to C-L Plane</figcaption>
 </figure>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-C Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_H_C_plane</span>(H_C_plane, color_points, color_hex)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_x_y</span>(color_points, H_point)</span>
@@ -1217,7 +1202,7 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outside_edge_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Outside Edge: H-C Plane</figcaption><p></p>
+<figcaption>Outside Edge: H-C Plane</figcaption>
 </figure>
 </div>
 <p>One important detail to catch in the above image is the sharp end on the top right. This clipping occurs because we check that the image is symmetric across Hue = <code>H_point</code>. If we didn’t have that check, the right side would stretch up farther to match the boundary of the H-C Plane on the left side.</p>
@@ -1252,7 +1237,7 @@ Trying some other parameters
 <span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>                                 tilt_theta, H_bound)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[Inside Edge Info Code]</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_info</span>(H_point, C_point, L_point)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_sample</span>(color_points)</span>
@@ -1262,11 +1247,11 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="inside_edge_info.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Inside Edge: Base Color and Sample Points</figcaption><p></p>
+<figcaption>Inside Edge: Base Color and Sample Points</figcaption>
 </figure>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C-L Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_C_L_plane</span>(C_L_plane, color_points, color_hex)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_C_L</span>(color_points)</span>
@@ -1276,12 +1261,12 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="inside_edge_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Inside Edge: C-L Plane</figcaption><p></p>
+<figcaption>Inside Edge: C-L Plane</figcaption>
 </figure>
 </div>
 <p>The H-L Curve is very different from previous ones because of how close to the center the <code>C_point</code> is. Values close to the center span a larger region of Hue values than compared to points farther away to the outside, which creates a new shape.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-L Curve Code]</summary>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_H_L_curve</span>(H_L_curve, color_points, color_hex, H_point)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_H_L</span>(color_points, H_point)</span>
@@ -1291,11 +1276,11 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="inside_edge_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Inside Edge: H-L Curve</figcaption><p></p>
+<figcaption>Inside Edge: H-L Curve</figcaption>
 </figure>
 </div>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[C Tangent Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_C_tangent_plane</span>(C_tangent_plane, color_points, color_hex)</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_perpendicular_from_C_L</span>(color_points)</span>
@@ -1305,12 +1290,12 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="inside_edge_p_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Inside Edge: Plane Perpendicular to C-L Plane</figcaption><p></p>
+<figcaption>Inside Edge: Plane Perpendicular to C-L Plane</figcaption>
 </figure>
 </div>
 <p>For the final image, we can see that the H_bound cuts up the ellipse. The boundary prevents the ellipse from stretching across the HCL color space’s middle.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[H-C Plane Code]</summary>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">graph_H_C_plane</span>(H_C_plane, color_points, color_hex)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">graph_x_y</span>(color_points, H_point)</span>
@@ -1320,7 +1305,7 @@ Trying some other parameters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="inside_edge_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Inside Edge: H-C Plane</figcaption><p></p>
+<figcaption>Inside Edge: H-C Plane</figcaption>
 </figure>
 </div>
 <hr>
@@ -1356,12 +1341,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1370,17 +1358,78 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/www\.willtybrad\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1390,8 +1439,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1403,50 +1461,299 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
 </script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">Copyright 2022, William Tyler Bradley</div>
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright 2022, William Tyler Bradley</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
   </div>
 </footer>
+
 
 
 

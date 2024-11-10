@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.132">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -38,17 +38,25 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-53b2f635d03ca795124b4cf36c3844c7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-53b2f635d03ca795124b4cf36c3844c7.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-141603b5273b07211dcfd4cb98c47b22.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -57,8 +65,10 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script>
@@ -92,10 +102,39 @@ ul.task-list li input[type="checkbox"] {
   })
   </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="William Tyler Bradley">
+<link rel="alternate" type="application/rss+xml" title="William Tyler Bradley" href="index.xml" data-external="1"><meta property="og:title" content="William Tyler Bradley">
+<meta property="og:site_name" content="William Tyler Bradley">
 <meta name="twitter:title" content="William Tyler Bradley">
 <meta name="twitter:card" content="summary">
 </head>
@@ -104,64 +143,54 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">William Tyler Bradley</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Posts</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">About</a>
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/WilliamTylerBradley"><i class="bi bi-github" role="img" aria-label="github">
+    <a class="nav-link" href="https://github.com/WilliamTylerBradley"> <i class="bi bi-github" role="img" aria-label="github">
 </i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"> <i class="bi bi-linkedin" role="img" aria-label="linkedin">
 </i> 
- </a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"><i class="bi bi-twitter" role="img" aria-label="twitter">
-</i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page">
-      <h1 class="title">William Tyler Bradley</h1>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 
 
@@ -172,450 +201,450 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-left" data-index="0" data-categories="R,Generative Art" data-listing-date-sort="1663214400000" data-listing-file-modified-sort="1663346471220" data-listing-reading-time-sort="24.775">
+<div class="quarto-post image-left" data-index="0" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1663214400000" data-listing-file-modified-sort="1730755105710" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25" data-listing-word-count-sort="4955">
 <div class="thumbnail">
-<p><a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html"> <img src="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/flowfieldfigments.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html" class="no-external"></a></p><a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html" class="no-external">
+<p><img loading="lazy" src="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/flowfieldfigments.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html">
 <h3 class="no-anchor listing-title">
-Generative Art Twitter Bot with R and GitHub Actions
+<a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html" class="no-external">Generative Art Twitter Bot with R and GitHub Actions</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Automatic art generated daily</p>
+<a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html" class="no-external">Automatic art generated daily</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html">
+<a href="./posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/index.html" class="no-external">
 <div class="listing-date">
 Sep 15, 2022
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="1" data-categories="R,Generative Art" data-listing-date-sort="1653710400000" data-listing-file-modified-sort="1663346087606" data-listing-reading-time-sort="21.215">
+<div class="quarto-post image-left" data-index="1" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1653710400000" data-listing-file-modified-sort="1730755105654" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4233">
 <div class="thumbnail">
-<p><a href="./posts/2022-05-28-circuitry/index.html"> <img src="./posts/2022-05-28-circuitry/output_1.jpeg" class="thumnail-image"> </a></p>
+<p><a href="./posts/2022-05-28-circuitry/index.html" class="no-external"></a></p><a href="./posts/2022-05-28-circuitry/index.html" class="no-external">
+<p><img loading="lazy" src="./posts/2022-05-28-circuitry/output_1.jpeg" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-05-28-circuitry/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-05-28-circuitry/index.html">
 <h3 class="no-anchor listing-title">
-Circuitry
+<a href="./posts/2022-05-28-circuitry/index.html" class="no-external">Circuitry</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-05-28-circuitry/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Generative art project based on a looped path</p>
+<a href="./posts/2022-05-28-circuitry/index.html" class="no-external">Generative art project based on a looped path</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-05-28-circuitry/index.html">
+<a href="./posts/2022-05-28-circuitry/index.html" class="no-external">
 <div class="listing-date">
 May 28, 2022
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="2" data-categories="Data Science,Presentations" data-listing-date-sort="1653019200000" data-listing-file-modified-sort="1663346087580" data-listing-reading-time-sort="8.805">
+<div class="quarto-post image-left" data-index="2" data-categories="RGF0YSBTY2llbmNlLFByZXNlbnRhdGlvbnM=" data-listing-date-sort="1653019200000" data-listing-file-modified-sort="1730755105593" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1761">
 <div class="thumbnail">
-<p><a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html"> <img src="./posts/2022-05-20-cross-validation-a-toy-example/thumbnail.JPG" class="thumnail-image"> </a></p>
+<p><a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html" class="no-external"></a></p><a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html" class="no-external">
+<p><img loading="lazy" src="./posts/2022-05-20-cross-validation-a-toy-example/thumbnail.JPG" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html">
 <h3 class="no-anchor listing-title">
-Cross-validation: A Toy Example
+<a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html" class="no-external">Cross-validation: A Toy Example</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Presentation on cross-validation using toys</p>
+<a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html" class="no-external">Presentation on cross-validation using toys</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html">
+<a href="./posts/2022-05-20-cross-validation-a-toy-example/index.html" class="no-external">
 <div class="listing-date">
 May 20, 2022
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="3" data-categories="R,Generative Art" data-listing-date-sort="1651550400000" data-listing-file-modified-sort="1663346087253" data-listing-reading-time-sort="37">
+<div class="quarto-post image-left" data-index="3" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1651550400000" data-listing-file-modified-sort="1730755104849" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="37" data-listing-word-count-sort="7399">
 <div class="thumbnail">
-<p><a href="./posts/2022-05-03-pandemic-mazes/index.html"> <img src="./posts/2022-05-03-pandemic-mazes/image_75_1.jpeg" class="thumnail-image"> </a></p>
+<p><a href="./posts/2022-05-03-pandemic-mazes/index.html" class="no-external"></a></p><a href="./posts/2022-05-03-pandemic-mazes/index.html" class="no-external">
+<p><img loading="lazy" src="./posts/2022-05-03-pandemic-mazes/image_75_1.jpeg" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-05-03-pandemic-mazes/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-05-03-pandemic-mazes/index.html">
 <h3 class="no-anchor listing-title">
-Pandemic Mazes
+<a href="./posts/2022-05-03-pandemic-mazes/index.html" class="no-external">Pandemic Mazes</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-05-03-pandemic-mazes/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Generative art based on grocery store floor signs</p>
+<a href="./posts/2022-05-03-pandemic-mazes/index.html" class="no-external">Generative art based on grocery store floor signs</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-05-03-pandemic-mazes/index.html">
+<a href="./posts/2022-05-03-pandemic-mazes/index.html" class="no-external">
 <div class="listing-date">
 May 3, 2022
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="4" data-categories="Data Science" data-listing-date-sort="1646110800000" data-listing-file-modified-sort="1663346087213" data-listing-reading-time-sort="16.43">
+<div class="quarto-post image-left" data-index="4" data-categories="RGF0YSBTY2llbmNl" data-listing-date-sort="1646110800000" data-listing-file-modified-sort="1730755104754" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3287">
 <div class="thumbnail">
-<p><a href="./posts/2022-03-01-cohesive-graphs/index.html"> <img src="./posts/2022-03-01-cohesive-graphs/plot_12.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2022-03-01-cohesive-graphs/index.html" class="no-external"></a></p><a href="./posts/2022-03-01-cohesive-graphs/index.html" class="no-external">
+<p><img loading="lazy" src="./posts/2022-03-01-cohesive-graphs/plot_12.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-03-01-cohesive-graphs/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-03-01-cohesive-graphs/index.html">
 <h3 class="no-anchor listing-title">
-Cohesive Graphs
+<a href="./posts/2022-03-01-cohesive-graphs/index.html" class="no-external">Cohesive Graphs</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-03-01-cohesive-graphs/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Connecting graphs throughout a document</p>
+<a href="./posts/2022-03-01-cohesive-graphs/index.html" class="no-external">Connecting graphs throughout a document</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-03-01-cohesive-graphs/index.html">
+<a href="./posts/2022-03-01-cohesive-graphs/index.html" class="no-external">
 <div class="listing-date">
 Mar 1, 2022
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="5" data-categories="R,Generative Art" data-listing-date-sort="1646024400000" data-listing-file-modified-sort="1663346087213" data-listing-reading-time-sort="25.18">
+<div class="quarto-post image-left" data-index="5" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1646024400000" data-listing-file-modified-sort="1730755104754" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="26" data-listing-word-count-sort="5036">
 <div class="thumbnail">
-<p><a href="./posts/2022-02-28-constellations/index.html"> <img src="./posts/2022-02-28-constellations/constellations_1.jpeg" class="thumnail-image"> </a></p>
+<p><a href="./posts/2022-02-28-constellations/index.html" class="no-external"></a></p><a href="./posts/2022-02-28-constellations/index.html" class="no-external">
+<p><img loading="lazy" src="./posts/2022-02-28-constellations/constellations_1.jpeg" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-02-28-constellations/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-02-28-constellations/index.html">
 <h3 class="no-anchor listing-title">
-Constellations
+<a href="./posts/2022-02-28-constellations/index.html" class="no-external">Constellations</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-02-28-constellations/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Generative art project based on constellations</p>
+<a href="./posts/2022-02-28-constellations/index.html" class="no-external">Generative art project based on constellations</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-02-28-constellations/index.html">
+<a href="./posts/2022-02-28-constellations/index.html" class="no-external">
 <div class="listing-date">
 Feb 28, 2022
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="6" data-categories="R,Azure" data-listing-date-sort="1639976400000" data-listing-file-modified-sort="1663346087209" data-listing-reading-time-sort="1.83">
+<div class="quarto-post image-left" data-index="6" data-categories="UixBenVyZQ==" data-listing-date-sort="1639976400000" data-listing-file-modified-sort="1730755104744" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="366">
 <div class="thumbnail">
-<p><a href="./posts/2021-12-20-az-900-exam-flashcards/index.html"> <img src="./posts/2021-12-20-az-900-exam-flashcards/test_1_960x700.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-12-20-az-900-exam-flashcards/index.html" class="no-external"></a></p><a href="./posts/2021-12-20-az-900-exam-flashcards/index.html" class="no-external">
+<p><img loading="lazy" src="./posts/2021-12-20-az-900-exam-flashcards/test_1_960x700.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-12-20-az-900-exam-flashcards/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-12-20-az-900-exam-flashcards/index.html">
 <h3 class="no-anchor listing-title">
-AZ-900 Exam Flashcards
+<a href="./posts/2021-12-20-az-900-exam-flashcards/index.html" class="no-external">AZ-900 Exam Flashcards</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-12-20-az-900-exam-flashcards/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>R code to create a flashcard presentation</p>
+<a href="./posts/2021-12-20-az-900-exam-flashcards/index.html" class="no-external">R code to create a flashcard presentation</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-12-20-az-900-exam-flashcards/index.html">
+<a href="./posts/2021-12-20-az-900-exam-flashcards/index.html" class="no-external">
 <div class="listing-date">
 Dec 20, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="7" data-categories="R,Generative Art" data-listing-date-sort="1639026000000" data-listing-file-modified-sort="1663346087208" data-listing-reading-time-sort="2.48">
+<div class="quarto-post image-left" data-index="7" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1639026000000" data-listing-file-modified-sort="1730755104744" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="496">
 <div class="thumbnail">
-<p><a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html"> <img data-src="./posts/2021-12-09-deep-blue-versus-gary-kasparov/DeepBlueVersusGarryKasparov1996.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html" class="no-external"></a></p><a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2021-12-09-deep-blue-versus-gary-kasparov/DeepBlueVersusGarryKasparov1996.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html">
 <h3 class="no-anchor listing-title">
-Deep Blue versus Garry Kasparov
+<a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html" class="no-external">Deep Blue versus Garry Kasparov</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Generative art based on chess games</p>
+<a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html" class="no-external">Generative art based on chess games</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html">
+<a href="./posts/2021-12-09-deep-blue-versus-gary-kasparov/index.html" class="no-external">
 <div class="listing-date">
 Dec 9, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="8" data-categories="R,Generative Art" data-listing-date-sort="1634616000000" data-listing-file-modified-sort="1663346087197" data-listing-reading-time-sort="0.465">
+<div class="quarto-post image-left" data-index="8" data-categories="UG93ZXIgQkksUHJlc2VudGF0aW9ucw==" data-listing-date-sort="1634616000000" data-listing-file-modified-sort="1730755104574" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2562">
 <div class="thumbnail">
-<p><a href="./posts/2021-10-25-penrsose-tiling/index.html"> <img data-src="./posts/2021-10-25-penrsose-tiling/penrosetiling.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-10-19-power-bi-and-missing-values/index.html" class="no-external"></a></p><a href="./posts/2021-10-19-power-bi-and-missing-values/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2021-10-19-power-bi-and-missing-values/screenshots_1_960x700.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-10-19-power-bi-and-missing-values/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-10-25-penrsose-tiling/index.html">
 <h3 class="no-anchor listing-title">
-Penrose Tiling
+<a href="./posts/2021-10-19-power-bi-and-missing-values/index.html" class="no-external">Power BI and Missing Values</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-10-19-power-bi-and-missing-values/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>R package for Penrose tiling patterns</p>
+<a href="./posts/2021-10-19-power-bi-and-missing-values/index.html" class="no-external">Presentation write-up on Power BI and Missing Values</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-10-25-penrsose-tiling/index.html">
+<a href="./posts/2021-10-19-power-bi-and-missing-values/index.html" class="no-external">
 <div class="listing-date">
 Oct 19, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="9" data-categories="Power BI,Presentations" data-listing-date-sort="1634616000000" data-listing-file-modified-sort="1663346087142" data-listing-reading-time-sort="12.81">
+<div class="quarto-post image-left" data-index="9" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1634616000000" data-listing-file-modified-sort="1730755104714" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="93">
 <div class="thumbnail">
-<p><a href="./posts/2021-10-19-power-bi-and-missing-values/index.html"> <img data-src="./posts/2021-10-19-power-bi-and-missing-values/screenshots_1_960x700.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-10-25-penrsose-tiling/index.html" class="no-external"></a></p><a href="./posts/2021-10-25-penrsose-tiling/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2021-10-25-penrsose-tiling/penrosetiling.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-10-25-penrsose-tiling/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-10-19-power-bi-and-missing-values/index.html">
 <h3 class="no-anchor listing-title">
-Power BI and Missing Values
+<a href="./posts/2021-10-25-penrsose-tiling/index.html" class="no-external">Penrose Tiling</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-10-25-penrsose-tiling/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Presentation write-up on Power BI and Missing Values</p>
+<a href="./posts/2021-10-25-penrsose-tiling/index.html" class="no-external">R package for Penrose tiling patterns</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-10-19-power-bi-and-missing-values/index.html">
+<a href="./posts/2021-10-25-penrsose-tiling/index.html" class="no-external">
 <div class="listing-date">
 Oct 19, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="10" data-categories="R,Generative Art" data-listing-date-sort="1628740800000" data-listing-file-modified-sort="1663346087138" data-listing-reading-time-sort="11.525">
+<div class="quarto-post image-left" data-index="10" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1628740800000" data-listing-file-modified-sort="1730755104564" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2305">
 <div class="thumbnail">
-<p><a href="./posts/2021-08-12-bertrand-paradox/index.html"> <img data-src="./posts/2021-08-12-bertrand-paradox/thumbnail.jpeg" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-08-12-bertrand-paradox/index.html" class="no-external"></a></p><a href="./posts/2021-08-12-bertrand-paradox/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2021-08-12-bertrand-paradox/thumbnail.jpeg" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-08-12-bertrand-paradox/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-08-12-bertrand-paradox/index.html">
 <h3 class="no-anchor listing-title">
-Bertrand Paradox
+<a href="./posts/2021-08-12-bertrand-paradox/index.html" class="no-external">Bertrand Paradox</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-08-12-bertrand-paradox/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Generative art based on the Bertrand Paradox</p>
+<a href="./posts/2021-08-12-bertrand-paradox/index.html" class="no-external">Generative art based on the Bertrand Paradox</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-08-12-bertrand-paradox/index.html">
+<a href="./posts/2021-08-12-bertrand-paradox/index.html" class="no-external">
 <div class="listing-date">
 Aug 12, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="11" data-categories="R,Generative Art" data-listing-date-sort="1628568000000" data-listing-file-modified-sort="1663346087114" data-listing-reading-time-sort="70.94">
+<div class="quarto-post image-left" data-index="11" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1628568000000" data-listing-file-modified-sort="1730755104504" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="71" data-listing-word-count-sort="14189">
 <div class="thumbnail">
-<p><a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html"> <img data-src="./posts/2021-08-10-choosing-nearby-colors-part-2/hcl_par_per.jpeg" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html" class="no-external"></a></p><a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2021-08-10-choosing-nearby-colors-part-2/hcl_par_per.jpeg" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html">
 <h3 class="no-anchor listing-title">
-Choosing Nearby Colors Part 2
+<a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html" class="no-external">Choosing Nearby Colors Part 2</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Follow-up from previous post using the HCL coordinates directly</p>
+<a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html" class="no-external">Follow-up from previous post using the HCL coordinates directly</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html">
+<a href="./posts/2021-08-10-choosing-nearby-colors-part-2/index.html" class="no-external">
 <div class="listing-date">
 Aug 10, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="12" data-categories="R,Generative Art" data-listing-date-sort="1628481600000" data-listing-file-modified-sort="1663346087096" data-listing-reading-time-sort="48.885">
+<div class="quarto-post image-left" data-index="12" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1628481600000" data-listing-file-modified-sort="1730755104455" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="49" data-listing-word-count-sort="9776">
 <div class="thumbnail">
-<p><a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html"> <img data-src="./posts/2021-08-09-choosing-nearby-colors-part-1/h_c_plane.jpeg" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html" class="no-external"></a></p><a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2021-08-09-choosing-nearby-colors-part-1/h_c_plane.jpeg" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html">
 <h3 class="no-anchor listing-title">
-Choosing Nearby Colors Part 1
+<a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html" class="no-external">Choosing Nearby Colors Part 1</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Attempting to select colors close to a chosen one by sampling colors in a ellipse in the HCL color space</p>
+<a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html" class="no-external">Attempting to select colors close to a chosen one by sampling colors in a ellipse in the HCL color space</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html">
+<a href="./posts/2021-08-09-choosing-nearby-colors-part-1/index.html" class="no-external">
 <div class="listing-date">
 Aug 9, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="13" data-categories="R,SQL,Presentations" data-listing-date-sort="1624852800000" data-listing-file-modified-sort="1663346087084" data-listing-reading-time-sort="18.355">
+<div class="quarto-post image-left" data-index="13" data-categories="UixTUUwsUHJlc2VudGF0aW9ucw==" data-listing-date-sort="1624852800000" data-listing-file-modified-sort="1730755104414" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3671">
 <div class="thumbnail">
-<p><a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html"> <img data-src="./posts/2021-06-28-sql-server-machine-learning-services-presentation/slide_1.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html" class="no-external"></a></p><a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2021-06-28-sql-server-machine-learning-services-presentation/slide_1.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html">
 <h3 class="no-anchor listing-title">
-SQL Server’s Machine Learning Services Presentation
+<a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html" class="no-external">SQL Server’s Machine Learning Services Presentation</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Presentation write-up on SQL Server’s Machine Learning Services</p>
+<a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html" class="no-external">Presentation write-up on SQL Server’s Machine Learning Services</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html">
+<a href="./posts/2021-06-28-sql-server-machine-learning-services-presentation/index.html" class="no-external">
 <div class="listing-date">
 Jun 28, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="14" data-categories="R,Generative Art" data-listing-date-sort="1612069200000" data-listing-file-modified-sort="1663346087083" data-listing-reading-time-sort="10.685">
+<div class="quarto-post image-left" data-index="14" data-categories="UixHZW5lcmF0aXZlIEFydA==" data-listing-date-sort="1612069200000" data-listing-file-modified-sort="1730755104414" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2137">
 <div class="thumbnail">
-<p><a href="./posts/2021-01-31-genuary-2021/index.html"> <img data-src="./posts/2021-01-31-genuary-2021/JAN_01.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2021-01-31-genuary-2021/index.html" class="no-external"></a></p><a href="./posts/2021-01-31-genuary-2021/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2021-01-31-genuary-2021/JAN_01.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-01-31-genuary-2021/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-01-31-genuary-2021/index.html">
 <h3 class="no-anchor listing-title">
-GENUARY 2021
+<a href="./posts/2021-01-31-genuary-2021/index.html" class="no-external">GENUARY 2021</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-01-31-genuary-2021/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>GENUARY 2021: Art and Experience</p>
+<a href="./posts/2021-01-31-genuary-2021/index.html" class="no-external">GENUARY 2021: Art and Experience</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-01-31-genuary-2021/index.html">
+<a href="./posts/2021-01-31-genuary-2021/index.html" class="no-external">
 <div class="listing-date">
 Jan 31, 2021
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="15" data-categories="Blog" data-listing-date-sort="1589515200000" data-listing-file-modified-sort="1663346087060" data-listing-reading-time-sort="5.745">
+<div class="quarto-post image-left" data-index="15" data-categories="QmxvZw==" data-listing-date-sort="1589515200000" data-listing-file-modified-sort="1730755104344" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1149">
 <div class="thumbnail">
-<p><a href="./posts/2020-05-15-calathea-theme/index.html"> <img data-src="./posts/2020-05-15-calathea-theme/icon_thumbnail.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2020-05-15-calathea-theme/index.html" class="no-external"></a></p><a href="./posts/2020-05-15-calathea-theme/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2020-05-15-calathea-theme/icon_thumbnail.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2020-05-15-calathea-theme/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2020-05-15-calathea-theme/index.html">
 <h3 class="no-anchor listing-title">
-Calathea Theme
+<a href="./posts/2020-05-15-calathea-theme/index.html" class="no-external">Calathea Theme</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2020-05-15-calathea-theme/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>An elegant theme for growth and flow.</p>
+<a href="./posts/2020-05-15-calathea-theme/index.html" class="no-external">An elegant theme for growth and flow.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2020-05-15-calathea-theme/index.html">
+<a href="./posts/2020-05-15-calathea-theme/index.html" class="no-external">
 <div class="listing-date">
 May 15, 2020
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="16" data-categories="R,Blog" data-listing-date-sort="1587096000000" data-listing-file-modified-sort="1663346087056" data-listing-reading-time-sort="4.01">
+<div class="quarto-post image-left" data-index="16" data-categories="UixCbG9n" data-listing-date-sort="1587096000000" data-listing-file-modified-sort="1730755104326" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="801">
 <div class="thumbnail">
-<p><a href="./posts/2020-04-16-website-design-part-2/index.html"> <img data-src="./posts/2020-04-16-website-design-part-2/color_scheme_thumbnail.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2020-04-16-website-design-part-2/index.html" class="no-external"></a></p><a href="./posts/2020-04-16-website-design-part-2/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2020-04-16-website-design-part-2/color_scheme_thumbnail.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2020-04-16-website-design-part-2/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2020-04-16-website-design-part-2/index.html">
 <h3 class="no-anchor listing-title">
-Website Design: Part 2
+<a href="./posts/2020-04-16-website-design-part-2/index.html" class="no-external">Website Design: Part 2</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2020-04-16-website-design-part-2/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>This post continues the work from the previous one. This code takes the saved data and creates the images.</p>
+<a href="./posts/2020-04-16-website-design-part-2/index.html" class="no-external">This post continues the work from the previous one. This code takes the saved data and creates the images.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2020-04-16-website-design-part-2/index.html">
+<a href="./posts/2020-04-16-website-design-part-2/index.html" class="no-external">
 <div class="listing-date">
 Apr 17, 2020
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-left" data-index="17" data-categories="R,Blog" data-listing-date-sort="1587009600000" data-listing-file-modified-sort="1663346087055" data-listing-reading-time-sort="2.2">
+<div class="quarto-post image-left" data-index="17" data-categories="UixCbG9n" data-listing-date-sort="1587009600000" data-listing-file-modified-sort="1730755104326" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="439">
 <div class="thumbnail">
-<p><a href="./posts/2020-04-16-website-design-part-1/index.html"> <img data-src="./posts/2020-04-16-website-design-part-1/ds_letter_thumbnail.png" class="thumnail-image"> </a></p>
+<p><a href="./posts/2020-04-16-website-design-part-1/index.html" class="no-external"></a></p><a href="./posts/2020-04-16-website-design-part-1/index.html" class="no-external">
+<p><img loading="lazy" data-src="./posts/2020-04-16-website-design-part-1/ds_letter_thumbnail.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2020-04-16-website-design-part-1/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2020-04-16-website-design-part-1/index.html">
 <h3 class="no-anchor listing-title">
-Website Design: Part 1
+<a href="./posts/2020-04-16-website-design-part-1/index.html" class="no-external">Website Design: Part 1</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2020-04-16-website-design-part-1/index.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>This blog post and the next one cover the code for making the site images. The first post pulls the data, and the second one creates the images. The setup first pulls the contents from the <span>Data Science</span> page of Wikipedia to get the letter frequencies. The code then pulls the overall letter frequencies for the English language. Finally, it saves them together to graph later.</p>
+<a href="./posts/2020-04-16-website-design-part-1/index.html" class="no-external">This blog post and the next one cover the code for making the site images. The first post pulls the data, and the second one creates the images. The setup first pulls the contents from the <span>Data Science</span> page of Wikipedia to get the letter frequencies. The code then pulls the overall letter frequencies for the English language. Finally, it saves them together to graph later.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2020-04-16-website-design-part-1/index.html">
+<a href="./posts/2020-04-16-website-design-part-1/index.html" class="no-external">
 <div class="listing-date">
 Apr 16, 2020
 </div>
@@ -650,6 +679,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -657,12 +830,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -671,17 +847,73 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/www\.williamtylerbradley\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -691,8 +923,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -704,36 +945,310 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">Copyright 2022, William Tyler Bradley</div>
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright 2024, William Tyler Bradley
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="./index.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
   </div>
 </footer>
+
 
 
 

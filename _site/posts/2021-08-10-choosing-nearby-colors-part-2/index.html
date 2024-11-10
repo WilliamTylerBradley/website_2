@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.132">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -19,11 +19,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -34,7 +35,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -48,43 +49,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -101,17 +72,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-53b2f635d03ca795124b4cf36c3844c7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-bc74ddde539835a3b22f840d334b18a7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -120,8 +97,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -139,40 +118,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html">Home</a>
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html">About</a>
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/WilliamTylerBradley"><i class="bi bi-github" role="img" aria-label="github">
+    <a class="nav-link" href="https://github.com/WilliamTylerBradley"> <i class="bi bi-github" role="img" aria-label="github">
 </i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+    <a class="nav-link" href="https://www.linkedin.com/in/williamtylerbradley/"> <i class="bi bi-linkedin" role="img" aria-label="linkedin">
 </i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"><i class="bi bi-twitter" role="img" aria-label="twitter">
+    <a class="nav-link" href="https://twitter.com/w_tyler_bradley"> <i class="bi bi-twitter" role="img" aria-label="twitter">
 </i> 
- </a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -203,6 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <p class="date">August 10, 2021</p>
       </div>
     </div>
+    
       
     </div>
     
@@ -213,6 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+
 
 
 
@@ -228,7 +213,7 @@ Base Point Location
 </center>
 <hr>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[A Lot of Setup Code]</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">##---------</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Libraries</span></span>
@@ -432,7 +417,7 @@ Base Point Location
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c_l_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Base Color: C-L Plane</figcaption><p></p>
+<figcaption>Base Color: C-L Plane</figcaption>
 </figure>
 </div>
 </div>
@@ -440,7 +425,7 @@ Base Point Location
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="h_c_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Base Color: H-C Plane</figcaption><p></p>
+<figcaption>Base Color: H-C Plane</figcaption>
 </figure>
 </div>
 </div>
@@ -448,7 +433,7 @@ Base Point Location
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="h_l_curve.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Base Color: H-L Curve</figcaption><p></p>
+<figcaption>Base Color: H-L Curve</figcaption>
 </figure>
 </div>
 <p>Then we can look at the plane tangent to the H-L Curve to see the space perpendicular to the C-L plane.</p>
@@ -457,7 +442,7 @@ Base Point Location
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c_tangent_plane_setup.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">C Tangent Plane setup</figcaption><p></p>
+<figcaption>C Tangent Plane setup</figcaption>
 </figure>
 </div>
 </div>
@@ -465,7 +450,7 @@ Base Point Location
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c_tangent_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Base Color: Plane Perpendicular to C-L Plane</figcaption><p></p>
+<figcaption>Base Color: Plane Perpendicular to C-L Plane</figcaption>
 </figure>
 </div>
 </div>
@@ -481,7 +466,7 @@ xyL Perimeter
 <hr>
 <p>We’ll only pull points on the perimeter for this code, unlike the previous post that had points randomly throughout the sphere. We’ll move away from the base point using the Cartesian coordinates of x, y, and L for the first main section. This is exactly what we did in the last post, so it should look familiar. The main new addition is cutting the shape into pieces and graphing them on facets.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[xyL Perimeter Code]</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">##------------------</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># x, y, L perimeter</span></span>
@@ -839,67 +824,76 @@ xyL Perimeter
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_info.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: Info</figcaption><p></p>
+<figcaption>xyL: Info</figcaption>
 </figure>
 </div>
 <p>Above, we see the basic information about the base color and the points sampled around the sphere’s perimeter (width is 15 units). Below, we see the sphere cut up by C-L Planes at different Hue values. We see that as we move across different values for our Hue, we slice through the sphere to get different shapes. For example, on the right image, the ends are moved left slightly, and the doughnuts in the middle values tend to have a little more width on the right side. The distortion occurs because our cuts are fanning across the sphere at an angle, not moving along in a straight line. So, one side gets a little more of the perimeter to plot.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_c_l_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: C-L Plane by H cuts</figcaption><p></p>
+<figcaption>xyL: C-L Plane by H cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: C-L by H cuts</figcaption><p></p>
+<figcaption>xyL: C-L by H cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>The next set shows the H-L Curve by different Chroma values. Here, we might expect to see circles, but instead, we get ovals. These shapes occur because the ring made by moving Hue through the sphere cuts along a curve, then it’s flattened for these facets. Also, technically the facets are a little off because the width of the graph should be increasing as Chroma increases. So even though they show the same Hue values, the arc length of the circle should be getting longer. Therefore the graphs should be getting wider.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_h_l_curve.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: H-L Curve by C cuts</figcaption><p></p>
+<figcaption>xyL: H-L Curve by C cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: H-L by C cuts</figcaption><p></p>
+<figcaption>xyL: H-L by C cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>In the next set, we finally get our nice circles. As we slice through our sphere for different Luminance values, we get our circles in the H-C Planes.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_h_c_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: H-C Plane by L cuts</figcaption><p></p>
+<figcaption>xyL: H-C Plane by L cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: H-C by L cuts</figcaption><p></p>
+<figcaption>xyL: H-C by L cuts</figcaption>
 </figure>
 </div>
 </div>
@@ -909,25 +903,28 @@ xyL Perimeter
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_par_per.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: Parallel-Perpendicular Distances by L cuts</figcaption><p></p>
+<figcaption>xyL: Parallel-Perpendicular Distances by L cuts</figcaption>
 </figure>
 </div>
 <p>The next two images both have the Luminance values along the y-axis but cut the sphere differently. The left side slices the sphere moving out from the center of the HCL color space along the Chroma values. Here we see the nice circles instead of ovals for the images of the H-L cut by C. The right side cuts are made parallel to the C-L Plane and move along a straight line. We’re also getting circles that aren’t a little lop-sided, unlike the C-L cut by H ones.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_per_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: Perpendicular Distance-L by Parallel Distance cuts</figcaption><p></p>
+<figcaption>xyL: Perpendicular Distance-L by Parallel Distance cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="xyl_par_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">xyL: Parallel Distance-L by Perpendicular Distance cuts</figcaption><p></p>
+<figcaption>xyL: Parallel Distance-L by Perpendicular Distance cuts</figcaption>
 </figure>
 </div>
 </div>
@@ -943,7 +940,7 @@ HCL Perimeter
 <hr>
 <p>We’ll move away from the base color along Hue, Chroma, and Luminance for the second main section. So we’ll curve around when changing Hue values.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[HCL Perimeter Code]</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">##------------------</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># H, C, L, perimeter</span></span>
@@ -1099,67 +1096,76 @@ HCL Perimeter
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_info.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: Info</figcaption><p></p>
+<figcaption>HCL: Info</figcaption>
 </figure>
 </div>
 <p>This first set of graphs plots the C-L plane split by Hue values with both the perimeter and where it fits in the color space. We see these nice circles as the perimeter is cut moving along Hue values.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_c_l_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: C-L Plane by H cuts</figcaption><p></p>
+<figcaption>HCL: C-L Plane by H cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: C-L by H cuts</figcaption><p></p>
+<figcaption>HCL: C-L by H cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>The next set shows H-L Curve split by different Chroma values. We’re also getting nice circles, unlike the xyL section.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_h_l_curve.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: H-L Curve by C cuts</figcaption><p></p>
+<figcaption>HCL: H-L Curve by C cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: H-L by C cuts</figcaption><p></p>
+<figcaption>HCL: H-L by C cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>The following graph breaks the trend of nice circles. Here we see teardrop shapes instead. The next few images pull this apart a little more.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_h_c_plane.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: H-C Plane by L cuts</figcaption><p></p>
+<figcaption>HCL: H-C Plane by L cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: H-C by L cuts</figcaption><p></p>
+<figcaption>HCL: H-C by L cuts</figcaption>
 </figure>
 </div>
 </div>
@@ -1169,25 +1175,28 @@ HCL Perimeter
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_par_per.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: Parallel-Perpendicular Distances by L cuts</figcaption><p></p>
+<figcaption>HCL: Parallel-Perpendicular Distances by L cuts</figcaption>
 </figure>
 </div>
 <p>We also get a squished version for the image on the left. There are fewer cuts because the shape doesn’t reach out as far as the image on the right.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_per_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: Perpendicular Distance-L by Parallel Distance cuts</figcaption><p></p>
+<figcaption>HCL: Perpendicular Distance-L by Parallel Distance cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="hcl_par_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">HCL: Parallel Distance-L by Perpendicular Distance cuts</figcaption><p></p>
+<figcaption>HCL: Parallel Distance-L by Perpendicular Distance cuts</figcaption>
 </figure>
 </div>
 </div>
@@ -1204,7 +1213,7 @@ Compare Perimeters
 <hr>
 <p>For the following images, the two sets we previously created are stuck together and then graphed to highlight the differences well.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[Compare Code]</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">##-------</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare</span></span>
@@ -1361,63 +1370,72 @@ Compare Perimeters
 </details>
 </div>
 <p>This section will have graphs with points from the xyL function in blue and HCL in orange. In the left image, we see the lop-sidedness of the xyL points with the circles of the HCL ones. Also, we can easily see that the XYL points stretch out to farther Hue values. Then we have the ovals for xyL and circles for HCL.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Comparison: C-L by L cuts</figcaption><p></p>
+<figcaption>Comparison: C-L by L cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Comparison: H-L by C cuts</figcaption><p></p>
+<figcaption>Comparison: H-L by C cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>Then we can see the circles for xyL and teardrops for HCL.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Comparison: H-C by L cuts</figcaption><p></p>
+<figcaption>Comparison: H-C by L cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_par_per.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Comparison: Parallel-Perpendicular by L cuts</figcaption><p></p>
+<figcaption>Comparison: Parallel-Perpendicular by L cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>Finally, we get a comparison that confirms the HCL function results in squeezing the perimeter, not stretching it vertically.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_per_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Comparison: Perpendicular-L by Parallel cuts</figcaption><p></p>
+<figcaption>Comparison: Perpendicular-L by Parallel cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_par_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Comparison: Parallel-L by Perpendicular cuts</figcaption><p></p>
+<figcaption>Comparison: Parallel-L by Perpendicular cuts</figcaption>
 </figure>
 </div>
 </div>
@@ -1428,14 +1446,14 @@ Compare Perimeters
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_samples.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Comparison: Samples H by L</figcaption><p></p>
+<figcaption>Comparison: Samples H by L</figcaption>
 </figure>
 </div>
 <p>The second comparison has the samples sorted by Hue (like the first comparison), then sorted by Chroma. To me, this looks very different for having the same colors in the same columns. The HCL square is a little grayer at the bottom.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="compare_samples2.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Comparison: Samples H by C</figcaption><p></p>
+<figcaption>Comparison: Samples H by C</figcaption>
 </figure>
 </div>
 <p>For the final two main sections, we’ll change only the Chroma value. First, we’ll move everything closer to the center.</p>
@@ -1449,7 +1467,7 @@ Lower Chroma Value
 <hr>
 <p>We’ll start by changing the base Chroma value from 26 to 16. Everything else is the same.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[Lower Chroma Value Code]</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Try lower value of C ----</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>C_point <span class="ot">&lt;-</span> <span class="dv">16</span></span>
@@ -1526,84 +1544,96 @@ Lower Chroma Value
 </details>
 </div>
 <p>From these graphs, we can see everything is exaggerated. For example, the first two images have similar circles for HCL, but xyL is breaking apart and getting stretched.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_lower_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Lower C: C-L by L cuts</figcaption><p></p>
+<figcaption>Lower C: C-L by L cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_lower_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Lower C: H-L by C cuts</figcaption><p></p>
+<figcaption>Lower C: H-L by C cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>Then we see the circles for xyL, but HCL has a very tight teardrop shape.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_lower_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Lower C: H-C by L cuts</figcaption><p></p>
+<figcaption>Lower C: H-C by L cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_lower_par_per.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Lower C: Parallel-Perpendicular by L cuts</figcaption><p></p>
+<figcaption>Lower C: Parallel-Perpendicular by L cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>The same trend continues with the exaggeration for HCL.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_lower_per_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Lower C: Perpendicular-L by Parallel cuts</figcaption><p></p>
+<figcaption>Lower C: Perpendicular-L by Parallel cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_lower_par_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Lower C: Parallel-L by Perpendicular cuts</figcaption><p></p>
+<figcaption>Lower C: Parallel-L by Perpendicular cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>Finally, we can compare the sampled colors directly.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_lower_samples.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Lower C: Samples H by L</figcaption><p></p>
+<figcaption>Lower C: Samples H by L</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_lower_samples2.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Lower C: Samples H by C</figcaption><p></p>
+<figcaption>Lower C: Samples H by C</figcaption>
 </figure>
 </div>
 </div>
@@ -1619,7 +1649,7 @@ Higher Chroma Value
 <hr>
 <p>For the last main section, we’ll set Chroma to 75.</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>[Higher Chroma Value Code]</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Try higher value of C ----</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>C_point <span class="ot">&lt;-</span> <span class="dv">75</span></span>
@@ -1696,84 +1726,96 @@ Higher Chroma Value
 </details>
 </div>
 <p>This time, the results have a different shape. Now, HCL stretches out farther than xyL (but still in a circle).</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_higher_c_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Higher C: C-L by L cuts</figcaption><p></p>
+<figcaption>Higher C: C-L by L cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_higher_h_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Higher C: H-L by C cuts</figcaption><p></p>
+<figcaption>Higher C: H-L by C cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>The graphs from above show the stretching well. Instead of the teardrop shape, we now have ovals. At some point in increasing the Chroma value, the HCL function surpasses xyL.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_higher_h_c.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Higher C: H-C by L cuts</figcaption><p></p>
+<figcaption>Higher C: H-C by L cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_higher_par_per.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Higher C: Parallel-Perpendicular by L cuts</figcaption><p></p>
+<figcaption>Higher C: Parallel-Perpendicular by L cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>We see the same trend continue here.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_higher_per_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Higher C: Perpendicular-L by Parallel cuts</figcaption><p></p>
+<figcaption>Higher C: Perpendicular-L by Parallel cuts</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_higher_par_l.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Higher C: Parallel-L by Perpendicular cuts</figcaption><p></p>
+<figcaption>Higher C: Parallel-L by Perpendicular cuts</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <p>And finally, we can compare the examples again.</p>
-<div class="quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_higher_samples.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Higher C: Samples H by L</figcaption><p></p>
+<figcaption>Higher C: Samples H by L</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="C_higher_samples2.jpeg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Higher C: Samples H by C</figcaption><p></p>
+<figcaption>Higher C: Samples H by C</figcaption>
 </figure>
 </div>
 </div>
@@ -1817,12 +1859,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1831,17 +1876,78 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/www\.willtybrad\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1851,8 +1957,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1864,50 +1979,299 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/www\.willtybrad\.com/);
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
 </script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">Copyright 2022, William Tyler Bradley</div>
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright 2022, William Tyler Bradley</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
   </div>
 </footer>
+
 
 
 

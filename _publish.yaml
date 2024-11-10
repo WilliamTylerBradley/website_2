@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: 65fb087c-bfa1-4b69-8b5e-93a2f4013ae6
+      url: "https://williamtylerbradley.com"

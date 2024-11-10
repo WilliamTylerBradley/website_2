@@ -3,18 +3,18 @@
 // use default as the base
 $theme: "default" !default;
 
-$primary: #263121 !default;
-$secondary: #353E31 !default;
+$primary: #FCFFFB !default;
+$secondary: #FCFFFB !default;
 
-$body-bg: #FEFFFB !default;
-$body-color: #1E271A !default;
-$link-color: #85B258 !default;
+$body-bg: #1E271A !default;
+$body-color: #FCFFFB !default;
+$link-color: #CAD3C1 !default;
 
 $navbar-bg: #263121 !default;
 $navbar-fg: #FCFFFB !default;
 
-$footer-bg: #FCFFFB !default;
-$footer-fg: #1E271A !default;
+$footer-bg: #1E271A !default;
+$footer-fg: #FCFFFB !default;
 
 $font-family-monospace: Courier New !default;
 
@@ -37,7 +37,7 @@ $font-family-monospace: Courier New !default;
 /* Lines on home page between posts */
 div.quarto-post {
   border-bottom: 1px solid;
-  border-color: #263121;
+  border-color: #85B258;
   margin-bottom: 1em;
 }
 
@@ -63,7 +63,7 @@ div.quarto-post {
 .figure-caption {
   text-align: center;
   margin-top: 0;
-  color: #1E271A;
+  color: #CAD3C1;
 }
 
 /* scale thumbnail image */

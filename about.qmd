@@ -10,15 +10,10 @@ about:
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/williamtylerbradley/
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/w_tyler_bradley
 ---
 
 I go by my middle name, Tyler.
 
 Data scientist located in Asheville, NC.
-
-Currently working in health care.
 
 Having fun with generative art.
