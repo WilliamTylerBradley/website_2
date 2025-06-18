@@ -67,11 +67,17 @@ figcaption {
 }
 
 /* scale thumbnail image */
+/* also line up top of thumbnail with title text */
 div.quarto-post .thumbnail img {
   display: block;
   margin-left: auto;
   height: 200px;
   width: 200px;
+  margin-bottom: 1rem;
+}
+
+div.quarto-post .thumbnail p {
+  margin-bottom: 0px;
 }
 
 /* pink for folded code */
