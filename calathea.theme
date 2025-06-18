@@ -9,8 +9,7 @@
         },
         "Other": {
             "text-color": "#FCFFFB"
-        },
-        
+        },        
         "Attribute": {
             "text-color": "#FCFFFB"
         },
@@ -66,7 +65,7 @@
             "text-color": "#C29CB7"
         },
         "Import": {
-            "text-color": "#FCFFFB"
+            "text-color": "#FFDFE5"
         },
         "Char": {
             "text-color": "#E9F5B9"

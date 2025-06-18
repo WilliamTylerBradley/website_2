@@ -10,7 +10,1526 @@
 <atom:link href="https://www.williamtylerbradley.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Website for W T Bradley</description>
 <generator>quarto-1.6.32</generator>
-<lastBuildDate>Thu, 15 Sep 2022 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 11 Nov 2024 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Poisson Disk Sampling</title>
+  <link>https://www.williamtylerbradley.com/posts/2024-11-11-poisson-disk-sampling/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<hr>
+<center>
+<h2 class="anchored">
+Introduction
+</h2>
+</center>
+<hr>
+<p>This post goes through the code for a Python Poisson Disk Sampling package. The code comes from <a href="https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf">Robert Bridson’s algorithm</a>. The posts from <a href="https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm">Sighack</a> and <a href="https://www.jasondavies.com/poisson-disc/">Jason Davies</a> are also helpful resources to have.</p>
+<p>Basically, we’ll start with one point then add another point within certain bounds from that one. We’ll continue adding new points off of these points and so on as long as the new points aren’t too close to any other point. When no new points can be added, the algorithm is done.</p>
+<p>The points in this code will form a repeating pattern if allowed.</p>
+<br>
+<hr>
+<center>
+<h2 class="anchored">
+Code
+</h2>
+</center>
+<hr>
+<p>We’ll start by importing the libraries.</p>
+<div id="8fd73aa2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> random</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> copy</span></code></pre></div>
+</div>
+<p>Then we’ll create a <code>Point</code> class. It’s basically just a holder for the location of a single point.</p>
+<div id="0f8119b3" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Point:</span>
+<span id="cb2-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Class for a singluar point</span></span>
+<span id="cb2-4"></span>
+<span id="cb2-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Attributes</span></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    ----------</span></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    order: int</span></span>
+<span id="cb2-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        The order the point was inserted into the class list</span></span>
+<span id="cb2-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    x: float</span></span>
+<span id="cb2-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        x-location of the point</span></span>
+<span id="cb2-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    y: float</span></span>
+<span id="cb2-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        y-location of the point</span></span>
+<span id="cb2-13"></span>
+<span id="cb2-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb2-15"></span>
+<span id="cb2-16">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>,</span>
+<span id="cb2-17">                 order: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>,</span>
+<span id="cb2-18">                 x: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>,</span>
+<span id="cb2-19">                 y: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb2-20">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb2-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Constructs a point</span></span>
+<span id="cb2-22"></span>
+<span id="cb2-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Parameters</span></span>
+<span id="cb2-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        ----------</span></span>
+<span id="cb2-25"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        order: int</span></span>
+<span id="cb2-26"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            The order the point was inserted into the class list</span></span>
+<span id="cb2-27"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        x: float</span></span>
+<span id="cb2-28"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            x-location of the point</span></span>
+<span id="cb2-29"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        y: float</span></span>
+<span id="cb2-30"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            y-location of the point</span></span>
+<span id="cb2-31"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb2-32">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.order <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> order</span>
+<span id="cb2-33">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x</span>
+<span id="cb2-34">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> y</span>
+<span id="cb2-35"></span>
+<span id="cb2-36">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__repr__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>:</span>
+<span id="cb2-37">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""repr for Point class"""</span></span>
+<span id="cb2-38">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Point(order=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>order<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, x=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, y=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)'</span></span>
+<span id="cb2-39"></span>
+<span id="cb2-40">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__str__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>:</span>
+<span id="cb2-41">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""str for Point class"""</span></span>
+<span id="cb2-42">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>order<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span></span>
+<span id="cb2-43"></span>
+<span id="cb2-44">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> point_information(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>:</span>
+<span id="cb2-45">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""Returns the Point information as a list"""</span></span>
+<span id="cb2-46">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> [<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.order, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y]</span></code></pre></div>
+</div>
+<p>Now, we’ll start to build up the main code section.</p>
+<p>First is the <code>PoissonDiskSampling</code> class. This will hold the main code for the algorithm.</p>
+<p>We’ll first start out with the <code>__init__</code> method to set up the basic attributes. We’ll need to keep track of:</p>
+<ul>
+<li><code>radius</code> to know how far to search around a point. This determines how close points are together.</li>
+<li><code>grid_height</code> and <code>grid_width</code> to know how big of an area to fill.</li>
+<li><code>sample_limit</code> to know when to stop trying for new points. This can affect how filled in the area gets.</li>
+<li><code>seed</code> to make it reproducible.</li>
+<li><code>initial_point</code> for a starting point, if one is provided.</li>
+</ul>
+<p>These will be used to build the backgroud grid, <code>grid</code>. This is used to speed up comparing a potential point to the current list of accepted points, <code>points</code>. Finally, there will be a very similar list of points that are kept to base potential points, <code>active_list</code>.</p>
+<div id="781c0cbb" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> PoissonDiskSampling:</span>
+<span id="cb3-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Class for poisson disk sampling points</span></span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Attributes</span></span>
+<span id="cb3-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    ----------</span></span>
+<span id="cb3-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    points: list</span></span>
+<span id="cb3-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        The main list of points</span></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb3-10">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>,</span>
+<span id="cb3-11">                 radius: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>,</span>
+<span id="cb3-12">                 grid_width: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>,</span>
+<span id="cb3-13">                 grid_height: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>,</span>
+<span id="cb3-14">                 sample_limit: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>,</span>
+<span id="cb3-15">                 seed: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>,</span>
+<span id="cb3-16">                 inital_point: Point <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb3-17">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb3-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Constructor for the poisson disk sample</span></span>
+<span id="cb3-19"></span>
+<span id="cb3-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Parameters</span></span>
+<span id="cb3-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        ----------</span></span>
+<span id="cb3-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        radius: float</span></span>
+<span id="cb3-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            The minimum distance between points</span></span>
+<span id="cb3-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        grid_width: float</span></span>
+<span id="cb3-25"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            The width of the grid</span></span>
+<span id="cb3-26"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        grid_height: float</span></span>
+<span id="cb3-27"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            The height of the grid</span></span>
+<span id="cb3-28"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        sample_limit: int</span></span>
+<span id="cb3-29"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            The number of times to try to find a new sample point for</span></span>
+<span id="cb3-30"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            each attempt with an active point. Decreasing will speed up</span></span>
+<span id="cb3-31"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            the process, but increasing will fill in more points.</span></span>
+<span id="cb3-32"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        seed: int</span></span>
+<span id="cb3-33"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Seed for the random number generator, if needed.</span></span>
+<span id="cb3-34"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        inital_point: Point</span></span>
+<span id="cb3-35"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Inital point to use. If one is not provided, then one is</span></span>
+<span id="cb3-36"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            choosen at random. This is mostly used for testing.</span></span>
+<span id="cb3-37"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb3-38">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> radius</span>
+<span id="cb3-39">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> grid_width</span>
+<span id="cb3-40">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> grid_height</span>
+<span id="cb3-41">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.sample_limit <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sample_limit</span>
+<span id="cb3-42"></span>
+<span id="cb3-43">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># These are called often in the code. So they are pre-calculated</span></span>
+<span id="cb3-44">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.cell_size: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> math.sqrt(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-45">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.bounds: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.ceil(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.radius<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.cell_size)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2</span></span>
+<span id="cb3-46">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.wrap_cutoff <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.bounds<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-47">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_width: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.ceil(</span>
+<span id="cb3-48">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.cell_size)</span>
+<span id="cb3-49">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_height: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.ceil(</span>
+<span id="cb3-50">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.cell_size)</span>
+<span id="cb3-51">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.radius_2: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.radius)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-52"></span>
+<span id="cb3-53">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># These hold the points, one as a list and one as a 2d array.</span></span>
+<span id="cb3-54">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># The grid has room to hold duplicated points on the edges to</span></span>
+<span id="cb3-55">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># allow checking for point distance when the pattern repeats.</span></span>
+<span id="cb3-56">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.points: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb3-57">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [</span>
+<span id="cb3-58">            [<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.bounds<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)]</span>
+<span id="cb3-59">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.bounds<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)]</span>
+<span id="cb3-60"></span>
+<span id="cb3-61">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># This is list of point to sample from until they are checked</span></span>
+<span id="cb3-62">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#  for the self.sample_limit attribute</span></span>
+<span id="cb3-63">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.active_list: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span></code></pre></div>
+</div>
+<p>We can finish up the rest of the <code>__init__</code> method that will sample all the points. It starts by determining the first point. Then uses a while loop to sample new points until all of the accepted points have been checked.</p>
+<div id="a69ad0cb" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Set up the start</span></span>
+<span id="cb4-2">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> seed <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb4-3">            random.seed(seed)</span>
+<span id="cb4-4"></span>
+<span id="cb4-5">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> inital_point <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">is</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb4-6">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.insert_point(inital_point)</span>
+<span id="cb4-7">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb4-8">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.insert_point(</span>
+<span id="cb4-9">                Point(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb4-10">                      random.random() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_width,</span>
+<span id="cb4-11">                      random.random() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_height))</span>
+<span id="cb4-12"></span>
+<span id="cb4-13">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Continue until all points are checked</span></span>
+<span id="cb4-14">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Randomly pull a point that hasn't been removed each time</span></span>
+<span id="cb4-15">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.active_list:</span>
+<span id="cb4-16">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.sample(random.randrange(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.active_list)))</span></code></pre></div>
+</div>
+<p>In the previous code block, the <code>sample</code> method is called in a while loop. We’ll now build up two other methods, <code>insert_point</code> and <code>check_neighbors</code>, to then get to <code>sample</code>.</p>
+<p>The <code>insert_point</code> method takes a new point and inserts it into the <code>grid</code> and <code>points</code> list. The main difficulty is in checking the edges to have points repeat if needed.</p>
+<div id="b4e923ff" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> insert_point(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>,</span>
+<span id="cb5-2">                     p: Point) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb5-3">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb5-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Inserts a new point into the self.points list and the self.grid</span></span>
+<span id="cb5-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        array. If the point is near the edge, extra points will be added</span></span>
+<span id="cb5-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        to the grid so the pattern can repeat itself without having</span></span>
+<span id="cb5-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        points too close to each other.</span></span>
+<span id="cb5-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb5-9">        cell_x: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.floor(p.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.cell_size) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.bounds</span>
+<span id="cb5-10">        cell_y: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.floor(p.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.cell_size) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.bounds</span>
+<span id="cb5-11"></span>
+<span id="cb5-12">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid[cell_x][cell_y] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p</span>
+<span id="cb5-13">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.points.append(p.point_information())</span>
+<span id="cb5-14"></span>
+<span id="cb5-15">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># If on the edges, loop around</span></span>
+<span id="cb5-16">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check along sides</span></span>
+<span id="cb5-17">        flip_x: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb5-18">        cell_x_wrap: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span></span>
+<span id="cb5-19">        x_wrap: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span></span>
+<span id="cb5-20">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> cell_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.wrap_cutoff:</span>
+<span id="cb5-21">            flip_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb5-22">            cell_x_wrap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> cell_x</span>
+<span id="cb5-23">            x_wrap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_width</span>
+<span id="cb5-24">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> cell_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_width:</span>
+<span id="cb5-25">            flip_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb5-26">            cell_x_wrap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> cell_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_width</span>
+<span id="cb5-27">            x_wrap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_width</span>
+<span id="cb5-28"></span>
+<span id="cb5-29">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> flip_x:</span>
+<span id="cb5-30">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid[cell_x_wrap][cell_y] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Point(p.order, x_wrap, p.y)</span>
+<span id="cb5-31"></span>
+<span id="cb5-32">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check along top and bottom</span></span>
+<span id="cb5-33">        flip_y: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb5-34">        cell_y_wrap: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span></span>
+<span id="cb5-35">        y_wrap: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span></span>
+<span id="cb5-36">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> cell_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.wrap_cutoff:</span>
+<span id="cb5-37">            flip_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb5-38">            cell_y_wrap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> cell_y</span>
+<span id="cb5-39">            y_wrap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_height</span>
+<span id="cb5-40">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> cell_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_height:</span>
+<span id="cb5-41">            flip_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb5-42">            cell_y_wrap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> cell_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_cell_height</span>
+<span id="cb5-43">            y_wrap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid_height</span>
+<span id="cb5-44"></span>
+<span id="cb5-45">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> flip_y:</span>
+<span id="cb5-46">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid[cell_x][cell_y_wrap] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Point(p.order, p.x, y_wrap)</span>
+<span id="cb5-47"></span>
+<span id="cb5-48">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check corners</span></span>
+<span id="cb5-49">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> flip_x <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> flip_y:</span>
+<span id="cb5-50">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid[cell_x_wrap][cell_y_wrap] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Point(</span>
+<span id="cb5-51">                p.order, x_wrap, y_wrap)</span>
+<span id="cb5-52"></span>
+<span id="cb5-53">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Insert into active list</span></span>
+<span id="cb5-54">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.active_list.append(p)</span></code></pre></div>
+</div>
+<p>The <code>check_neighbors</code> method uses the <code>grid</code> to see if the new points is too close to any other points.</p>
+<div id="59a263fa" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> check_neighbors(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>,</span>
+<span id="cb6-2">                        x: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>,</span>
+<span id="cb6-3">                        y: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">bool</span>:</span>
+<span id="cb6-4">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""Checks if there are any points too close a location."""</span></span>
+<span id="cb6-5">        cell_x: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.floor(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.cell_size) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.bounds</span>
+<span id="cb6-6">        cell_y: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.floor(y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.cell_size) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.bounds</span>
+<span id="cb6-7"></span>
+<span id="cb6-8">        column: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span></span>
+<span id="cb6-9">        row: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span></span>
+<span id="cb6-10">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> column <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(cell_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, cell_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>):</span>
+<span id="cb6-11">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(cell_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, cell_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>):</span>
+<span id="cb6-12">                neighbor: Point <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.grid[column][row]</span>
+<span id="cb6-13">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> neighbor:</span>
+<span id="cb6-14">                    dx: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> neighbor.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> x</span>
+<span id="cb6-15">                    dy: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> neighbor.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y</span>
+<span id="cb6-16">                    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (dx<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> dy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.radius_2:</span>
+<span id="cb6-17">                        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb6-18"></span>
+<span id="cb6-19">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span></code></pre></div>
+</div>
+<p>The <code>sample</code> method takes in an index for a point from the <code>active_list</code>, pulls a new point around that point, and then checks to see if it’s good with <code>check_neighbors</code>. If it is good, then it calls <code>insert_point</code>. If enough attempts are made without adding a new point, the first point is removed from <code>active_list</code>.</p>
+<p>Finally, the <code>sample_points</code> method pulls everything together and repeated the points pattern if requested.</p>
+<div id="c5186e26" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> sample_points(radius: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>,</span>
+<span id="cb7-2">                  grid_width: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>,</span>
+<span id="cb7-3">                  grid_height: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>,</span>
+<span id="cb7-4">                  sample_limit: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>,</span>
+<span id="cb7-5">                  repeat_percentage: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">.25</span>,</span>
+<span id="cb7-6">                  seed: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>,</span>
+<span id="cb7-7">                  inital_point: Point <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb7-8">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb7-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Creates a list of points from poisson disk sampling with optional</span></span>
+<span id="cb7-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    repeats along the edges.</span></span>
+<span id="cb7-11"></span>
+<span id="cb7-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Parameters</span></span>
+<span id="cb7-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    ----------</span></span>
+<span id="cb7-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    radius: float</span></span>
+<span id="cb7-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        The minimum distance between points</span></span>
+<span id="cb7-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    grid_width: float</span></span>
+<span id="cb7-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        The width of the grid</span></span>
+<span id="cb7-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    grid_height: float</span></span>
+<span id="cb7-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        The height of the grid</span></span>
+<span id="cb7-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    sample_limit: int</span></span>
+<span id="cb7-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        The number of times to try to find a new sample point for</span></span>
+<span id="cb7-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        each attempt with an active point. Decreasing will speed up</span></span>
+<span id="cb7-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        the process, but increasing will fill in more points.</span></span>
+<span id="cb7-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    repeat_percentage: float</span></span>
+<span id="cb7-25"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        How much to repeat points around the borders. 0 for no repeats</span></span>
+<span id="cb7-26"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        1 for full repeats.</span></span>
+<span id="cb7-27"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    seed: int</span></span>
+<span id="cb7-28"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Seed for the random number generator, if needed.</span></span>
+<span id="cb7-29"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    inital_point: Point</span></span>
+<span id="cb7-30"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Inital point to use. If one is not provided, then one is</span></span>
+<span id="cb7-31"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        choosen at random. This is mostly used for testing.</span></span>
+<span id="cb7-32"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb7-33">    samp: PoissonDiskSampling <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PoissonDiskSampling(radius<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>radius,</span>
+<span id="cb7-34">                                                    grid_width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>grid_width,</span>
+<span id="cb7-35">                                                    grid_height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>grid_height,</span>
+<span id="cb7-36">                                                    sample_limit<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>sample_limit,</span>
+<span id="cb7-37">                                                    seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>seed,</span>
+<span id="cb7-38">                                                    inital_point<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>inital_point)</span>
+<span id="cb7-39">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> repeat_percentage <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb7-40">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> samp.points</span>
+<span id="cb7-41"></span>
+<span id="cb7-42">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Find boundaries from repeat_percentage</span></span>
+<span id="cb7-43">    width_min: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (grid_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> repeat_percentage)</span>
+<span id="cb7-44">    width_max: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> grid_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (grid_width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> repeat_percentage)</span>
+<span id="cb7-45">    height_min: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (grid_height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> repeat_percentage)</span>
+<span id="cb7-46">    height_max: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> grid_height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (grid_height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> repeat_percentage)</span>
+<span id="cb7-47"></span>
+<span id="cb7-48">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Fill list with base points and copies for repetition</span></span>
+<span id="cb7-49">    points: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> copy.deepcopy(samp.points)</span>
+<span id="cb7-50"></span>
+<span id="cb7-51">    column: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span></span>
+<span id="cb7-52">    row: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span></span>
+<span id="cb7-53">    p: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span></span>
+<span id="cb7-54">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> column <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>):</span>
+<span id="cb7-55">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> row <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>):</span>
+<span id="cb7-56">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> column <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">or</span> row <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb7-57">                rep_points: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> copy.deepcopy(samp.points)</span>
+<span id="cb7-58">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> rep_points:</span>
+<span id="cb7-59">                    p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> column <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> grid_width</span>
+<span id="cb7-60">                    p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> row <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> grid_height</span>
+<span id="cb7-61">                <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check if the repeated points are in bounds</span></span>
+<span id="cb7-62">                rep_points <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [p <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> rep_points</span>
+<span id="cb7-63">                              <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> width_min</span>
+<span id="cb7-64">                              <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> width_max</span>
+<span id="cb7-65">                              <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> height_min</span>
+<span id="cb7-66">                              <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> height_max]</span>
+<span id="cb7-67">                points.extend(rep_points)</span>
+<span id="cb7-68"></span>
+<span id="cb7-69">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> points</span></code></pre></div>
+</div>
+<p>Here’s some example code. The repetition of points is visible here.</p>
+<div id="44641baf" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb8-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb8-3"></span>
+<span id="cb8-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> PoissonDiskSampling <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pds</span>
+<span id="cb8-5"></span>
+<span id="cb8-6">height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span></span>
+<span id="cb8-7">width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span></span>
+<span id="cb8-8">radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb8-9"></span>
+<span id="cb8-10">samp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pds.sample_points(radius, width, height, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb8-11">points <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array(samp)</span>
+<span id="cb8-12"></span>
+<span id="cb8-13">fig, ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots()</span>
+<span id="cb8-14">ax.scatter(points[:, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], points[:, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>])</span>
+<span id="cb8-15"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> points:</span>
+<span id="cb8-16">    ax.annotate(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]), (p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>]))</span>
+<span id="cb8-17">ax.set_aspect(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'equal'</span>)</span>
+<span id="cb8-18">plt.show()</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.williamtylerbradley.com/posts/2024-11-11-poisson-disk-sampling/base_img.png" class="img-fluid figure-img"></p>
+<figcaption>Example</figcaption>
+</figure>
+</div>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Generative Art</category>
+  <guid>https://www.williamtylerbradley.com/posts/2024-11-11-poisson-disk-sampling/</guid>
+  <pubDate>Mon, 11 Nov 2024 05:00:00 GMT</pubDate>
+  <media:content url="https://www.williamtylerbradley.com/posts/2024-11-11-poisson-disk-sampling/base_img.png" medium="image" type="image/png" height="139" width="144"/>
+</item>
 <item>
   <title>Generative Art Twitter Bot with R and GitHub Actions</title>
   <link>https://www.williamtylerbradley.com/posts/2022-09-15-generative-art-twitter-bot-with-r-and-github-actions/</link>
