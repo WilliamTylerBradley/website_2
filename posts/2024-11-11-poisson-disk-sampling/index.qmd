@@ -346,6 +346,13 @@ def sample_points(radius: float,
     return points
 ```
 
+A package for the code can be found [here](https://github.com/WilliamTylerBradley/poisson_disk_sampling).
+
+```{python package_install}
+# install the package
+pip install git+https://github.com/WilliamTylerBradley/poisson_disk_sampling
+```
+
 Here's some example code. The repetition of points is visible here.
 
 ```{python example}

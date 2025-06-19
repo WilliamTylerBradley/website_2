@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-56185efd0470ba46c0ac2ee310b4564f.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-df51b626b9df46f65819e3c6a8d1730b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-9407df0dbcad1406fa4a8b9c9a52ae76.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -229,13 +229,13 @@ Code
 </center>
 <hr>
 <p>We’ll start by importing the libraries.</p>
-<div id="8fd73aa2" class="cell" data-execution_count="1">
+<div id="abdbc987" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we’ll create a <code>Point</code> class. It’s basically just a holder for the location of a single point.</p>
-<div id="0f8119b3" class="cell" data-execution_count="2">
+<div id="5b28c184" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Class for a singluar point</span></span>
@@ -283,18 +283,17 @@ Code
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Returns the Point information as a list"""</span></span>
 <span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [<span class="va">self</span>.order, <span class="va">self</span>.x, <span class="va">self</span>.y]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now, we’ll start to build up the main code section.</p>
-<p>First is the <code>PoissonDiskSampling</code> class. This will hold the main code for the algorithm.</p>
-<p>We’ll first start out with the <code>__init__</code> method to set up the basic attributes. We’ll need to keep track of:</p>
+<p>Now, we’ll start to build up the main code section. First is the <code>PoissonDiskSampling</code> class. This will hold the main code for the algorithm. We’ll start out with the <code>__init__</code> method to set up the basic attributes.</p>
+<p>We’ll need to keep track of:</p>
 <ul>
 <li><code>radius</code> to know how far to search around a point. This determines how close points are together.</li>
 <li><code>grid_height</code> and <code>grid_width</code> to know how big of an area to fill.</li>
 <li><code>sample_limit</code> to know when to stop trying for new points. This can affect how filled in the area gets.</li>
 <li><code>seed</code> to make it reproducible.</li>
-<li><code>initial_point</code> for a starting point, if one is provided.</li>
+<li><code>initial_point</code> for an optional starting point.</li>
 </ul>
-<p>These will be used to build the backgroud grid, <code>grid</code>. This is used to speed up comparing a potential point to the current list of accepted points, <code>points</code>. Finally, there will be a very similar list of points that are kept to base potential points, <code>active_list</code>.</p>
-<div id="781c0cbb" class="cell" data-execution_count="3">
+<p>These attributes will be used to build the backgroud grid, <code>grid</code>. This is used to speed up comparing a potential point to the current list of accepted points, <code>points</code>. Finally, there will be a very similar list of points that are kept to anchor potential points, <code>active_list</code>.</p>
+<div id="5cdecab8" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PoissonDiskSampling:</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Class for poisson disk sampling points</span></span>
@@ -360,8 +359,8 @@ Code
 <span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.active_list: <span class="bu">list</span> <span class="op">=</span> []</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can finish up the rest of the <code>__init__</code> method that will sample all the points. It starts by determining the first point. Then uses a while loop to sample new points until all of the accepted points have been checked.</p>
-<div id="a69ad0cb" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the start</span></span>
+<div id="0e401f20" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set up the start</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> seed <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>            random.seed(seed)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -380,7 +379,7 @@ Code
 </div>
 <p>In the previous code block, the <code>sample</code> method is called in a while loop. We’ll now build up two other methods, <code>insert_point</code> and <code>check_neighbors</code>, to then get to <code>sample</code>.</p>
 <p>The <code>insert_point</code> method takes a new point and inserts it into the <code>grid</code> and <code>points</code> list. The main difficulty is in checking the edges to have points repeat if needed.</p>
-<div id="b4e923ff" class="cell" data-execution_count="5">
+<div id="b622cf71" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> insert_point(<span class="va">self</span>,</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     p: Point) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
@@ -437,7 +436,7 @@ Code
 <span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.active_list.append(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>check_neighbors</code> method uses the <code>grid</code> to see if the new points is too close to any other points.</p>
-<div id="59a263fa" class="cell" data-execution_count="6">
+<div id="83a25ddb" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> check_neighbors(<span class="va">self</span>,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                        x: <span class="bu">float</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                        y: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
@@ -460,7 +459,7 @@ Code
 </div>
 <p>The <code>sample</code> method takes in an index for a point from the <code>active_list</code>, pulls a new point around that point, and then checks to see if it’s good with <code>check_neighbors</code>. If it is good, then it calls <code>insert_point</code>. If enough attempts are made without adding a new point, the first point is removed from <code>active_list</code>.</p>
 <p>Finally, the <code>sample_points</code> method pulls everything together and repeated the points pattern if requested.</p>
-<div id="c5186e26" class="cell" data-execution_count="7">
+<div id="b93f10fb" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_points(radius: <span class="bu">float</span>,</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                  grid_width: <span class="bu">float</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                  grid_height: <span class="bu">float</span>,</span>
@@ -531,26 +530,29 @@ Code
 <span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> points</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>A package for the code can be found <a href="https://github.com/WilliamTylerBradley/poisson_disk_sampling">here</a>.</p>
+<div id="d32a4d10" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the package</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>WilliamTylerBradley<span class="op">/</span>poisson_disk_sampling</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Here’s some example code. The repetition of points is visible here.</p>
-<div id="44641baf" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> PoissonDiskSampling <span class="im">as</span> pds</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>height <span class="op">=</span> <span class="dv">20</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">30</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>radius <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>samp <span class="op">=</span> pds.sample_points(radius, width, height, seed<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> np.array(samp)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>ax.scatter(points[:, <span class="dv">1</span>], points[:, <span class="dv">2</span>])</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> points:</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    ax.annotate(<span class="bu">int</span>(p[<span class="dv">0</span>]), (p[<span class="dv">1</span>], p[<span class="dv">2</span>]))</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c697d0ce" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> PoissonDiskSampling <span class="im">as</span> pds</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>height <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>radius <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>samp <span class="op">=</span> pds.sample_points(radius, width, height, seed<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> np.array(samp)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ax.scatter(points[:, <span class="dv">1</span>], points[:, <span class="dv">2</span>])</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">'equal'</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1140,7 +1142,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
- Copyright 2024, William Tyler Bradley
+ Copyright 2025, William Tyler Bradley
   </li>  
 </ul>
     </div>
