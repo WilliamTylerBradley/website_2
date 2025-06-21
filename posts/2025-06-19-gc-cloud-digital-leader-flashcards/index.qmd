@@ -1,0 +1,86 @@
+---
+title: "Google Cloud - Cloud Digital Leader Certification Flashcards"
+description: "Flashcards for the Cloud Digital Leader Certification"
+date: "2025-06-21"
+categories: [Google Cloud]
+image: "gcp_dl_fc.png"
+execute: 
+  eval: false
+---
+
+I recently passed the Cloud Digital Leader certification from Google. I made a set of flash cards for it and posted them to GitHub. Here's the [link](https://github.com/WilliamTylerBradley/gcp_digital_leader_fc). They can be imported into [Anki](https://apps.ankiweb.net/).
+
+They could be improved. I wish I had made them more like the exam questions. For example, I have: 
+
+::: {.grid}
+::: {.g-col-2}
+:::
+::: {.g-col-8}
+
+| Latency |
+|---------|
+| A measure of how long it takes a particular part of a system to return a result. It's important because it directly affects the user experience, changes could indicate emerging issues. It's values might be tied to capacity demands, and it can be used to measure system improvements. |
+
+:::
+::: {.g-col-2}
+:::
+:::
+
+<br>
+I should have broken this up into:
+
+::: {.grid}
+::: {.g-col-2}
+:::
+::: {.g-col-8}
+
+| What is latency? |
+|---------|
+| A measure of how long it takes a particular part of a system to return a result. |
+
+:::
+::: {.g-col-2}
+:::
+:::
+
+::: {.grid}
+::: {.g-col-2}
+:::
+::: {.g-col-8}
+
+| What do you measure to test long it takes a particular part of a system to return a result? |
+|---------|
+| Latency |
+
+:::
+::: {.g-col-2}
+:::
+:::
+
+::: {.grid}
+::: {.g-col-2}
+:::
+::: {.g-col-8}
+
+| Why is latecy important? |
+|---------|
+| Because it directly affects the user experience, changes could indicate emerging issues |
+
+:::
+::: {.g-col-2}
+:::
+:::
+
+::: {.grid}
+::: {.g-col-2}
+:::
+::: {.g-col-8}
+
+| What is measuring latecy useful for? |
+|---------|
+| It's values might be tied to capacity demands, and it can be used to measure system improvements. |
+
+:::
+::: {.g-col-2}
+:::
+:::

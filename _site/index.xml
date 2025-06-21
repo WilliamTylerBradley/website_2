@@ -10,7 +10,153 @@
 <atom:link href="https://www.williamtylerbradley.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Website for W T Bradley</description>
 <generator>quarto-1.6.32</generator>
-<lastBuildDate>Mon, 11 Nov 2024 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 21 Jun 2025 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Google Cloud - Cloud Digital Leader Certification Flashcards</title>
+  <link>https://www.williamtylerbradley.com/posts/2025-06-19-gc-cloud-digital-leader-flashcards/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I recently passed the Cloud Digital Leader certification from Google. I made a set of flash cards for it and posted them to GitHub. Here’s the <a href="https://github.com/WilliamTylerBradley/gcp_digital_leader_fc">link</a>. They can be imported into <a href="https://apps.ankiweb.net/">Anki</a>.</p>
+<p>They could be improved. I wish I had made them more like the exam questions. For example, I have:</p>
+<div class="grid">
+<div class="g-col-2">
+
+</div>
+<div class="g-col-8">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Latency</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A measure of how long it takes a particular part of a system to return a result. It’s important because it directly affects the user experience, changes could indicate emerging issues. It’s values might be tied to capacity demands, and it can be used to measure system improvements.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="g-col-2">
+
+</div>
+</div>
+<p><br> I should have broken this up into:</p>
+<div class="grid">
+<div class="g-col-2">
+
+</div>
+<div class="g-col-8">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What is latency?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A measure of how long it takes a particular part of a system to return a result.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="g-col-2">
+
+</div>
+</div>
+<div class="grid">
+<div class="g-col-2">
+
+</div>
+<div class="g-col-8">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What do you measure to test long it takes a particular part of a system to return a result?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Latency</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="g-col-2">
+
+</div>
+</div>
+<div class="grid">
+<div class="g-col-2">
+
+</div>
+<div class="g-col-8">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Why is latecy important?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Because it directly affects the user experience, changes could indicate emerging issues</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="g-col-2">
+
+</div>
+</div>
+<div class="grid">
+<div class="g-col-2">
+
+</div>
+<div class="g-col-8">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 100%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What is measuring latecy useful for?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>It’s values might be tied to capacity demands, and it can be used to measure system improvements.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="g-col-2">
+
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>Google Cloud</category>
+  <guid>https://www.williamtylerbradley.com/posts/2025-06-19-gc-cloud-digital-leader-flashcards/</guid>
+  <pubDate>Sat, 21 Jun 2025 04:00:00 GMT</pubDate>
+  <media:content url="https://www.williamtylerbradley.com/posts/2025-06-19-gc-cloud-digital-leader-flashcards/gcp_dl_fc.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
 <item>
   <title>Poisson Disk Sampling</title>
   <link>https://www.williamtylerbradley.com/posts/2024-11-11-poisson-disk-sampling/</link>
