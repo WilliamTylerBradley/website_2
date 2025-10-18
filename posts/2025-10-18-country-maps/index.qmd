@@ -1,7 +1,7 @@
 ---
 title: "Country Maps"
 description: "A map of each country for flash cards"
-date: "2025-10-16"
+date: "2025-10-18"
 categories: [Python]
 image: "Algeria.png"
 execute: 

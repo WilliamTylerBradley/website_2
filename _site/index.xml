@@ -10,7 +10,7 @@
 <atom:link href="https://www.williamtylerbradley.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Website for W T Bradley</description>
 <generator>quarto-1.6.32</generator>
-<lastBuildDate>Thu, 16 Oct 2025 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 18 Oct 2025 04:00:00 GMT</lastBuildDate>
 <item>
   <title>Country Maps</title>
   <link>https://www.williamtylerbradley.com/posts/2025-10-18-country-maps/</link>
@@ -29,7 +29,7 @@ Imports
 </center>
 <hr>
 <p><code>geopandas</code> is the main package for working with this geography data. It’s basically a <code>pandas</code> dataframe with an additional <code>geometry</code> column for plotting. I tried doing everything with only <code>geopandas</code> and <code>matplotlib</code>, but the plots would end up with odd artifacts. Using the <code>cartopy</code> package for plotting fixed them.</p>
-<div id="21248f13" class="cell" data-execution_count="1">
+<div id="57ab53d9" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> cartopy</span>
@@ -73,7 +73,7 @@ Set up the data
 </center>
 <hr>
 <p>The data is saved from <a href="www.naturalearthdata.com">Natural Earth</a>. There are a lot of choices to make here. I wanted to use the <a href="https://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a>, but there are a few extras I added, like Kosovo. Some countries span a large area that can’t be graphed well because of the size, like France with Clipperton Island. For those cases, I drop any very small locations. For naming, if it was a group, like the United Kingdom, I wanted to use the group name, <code>ADMIN</code>, else the <code>NAME_LONG</code> tended to provide better text. Lastly, all the geometries were combined together.</p>
-<div id="b803213e" class="cell" data-execution_count="2">
+<div id="2e6bdf4c" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Load the world map from geopandas's built-in dataset</span></span>
@@ -287,7 +287,7 @@ The Main Loop Part 1
 </center>
 <hr>
 <p>For each country, I needed to find a lat/long point to set the orthographic projection. This should be the center of the country. I first use a point on the bounding box to get close and estimate the <a href="https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system">UTM</a> crs from there. Averaging the points on the bounding box or using <code>centroid</code> will fail on counties like Kiribati because it cross the International Date Line. An average of the bounding box wraps back around to the Atlantic Ocean instead of the center of the country in the Pacific Ocean. Therefore the multistep process of using UTM then <code>centroid</code> has to be done, instead of using <code>centroid</code> from the start. Also, Antarctica fails for estimating the UTM crs, so it is handled separately. Then after setting that point, the centroid of the country can be found and the projections can be set from there. Finally, some stats used for determining mapping options are saved.</p>
-<div id="d137674e" class="cell" data-execution_count="3">
+<div id="e1da6663" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -622,7 +622,7 @@ The Main Loop Part 2
 </center>
 <hr>
 <p>The rest of the loop plots the maps. First, some defauls are set for each plot. Backgrounds, the world map, and the individual country are plotted. Then, if the country is very small, an arrow is drawn, if the country is kind of small, an inset map is drawn, or if the country is largely water, the bounding box is drawn. These options make the map easier to understand.</p>
-<div id="cf9ddd3f" class="cell" data-execution_count="4">
+<div id="654db8d4" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">    <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Set up some basics</span></span>
@@ -1191,7 +1191,7 @@ Saving Some Data
 </center>
 <hr>
 <p>Throughout this code, some data has been collected. At the end it’s saved to a csv used to manually determine cutoffs for mapping options.</p>
-<div id="43901f19" class="cell" data-execution_count="5">
+<div id="47d01b23" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Save country data</span></span>
@@ -1330,7 +1330,7 @@ font-style: inherit;">'ISO'</span>)</span></code></pre></div>
  ]]></description>
   <category>Python</category>
   <guid>https://www.williamtylerbradley.com/posts/2025-10-18-country-maps/</guid>
-  <pubDate>Thu, 16 Oct 2025 04:00:00 GMT</pubDate>
+  <pubDate>Sat, 18 Oct 2025 04:00:00 GMT</pubDate>
   <media:content url="https://www.williamtylerbradley.com/posts/2025-10-18-country-maps/Algeria.png" medium="image" type="image/png" height="108" width="144"/>
 </item>
 <item>
