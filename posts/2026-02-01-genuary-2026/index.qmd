@@ -1,0 +1,67 @@
+---
+title: "Genuary 2026"
+description: "Generative Art for January 2026"
+date: "2026-02-01"
+categories: [Python]
+image: "Jan_01.svg"
+execute: 
+  eval: false
+jupyter: python3
+---
+
+I participated in [Genuary](https://genuary.art/) 2026 this year. I went with one prompt a week and kept the files [here](https://github.com/WilliamTylerBradley/genuary2026). I also focused on using SVGs for this run and kept all of them 100x100.
+
+<br>
+<hr>
+<center>
+<h2>JAN. 1: One color, one shape</h2>
+</center>
+<hr>
+
+I used an arrow that followed the gradient from OpenSimplex noise. I created a base shape, copied it on to a hexagonal grid, then used transformations to rotate them.
+
+![Jan_01](Jan_01.svg){width=80%}
+
+<br>
+<hr>
+<center>
+<h2>JAN. 10: Polar coordinates</h2>
+</center>
+<hr>
+
+This is a random walk through polar coordinates. The arc length is consistent so the change in theta is different based on the radius.
+
+![Jan_10](Jan_10.svg){width=80%}
+
+<br>
+<hr>
+<center>
+<h2>JAN. 17: Wallpaper group</h2>
+</center>
+<hr>
+
+This is based on a herringbone pattern for group pg. The colors are based on RGB and modulo on row number.
+
+![Jan_17](Jan_17.svg){width=80%}
+
+<br>
+<hr>
+<center>
+<h2>JAN. 27: Lifeform. A shape or structure that behaves as if it’s alive or growing.</h2>
+</center>
+<hr>
+
+Based on vegetation. This work uses cubic curves.
+
+![Jan_27](Jan_27.svg){width=80%}
+
+<br>
+<hr>
+<center>
+<h2>JAN. 29: Genetic evolution and mutation.</h2>
+</center>
+<hr>
+
+This has three polygons that grow until one reaches the outer boundary. This is my least favorite out of all of them.
+
+![Jan_29](Jan_29.svg){width=80%}
